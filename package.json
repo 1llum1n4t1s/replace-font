@@ -1,0 +1,19 @@
+{
+  "name": "notosans-font-replacer",
+  "version": "1.1.10",
+  "description": "Chrome extension to replace hard-to-read fonts with Noto Sans",
+  "scripts": {
+    "generate-icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0"
+  },
+  "keywords": [
+    "chrome-extension",
+    "font",
+    "noto-sans",
+    "japanese"
+  ],
+  "author": "",
+  "license": "MIT"
+}
