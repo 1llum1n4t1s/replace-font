@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プライバシーポリシー - NotoSansへ置換するやつ(改修型)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            line-height: 1.8;
+            color: #24292f;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            color: #1f2328;
+            border-bottom: 3px solid #0969da;
+            padding-bottom: 0.3em;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: #1f2328;
+            border-bottom: 1px solid #d0d7de;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin-top: 1.2em;
+            margin-bottom: 0.6em;
+            color: #1f2328;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul {
+            margin-left: 2em;
+            margin-bottom: 1em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        .highlight {
+            background-color: #fff8c5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background-color: #ddf4ff;
+            border-left: 4px solid #0969da;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .info-box p {
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 2em;
+        }
+
+        .date {
+            color: #656d76;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+        }
+
+        a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lang-switch a {
+            padding: 8px 16px;
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        .lang-switch a:hover {
+            background-color: #e7eaed;
+            text-decoration: none;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #d0d7de;
+            margin: 3em 0;
+        }
+
+        footer {
+            margin-top: 3em;
+            padding-top: 2em;
+            border-top: 1px solid #d0d7de;
+            text-align: center;
+            color: #656d76;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-switch">
+            <a href="#ja">日本語</a>
+            <a href="#en">English</a>
+        </div>
+
+        <!-- Japanese Version -->
+        <section id="ja">
+            <h1>プライバシーポリシー</h1>
+            <p class="date">最終更新日: 2026年1月10日</p>
+
+            <div class="info-box">
+                <p><strong>重要:</strong> この拡張機能は<span class="highlight">一切のユーザーデータを収集・保存・送信しません</span>。全ての処理はあなたのブラウザ内でローカルに完結します。</p>
+            </div>
+
+            <div class="section">
+                <h2>概要</h2>
+                <p>「NotoSansへ置換するやつ(改修型)」（以下「本拡張機能」）は、ウェブページ上の読みづらい日本語フォントを自動的にNoto Sansフォントに置換するブラウザ拡張機能です。</p>
+                <p>本プライバシーポリシーは、本拡張機能がユーザーの情報をどのように扱うかを説明するものです。</p>
+            </div>
+
+            <div class="section">
+                <h2>データ収集について</h2>
+                <h3>収集しないデータ</h3>
+                <p>本拡張機能は、以下を含むいかなるユーザーデータも収集しません：</p>
+                <ul>
+                    <li>個人情報（名前、メールアドレス、住所など）</li>
+                    <li>ブラウジング履歴</li>
+                    <li>訪問したウェブサイトのURL</li>
+                    <li>入力されたテキストやフォームデータ</li>
+                    <li>Cookie情報</li>
+                    <li>IPアドレス</li>
+                    <li>デバイス情報</li>
+                    <li>位置情報</li>
+                    <li>その他いかなる種類のユーザーデータ</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>拡張機能の動作</h2>
+                <h3>処理内容</h3>
+                <p>本拡張機能は、以下の処理をローカルで実行します：</p>
+                <ul>
+                    <li>ウェブページのフォント設定を検出</li>
+                    <li>特定の日本語フォント（MS Gothic、Meiryo、Yu Gothicなど）を検出した場合、Noto Sansフォントに置換</li>
+                    <li>動的に追加されるiframe内のフォントも同様に置換</li>
+                </ul>
+
+                <h3>重要な点</h3>
+                <ul>
+                    <li><strong>全ての処理はブラウザ内で完結</strong>：外部サーバーへの通信は一切行いません</li>
+                    <li><strong>フォントファイルは拡張機能内に同梱</strong>：外部からのフォント読み込みは行いません</li>
+                    <li><strong>データの保存なし</strong>：ブラウザのローカルストレージやサーバーへのデータ保存は行いません</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>権限について</h2>
+                <h3>ホスト権限（&lt;all_urls&gt;）</h3>
+                <p>本拡張機能は、全てのウェブサイトへのアクセス権限を要求しますが、これは以下の理由によるものです：</p>
+                <ul>
+                    <li>ユーザーが訪問するあらゆるウェブページでフォント置換を行うため</li>
+                    <li>各ページのフォント設定を検出し、CSSを動的に注入するため</li>
+                </ul>
+                <p><strong>この権限は、フォント置換処理のためだけに使用され、データの収集や送信には一切使用されません。</strong></p>
+            </div>
+
+            <div class="section">
+                <h2>第三者への情報提供</h2>
+                <p>本拡張機能は、いかなるデータも収集しないため、第三者への情報提供は一切ありません。</p>
+                <ul>
+                    <li>広告ネットワークへの情報提供なし</li>
+                    <li>分析ツールの使用なし</li>
+                    <li>外部サービスとの連携なし</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>オープンソース</h2>
+                <p>本拡張機能のソースコードは、GitHubで公開されています：</p>
+                <p><a href="https://github.com/1llum1n4t1s/replace-font" target="_blank">https://github.com/1llum1n4t1s/replace-font</a></p>
+                <p>誰でもコードを閲覧・検証できるため、プライバシーとセキュリティに関する透明性を確保しています。</p>
+            </div>
+
+            <div class="section">
+                <h2>お問い合わせ</h2>
+                <p>本プライバシーポリシーに関するご質問や懸念がある場合は、GitHubリポジトリのIssuesセクションからお問い合わせください：</p>
+                <p><a href="https://github.com/1llum1n4t1s/replace-font/issues" target="_blank">https://github.com/1llum1n4t1s/replace-font/issues</a></p>
+            </div>
+
+            <div class="section">
+                <h2>ポリシーの変更</h2>
+                <p>本プライバシーポリシーは、必要に応じて更新されることがあります。重要な変更がある場合は、GitHubリポジトリおよび拡張機能の更新情報でお知らせします。</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- English Version -->
+        <section id="en">
+            <h1>Privacy Policy</h1>
+            <p class="date">Last Updated: January 10, 2026</p>
+
+            <div class="info-box">
+                <p><strong>Important:</strong> This extension <span class="highlight">does not collect, store, or transmit any user data</span>. All processing is done locally within your browser.</p>
+            </div>
+
+            <div class="section">
+                <h2>Overview</h2>
+                <p>"NotoSansへ置換するやつ(改修型)" (Replace with Noto Sans - Improved Version, hereinafter "this extension") is a browser extension that automatically replaces hard-to-read Japanese fonts on web pages with Noto Sans font.</p>
+                <p>This privacy policy explains how this extension handles user information.</p>
+            </div>
+
+            <div class="section">
+                <h2>Data Collection</h2>
+                <h3>Data We Do NOT Collect</h3>
+                <p>This extension does not collect any user data, including but not limited to:</p>
+                <ul>
+                    <li>Personal information (name, email address, physical address, etc.)</li>
+                    <li>Browsing history</li>
+                    <li>URLs of visited websites</li>
+                    <li>Entered text or form data</li>
+                    <li>Cookie information</li>
+                    <li>IP addresses</li>
+                    <li>Device information</li>
+                    <li>Location data</li>
+                    <li>Any other kind of user data</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>How the Extension Works</h2>
+                <h3>Processing</h3>
+                <p>This extension performs the following processes locally:</p>
+                <ul>
+                    <li>Detects font settings on web pages</li>
+                    <li>Replaces specific Japanese fonts (MS Gothic, Meiryo, Yu Gothic, etc.) with Noto Sans font when detected</li>
+                    <li>Also replaces fonts within dynamically added iframes</li>
+                </ul>
+
+                <h3>Key Points</h3>
+                <ul>
+                    <li><strong>All processing is done within the browser</strong>: No communication with external servers</li>
+                    <li><strong>Font files are bundled with the extension</strong>: No external font loading</li>
+                    <li><strong>No data storage</strong>: No data is saved to browser local storage or servers</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Permissions</h2>
+                <h3>Host Permission (&lt;all_urls&gt;)</h3>
+                <p>This extension requests access to all websites for the following reasons:</p>
+                <ul>
+                    <li>To perform font replacement on any web page the user visits</li>
+                    <li>To detect font settings on each page and dynamically inject CSS</li>
+                </ul>
+                <p><strong>This permission is used solely for font replacement and is never used for data collection or transmission.</strong></p>
+            </div>
+
+            <div class="section">
+                <h2>Third-Party Data Sharing</h2>
+                <p>Since this extension does not collect any data, there is no sharing of information with third parties.</p>
+                <ul>
+                    <li>No data sharing with advertising networks</li>
+                    <li>No use of analytics tools</li>
+                    <li>No integration with external services</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Open Source</h2>
+                <p>The source code of this extension is publicly available on GitHub:</p>
+                <p><a href="https://github.com/1llum1n4t1s/replace-font" target="_blank">https://github.com/1llum1n4t1s/replace-font</a></p>
+                <p>Anyone can review and verify the code, ensuring transparency regarding privacy and security.</p>
+            </div>
+
+            <div class="section">
+                <h2>Contact</h2>
+                <p>If you have any questions or concerns about this privacy policy, please contact us through the Issues section of the GitHub repository:</p>
+                <p><a href="https://github.com/1llum1n4t1s/replace-font/issues" target="_blank">https://github.com/1llum1n4t1s/replace-font/issues</a></p>
+            </div>
+
+            <div class="section">
+                <h2>Policy Changes</h2>
+                <p>This privacy policy may be updated as necessary. Significant changes will be announced through the GitHub repository and extension update notes.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 NotoSansへ置換するやつ(改修型) | Licensed under <a href="https://github.com/1llum1n4t1s/replace-font/blob/main/LICENSE" target="_blank">MIT License</a></p>
+        </footer>
+    </div>
+</body>
+</html>

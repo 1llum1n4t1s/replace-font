@@ -183,7 +183,7 @@ npm run generate-icons
      - **言語**: 日本語
 
 4. **プライバシー設定**
-   - プライバシーポリシーのURL（必要に応じて）
+   - プライバシーポリシーのURL: https://1llum1n4t1s.github.io/replace-font/privacy.html
    - データ収集の有無を明記
 
 5. **公開設定**
@@ -194,6 +194,20 @@ npm run generate-icons
 - 審査には通常1〜3営業日かかります
 - manifest.jsonのバージョン番号は更新の度にインクリメントしてください
 - スクリーンショットは拡張機能の動作を明確に示すものを用意してください
+
+### GitHub Pagesの設定（プライバシーポリシー公開）
+
+プライバシーポリシーを公開するために、GitHub Pagesを有効化します：
+
+1. GitHubリポジトリページで「Settings」タブをクリック
+2. 左サイドバーの「Pages」をクリック
+3. 「Source」セクションで以下を選択：
+   - Branch: `main` (または `master`)
+   - Folder: `/docs`
+4. 「Save」ボタンをクリック
+5. 数分後、以下のURLでプライバシーポリシーが公開されます：
+   - トップページ: https://1llum1n4t1s.github.io/replace-font/
+   - プライバシーポリシー: https://1llum1n4t1s.github.io/replace-font/privacy.html
 
 ## 📝 パフォーマンス最適化
 
