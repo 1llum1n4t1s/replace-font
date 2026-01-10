@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- グラデーション背景 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGradient)"/>
+
+  <!-- 上部の「A」（欧文フォント） -->
+  <text x="256" y="170" font-family="Arial, sans-serif" font-size="120" font-weight="bold"
+        fill="white" text-anchor="middle" opacity="0.95">A</text>
+
+  <!-- 中央の変換矢印 -->
+  <g transform="translate(256, 256)">
+    <!-- 下向き矢印 -->
+    <path d="M -30,-20 L 30,-20 L 30,-30 L 50,0 L 30,30 L 30,20 L -30,20 L -30,30 L -50,0 L -30,-30 Z"
+          fill="white" opacity="0.9" filter="url(#shadow)"/>
+  </g>
+
+  <!-- 下部の「あ」（日本語フォント） -->
+  <text x="256" y="420" font-family="'Noto Sans JP', sans-serif" font-size="110" font-weight="bold"
+        fill="white" text-anchor="middle" opacity="0.95">あ</text>
+</svg>
