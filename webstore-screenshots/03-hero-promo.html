@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screenshot 3 - Hero Promotional</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 1280px;
+      height: 800px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .decorative-circles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+    }
+
+    .circle1 {
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      left: -100px;
+    }
+
+    .circle2 {
+      width: 300px;
+      height: 300px;
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .circle3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 10%;
+      opacity: 0.5;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+    }
+
+    .logo {
+      font-size: 80px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .main-title {
+      font-size: 56px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      opacity: 0.95;
+      margin-bottom: 48px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      font-weight: 400;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+      max-width: 1000px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 32px 24px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .feature-description {
+      font-size: 14px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .stats-banner {
+      display: flex;
+      gap: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      padding: 24px 48px;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 32px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 900;
+      display: block;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .badges-container {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-icon {
+      font-size: 18px;
+    }
+
+    .version-badge {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    .supported-fonts {
+      margin-top: 32px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 24px 32px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      max-width: 900px;
+    }
+
+    .supported-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+
+    .font-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .font-tag {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="decorative-circles">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+  </div>
+
+  <div class="version-badge">v1.1.10</div>
+
+  <div class="content">
+    <div class="logo">📝</div>
+    <h1 class="main-title">NotoSansへ置換するやつ</h1>
+    <p class="subtitle">読みづらいフォントを自動的に美しいNoto Sansに</p>
+
+    <div class="stats-banner">
+      <div class="stat-item">
+        <span class="stat-number">10+</span>
+        <span class="stat-label">対応フォント</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">⚡</span>
+        <span class="stat-label">高速動作</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">自動置換</span>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3 class="feature-title">高速処理</h3>
+        <p class="feature-description">最適化されたフォントプリロード機構により、ページ読み込みに影響を与えません</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🔄</span>
+        <h3 class="feature-title">自動検出</h3>
+        <p class="feature-description">複数の日本語フォントを自動で検出し、即座に置換処理を実行します</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🖼️</span>
+        <h3 class="feature-title">iframe対応</h3>
+        <p class="feature-description">動的に追加されるiframe内のフォントも自動的に置換します</p>
+      </div>
+    </div>
+
+    <div class="badges-container">
+      <div class="badge">
+        <span class="badge-icon">🚀</span>
+        <span>Manifest V3</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">💾</span>
+        <span>軽量設計</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">🎨</span>
+        <span>美しいUI</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">✨</span>
+        <span>最適化済</span>
+      </div>
+    </div>
+
+    <div class="supported-fonts">
+      <div class="supported-title">置換対象フォント</div>
+      <div class="font-tags">
+        <span class="font-tag">MS Gothic</span>
+        <span class="font-tag">MS PGothic</span>
+        <span class="font-tag">MS UI Gothic</span>
+        <span class="font-tag">Meiryo</span>
+        <span class="font-tag">Meiryo UI</span>
+        <span class="font-tag">Yu Gothic</span>
+        <span class="font-tag">Yu Gothic UI</span>
+        <span class="font-tag">M PLUS Rounded 1c</span>
+        <span class="font-tag">Malgun Gothic</span>
+        <span class="font-tag">Arial Unicode MS</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
