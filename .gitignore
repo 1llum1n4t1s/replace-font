@@ -5,6 +5,7 @@ package-lock.json
 # Build outputs
 *.log
 *.tmp
+*.zip
 
 # OS files
 .DS_Store
