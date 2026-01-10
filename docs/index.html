@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotoSansへ置換するやつ(改修型)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 0.5em;
+            color: #1f2328;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #656d76;
+            margin-bottom: 2em;
+            font-size: 1.1em;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .link-card {
+            display: block;
+            padding: 20px 24px;
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1f2328;
+            transition: all 0.2s ease;
+        }
+
+        .link-card:hover {
+            background: #e7eaed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-card h2 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: #0969da;
+        }
+
+        .link-card p {
+            color: #656d76;
+            font-size: 0.95em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #0969da;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+
+        footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #d0d7de;
+            text-align: center;
+            color: #656d76;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📝</div>
+        <h1>NotoSansへ置換するやつ</h1>
+        <p class="subtitle">改修型 v2.0.0</p>
+
+        <div class="links">
+            <a href="privacy.html" class="link-card">
+                <h2>🔒 プライバシーポリシー <span class="badge">必読</span></h2>
+                <p>拡張機能のデータ取り扱いについて | Privacy Policy</p>
+            </a>
+
+            <a href="https://github.com/1llum1n4t1s/replace-font" target="_blank" class="link-card">
+                <h2>📦 GitHubリポジトリ</h2>
+                <p>ソースコードの閲覧とIssue報告 | View Source Code</p>
+            </a>
+
+            <a href="https://chrome.google.com/webstore" target="_blank" class="link-card">
+                <h2>🌐 Chrome Web Store</h2>
+                <p>拡張機能をインストール | Install Extension</p>
+            </a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 NotoSansへ置換するやつ(改修型)</p>
+            <p>Licensed under <a href="https://github.com/1llum1n4t1s/replace-font/blob/main/LICENSE" target="_blank">MIT License</a></p>
+        </footer>
+    </div>
+</body>
+</html>
