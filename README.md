@@ -132,6 +132,19 @@ npm run generate-icons
 
 ### ビルド & パッケージング
 
+#### Linux / Mac / WSL
+```bash
+# 配布用ZIPを作成
+./zip.sh
+```
+
+#### Windows (PowerShell)
+```powershell
+# 配布用ZIPを作成
+.\zip.ps1
+```
+
+#### Git Bash (Windows)
 ```bash
 # 配布用ZIPを作成
 ./zip.sh
@@ -145,8 +158,15 @@ npm run generate-icons
 ### Chrome Web Storeへのアップロード
 
 1. **ZIPファイルを作成**
+
+   **Linux / Mac / Git Bash:**
    ```bash
    ./zip.sh
+   ```
+
+   **Windows PowerShell:**
+   ```powershell
+   .\zip.ps1
    ```
 
 2. **Chrome Web Store Developer Dashboardにアクセス**
