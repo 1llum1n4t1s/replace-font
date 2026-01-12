@@ -1,4 +1,4 @@
-# NotoSansへ置換するやつ（改修型）
+# NotoSansへ置換するやつ(改修型)
 
 [![Version](https://img.shields.io/badge/version-2.0.2-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
