@@ -109,7 +109,7 @@
       // フォント読み込み失敗時のエラーハンドリング
       preloadTag.addEventListener('error', function onFontError() {
         preloadTag.removeEventListener('error', onFontError);
-        console.warn(`[やっぱり Noto Sans] フォント読み込み失敗: ${config.weight}`);
+        console.warn(`[NotoSansへ置換するやつ(改修型)] フォント読み込み失敗: ${config.weight}`);
       });
 
       fragment.appendChild(preloadTag);
