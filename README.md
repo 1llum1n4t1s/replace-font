@@ -17,10 +17,7 @@
 ## 📥 インストール
 
 ### Chrome
-https://chrome.google.com/webstore/detail/oecglhldbofcklanmhckefiflhfhabdd
-
-### Firefox
-https://addons.mozilla.org/ja/firefox/addon/replace-with-noto/
+https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe?authuser=0&hl=ja
 
 ## 🔤 置換対象フォント
 
