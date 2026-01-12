@@ -5,8 +5,8 @@
 
   // フォントURLをプリコンピュート（ループ内での文字列連結を回避）
   const FONT_CONFIG = [
-    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansCJKjp-Regular-subset.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-regular.css` },
-    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansCJKjp-Bold-subset.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-bold.css` }
+    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-regular.css` },
+    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-bold.css` }
   ];
 
   // クラス名の衝突を防ぐためのユニークID生成
