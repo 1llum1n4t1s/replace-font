@@ -86,7 +86,3 @@ This is a browser extension that automatically replaces hard-to-read Japanese fo
 MIT License - See [LICENSE](LICENSE) file for details.
 
 Noto Sans CJK JP fonts are licensed under the [SIL Open Font License 1.1](fonts/LICENSE).
-
----
-
-![Font replacement example](https://user-images.githubusercontent.com/75155258/159868921-7dd6896a-19b0-41c9-86c3-8041ec9fe730.png)
