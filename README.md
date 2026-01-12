@@ -17,7 +17,7 @@
 ## 📥 インストール
 
 ### Chrome
-https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe?authuser=0&hl=ja
+https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
 
 ## 🔤 置換対象フォント
 
