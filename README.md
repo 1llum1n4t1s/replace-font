@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ（改修型）
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンス最適化済み。
@@ -52,9 +52,9 @@ replace-font/
 ├── css/                      # フォント置換CSS
 │   ├── replacefont-extension-regular.css
 │   └── replacefont-extension-bold.css
-├── fonts/                    # サブセット化されたフォント
-│   ├── NotoSansCJKjp-Regular-subset.woff2
-│   └── NotoSansCJKjp-Bold-subset.woff2
+├── fonts/                    # Noto Sans JP フォント
+│   ├── NotoSansJP-Regular.woff2
+│   └── NotoSansJP-Bold.woff2
 ├── icons/                    # アイコンファイル
 │   ├── icon.svg             # ソースSVG
 │   ├── icon-16x16.png
