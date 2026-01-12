@@ -1,3 +1,26 @@
+:root {
+  /* カラー変数 */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-bg-light: rgba(255, 255, 255, 0.12);
+  --glass-bg-hover: rgba(255, 255, 255, 0.2);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-light: rgba(255, 255, 255, 0.15);
+  --glass-border-strong: rgba(255, 255, 255, 0.25);
+  --glass-border-badge: rgba(255, 255, 255, 0.3);
+  --text-color: #ffffff;
+  --accent-green: #4ade80;
+
+  /* 共通値 */
+  --blur-amount: blur(10px);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --transition-fast: 0.3s ease;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,16 +29,17 @@
 
 @font-face {
   font-family: 'Noto Font';
-  src:  local('Noto Sans CJK JP'),
-        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansCJKjp-Regular-subset.woff2') format('woff2');
+  src: local('Noto Sans CJK JP'),
+       url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansCJKjp-Regular-subset.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Noto Font';
-  src:  local('Noto Sans CJK JP Bold'),
-        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansCJKjp-Bold-subset.woff2') format('woff2');
+  src: local('Noto Sans CJK JP Bold'),
+       url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansCJKjp-Bold-subset.woff2') format('woff2');
   font-weight: bold;
+  font-display: swap;
 }
 
 body {
@@ -30,7 +54,7 @@ body {
 
 .container {
   padding: 24px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .header {
@@ -46,12 +70,8 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .title {
@@ -64,23 +84,23 @@ body {
 .badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
+  backdrop-filter: var(--blur-amount);
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--glass-border-badge);
 }
 
 .status-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--blur-amount);
+  border-radius: var(--radius-lg);
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
 }
 
 .status-indicator {
@@ -98,18 +118,14 @@ body {
 }
 
 .dot.active {
-  background: #4ade80;
-  box-shadow: 0 0 12px #4ade80;
+  background: var(--accent-green);
+  box-shadow: 0 0 12px var(--accent-green);
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .status-text {
@@ -132,19 +148,19 @@ body {
 }
 
 .feature-item {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+  background: var(--glass-bg-light);
+  backdrop-filter: var(--blur-amount);
+  border-radius: var(--radius-md);
   padding: 16px 8px;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
+  border: 1px solid var(--glass-border-light);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .feature-item:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-hover);
 }
 
 .feature-icon {
@@ -161,12 +177,12 @@ body {
 }
 
 .info-section {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: var(--glass-bg-subtle);
+  backdrop-filter: var(--blur-amount);
+  border-radius: var(--radius-lg);
   padding: 18px;
   margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--glass-border-light);
 }
 
 .section-title {
@@ -184,19 +200,19 @@ body {
 }
 
 .font-tag {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-bg-hover);
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 11px;
   font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid var(--glass-border-strong);
   letter-spacing: 0.2px;
 }
 
 .footer {
   text-align: center;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid var(--glass-border-light);
 }
 
 .version {
