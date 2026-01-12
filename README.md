@@ -52,9 +52,9 @@ replace-font/
 ├── css/                      # フォント置換CSS
 │   ├── replacefont-extension-regular.css
 │   └── replacefont-extension-bold.css
-├── fonts/                    # サブセット化されたフォント
-│   ├── NotoSansCJKjp-Regular-subset.woff2
-│   └── NotoSansCJKjp-Bold-subset.woff2
+├── fonts/                    # Noto Sans JP フォント
+│   ├── NotoSansJP-Regular.woff2
+│   └── NotoSansJP-Bold.woff2
 ├── icons/                    # アイコンファイル
 │   ├── icon.svg             # ソースSVG
 │   ├── icon-16x16.png
