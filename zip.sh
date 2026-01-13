@@ -2,23 +2,29 @@
 
 # Chrome Web Store用のZIPファイルを作成するスクリプト
 
-# バージョン同期: package.json から manifest.json に自動同期
+# バージョン同期: package.json から全ファイルにバージョンを自動同期
 echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
-MANIFEST_VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
-if [ "$MANIFEST_VERSION" != "$PACKAGE_VERSION" ]; then
-    # jqがない場合は sed で対応
-    if command -v jq &> /dev/null; then
-        jq ".version = \"$PACKAGE_VERSION\"" manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
-    else
-        sed -i.bak "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/" manifest.json
-        rm -f manifest.json.bak
+# 更新対象ファイル
+FILES_TO_UPDATE=("manifest.json" "docs/index.html" "popup/popup.html")
+
+for file in "${FILES_TO_UPDATE[@]}"; do
+    if [ -f "$file" ]; then
+        # バージョン番号を置換（macOS対応）
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v$PACKAGE_VERSION/g" "$file"
+            sed -i '' "s/Version [0-9]\+\.[0-9]\+\.[0-9]\+/Version $PACKAGE_VERSION/g" "$file"
+            sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/g" "$file"
+        else
+            sed -i "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v$PACKAGE_VERSION/g" "$file"
+            sed -i "s/Version [0-9]\+\.[0-9]\+\.[0-9]\+/Version $PACKAGE_VERSION/g" "$file"
+            sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/g" "$file"
+        fi
     fi
-    echo "Version synced: $PACKAGE_VERSION"
-else
-    echo "Version already synced: $PACKAGE_VERSION"
-fi
+done
+
+echo "Version synced: $PACKAGE_VERSION"
 echo ""
 
 # zipコマンドの確認
