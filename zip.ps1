@@ -1,5 +1,24 @@
 # Chrome Web Store用のZIPファイルを作成するスクリプト (Windows PowerShell版)
 
+# バージョン同期: package.json から全ファイルにバージョンを自動同期
+$packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+$version = $packageJson.version
+
+$filesToUpdate = @("manifest.json", "docs/index.html", "popup/popup.html")
+foreach ($filePath in $filesToUpdate) {
+    $content = Get-Content -Path $filePath -Raw -Encoding UTF8
+    
+    # バージョン番号の置換
+    $content = [regex]::Replace($content, 'v[0-9]+\.[0-9]+\.[0-9]+', "v$version")
+    $content = [regex]::Replace($content, 'Version [0-9]+\.[0-9]+\.[0-9]+', "Version $version")
+    $content = [regex]::Replace($content, '"version": "[^"]+"', "`"version`": `"$version`"")
+    
+    # ファイルに書き戻す
+    $content | Out-File -FilePath $filePath -Encoding UTF8 -NoNewline
+}
+Write-Host "Version synced: $version" -ForegroundColor Green
+Write-Host ""
+
 Write-Host "📦 Chrome Web Store用のZIPファイルを作成中..." -ForegroundColor Cyan
 
 # 古いZIPファイルを削除
