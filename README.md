@@ -49,6 +49,19 @@ https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
 
 Noto Sans CJK JP は [SIL Open Font License 1.1](fonts/LICENSE) の下で提供されています。
 
+## 🔖 バージョン管理
+
+バージョン番号は `package.json` で一元管理されており、パッケージング時に自動的に `manifest.json` と同期されます。
+
+**バージョンを更新する場合:**
+
+```bash
+# package.json のバージョンを更新
+npm version minor  # または patch, major
+```
+
+パッケージング時（`./zip.sh` または `./zip.ps1` 実行時）に、`manifest.json` のバージョンが自動同期されます。
+
 ## 🤝 コントリビューション
 
 Issue報告やPull Requestを歓迎します。
