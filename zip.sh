@@ -7,7 +7,7 @@ echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 # 更新対象ファイル
-FILES_TO_UPDATE=("manifest.json" "docs/index.html" "popup/popup.html")
+FILES_TO_UPDATE=("manifest.json" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html")
 
 for file in "${FILES_TO_UPDATE[@]}"; do
     if [ -f "$file" ]; then
