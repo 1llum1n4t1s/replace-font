@@ -4,7 +4,7 @@
 $packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
 $version = $packageJson.version
 
-$filesToUpdate = @("manifest.json", "docs/index.html", "popup/popup.html")
+$filesToUpdate = @("manifest.json", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html")
 foreach ($filePath in $filesToUpdate) {
     $content = Get-Content -Path $filePath -Raw -Encoding UTF8
     
