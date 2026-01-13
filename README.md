@@ -35,32 +35,14 @@ https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
 - **Malgun Gothic**
 - **Arial Unicode MS**
 
-## 💡 推奨設定
-
-さらに多くのサイトで文字を美しく表示するには、ブラウザのデフォルトフォント設定を変更することをおすすめします。
-
-詳細: [Chrome のフォントを美しい Noto Sans にする方法](https://r-40021.github.io/blog/2022-05/font)
-
 ## 📄 ライセンス
 
 このプロジェクトは [MIT License](LICENSE) の下でライセンスされています。
 
 ### フォントライセンス
 
-Noto Sans CJK JP は [SIL Open Font License 1.1](fonts/LICENSE) の下で提供されています。
+Noto Sans JP は [SIL Open Font License 1.1](fonts/LICENSE) の下で提供されています。
 
-## 🔖 バージョン管理
-
-バージョン番号は `package.json` で一元管理されており、パッケージング時に自動的に `manifest.json` と同期されます。
-
-**バージョンを更新する場合:**
-
-```bash
-# package.json のバージョンを更新
-npm version minor  # または patch, major
-```
-
-パッケージング時（`./zip.sh` または `./zip.ps1` 実行時）に、`manifest.json` のバージョンが自動同期されます。
 
 ## 🤝 コントリビューション
 
@@ -98,4 +80,4 @@ This is a browser extension that automatically replaces hard-to-read Japanese fo
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
-Noto Sans CJK JP fonts are licensed under the [SIL Open Font License 1.1](fonts/LICENSE).
+Noto Sans JP fonts are licensed under the [SIL Open Font License 1.1](fonts/LICENSE).
