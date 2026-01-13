@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.3-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.5-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンス最適化済み。
@@ -12,7 +12,7 @@
 - 🖼️ **iframe対応**: 動的に追加されるiframe内のフォントも置換
 - 🎨 **カスタムアイコン**: SVGから自動生成されるアイコン
 - 🚀 **Manifest V3**: 最新のChrome拡張仕様に対応
-- 💾 **軽量**: ローカルフォントがない場合は拡張機能内蔵フォントを読み込む
+- 💾 **軽量**: ローカルフォントがない場合は拡張機能内蔵フォント(Noto Sans JP)を読み込む
 
 ## 📥 インストール
 
