@@ -2,6 +2,25 @@
 
 # Chrome Web Store用のZIPファイルを作成するスクリプト
 
+# バージョン同期: package.json から manifest.json に自動同期
+echo "Version syncing..."
+PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
+MANIFEST_VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
+
+if [ "$MANIFEST_VERSION" != "$PACKAGE_VERSION" ]; then
+    # jqがない場合は sed で対応
+    if command -v jq &> /dev/null; then
+        jq ".version = \"$PACKAGE_VERSION\"" manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+    else
+        sed -i.bak "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/" manifest.json
+        rm -f manifest.json.bak
+    fi
+    echo "Version synced: $PACKAGE_VERSION"
+else
+    echo "Version already synced: $PACKAGE_VERSION"
+fi
+echo ""
+
 # zipコマンドの確認
 if ! command -v zip &> /dev/null; then
   echo "❌ zip をインストールしてください"
