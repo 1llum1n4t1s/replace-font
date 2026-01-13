@@ -7,7 +7,7 @@ echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 # 更新対象ファイル
-FILES_TO_UPDATE=("manifest.json" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html")
+FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html")
 
 for file in "${FILES_TO_UPDATE[@]}"; do
     if [ -f "$file" ]; then
@@ -16,10 +16,12 @@ for file in "${FILES_TO_UPDATE[@]}"; do
             sed -i '' "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v$PACKAGE_VERSION/g" "$file"
             sed -i '' "s/Version [0-9]\+\.[0-9]\+\.[0-9]\+/Version $PACKAGE_VERSION/g" "$file"
             sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/g" "$file"
+            sed -i '' "s/version-[0-9]\+\.[0-9]\+\.[0-9]\+-/version-$PACKAGE_VERSION-/g" "$file"
         else
             sed -i "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/v$PACKAGE_VERSION/g" "$file"
             sed -i "s/Version [0-9]\+\.[0-9]\+\.[0-9]\+/Version $PACKAGE_VERSION/g" "$file"
             sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$PACKAGE_VERSION\"/g" "$file"
+            sed -i "s/version-[0-9]\+\.[0-9]\+\.[0-9]\+-/version-$PACKAGE_VERSION-/g" "$file"
         fi
     fi
 done

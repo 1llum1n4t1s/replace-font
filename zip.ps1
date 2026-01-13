@@ -4,7 +4,7 @@
 $packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
 $version = $packageJson.version
 
-$filesToUpdate = @("manifest.json", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html")
+$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html")
 foreach ($filePath in $filesToUpdate) {
     $content = Get-Content -Path $filePath -Raw -Encoding UTF8
     
@@ -12,6 +12,7 @@ foreach ($filePath in $filesToUpdate) {
     $content = [regex]::Replace($content, 'v[0-9]+\.[0-9]+\.[0-9]+', "v$version")
     $content = [regex]::Replace($content, 'Version [0-9]+\.[0-9]+\.[0-9]+', "Version $version")
     $content = [regex]::Replace($content, '"version": "[^"]+"', "`"version`": `"$version`"")
+    $content = [regex]::Replace($content, 'version-[0-9]+\.[0-9]+\.[0-9]+-', "version-$version-")
     
     # ファイルに書き戻す
     $content | Out-File -FilePath $filePath -Encoding UTF8 -NoNewline
