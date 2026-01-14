@@ -3,7 +3,9 @@
   "version": "2.0.5",
   "description": "Chrome extension to replace hard-to-read fonts with Noto Sans",
   "scripts": {
-    "generate-icons": "node scripts/generate-icons.js"
+    "generate-icons": "node scripts/generate-icons.js",
+    "generate-css": "node scripts/generate-css.js",
+    "build": "npm run generate-icons && npm run generate-css"
   },
   "devDependencies": {
     "sharp": "^0.33.0"
