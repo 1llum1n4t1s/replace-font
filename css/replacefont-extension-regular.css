@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 /* Regular */
-@font-face { 
-  font-family: 'MS PGothic';
+@font-face {
+  font-family: "MS PGothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -10,8 +10,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ms pgothic';
+@font-face {
+  font-family: "ms pgothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -19,8 +19,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'MS Pゴシック';
+@font-face {
+  font-family: "MS Pゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -28,8 +28,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ms pゴシック';
+@font-face {
+  font-family: "ms pゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -37,8 +37,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ＭＳ Ｐゴシック';
+@font-face {
+  font-family: "ＭＳ Ｐゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -46,8 +46,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'MS Gothic';
+@font-face {
+  font-family: "MS Gothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -55,8 +55,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ms gothic';
+@font-face {
+  font-family: "ms gothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -64,8 +64,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'MS ゴシック';
+@font-face {
+  font-family: "MS ゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -73,8 +73,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ms ゴシック';
+@font-face {
+  font-family: "ms ゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -82,8 +82,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: 'ＭＳ ゴシック';
+@font-face {
+  font-family: "ＭＳ ゴシック";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -91,8 +91,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "MS UI Gothic"; 
+@font-face {
+  font-family: "MS UI Gothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -100,8 +100,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "メイリオ"; 
+@font-face {
+  font-family: 'メイリオ';
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -109,8 +109,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Meiryo"; 
+@font-face {
+  font-family: 'Meiryo';
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -118,8 +118,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "YuGothic"; 
+@font-face {
+  font-family: 'YuGothic';
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -127,8 +127,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Yu Gothic"; 
+@font-face {
+  font-family: "Yu Gothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -136,8 +136,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "游ゴシック"; 
+@font-face {
+  font-family: '游ゴシック';
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -145,8 +145,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "YuGothic Medium"; 
+@font-face {
+  font-family: "YuGothic Medium";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -154,8 +154,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Yu Gothic Medium"; 
+@font-face {
+  font-family: "Yu Gothic Medium";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -163,8 +163,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "游ゴシック Medium"; 
+@font-face {
+  font-family: "游ゴシック Medium";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -172,8 +172,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Yu Gothic UI"; 
+@font-face {
+  font-family: "Yu Gothic UI";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -181,8 +181,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Meiryo UI"; 
+@font-face {
+  font-family: "Meiryo UI";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -190,8 +190,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "M PLUS Rounded 1c"; 
+@font-face {
+  font-family: "M PLUS Rounded 1c";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -199,8 +199,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Malgun Gothic"; 
+@font-face {
+  font-family: "Malgun Gothic";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -208,8 +208,8 @@
         local('BIZ UDPGothic');
   font-display: swap;
 }
-@font-face { 
-  font-family: "Arial Unicode MS"; 
+@font-face {
+  font-family: "Arial Unicode MS";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
