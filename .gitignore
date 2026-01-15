@@ -16,3 +16,6 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Chrome extension reserved
+_metadata/
