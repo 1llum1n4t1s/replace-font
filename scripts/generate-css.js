@@ -55,6 +55,17 @@ const FONT_CONFIGS = [
   }
 ];
 
+const HIRAGINO_FAMILIES = new Set([
+  'Hiragino Kaku Gothic ProN',
+  'Hiragino Kaku Gothic Pro',
+  'ヒラギノ角ゴ ProN',
+  'ヒラギノ角ゴ Pro',
+  'Hiragino Sans',
+  'Hiragino Sans Pro'
+]);
+
+const MACOS_FALLBACKS = ['San Francisco', '-apple-system', 'BlinkMacSystemFont'];
+
 /**
  * フォールバックフォントを取得
  * @param {string} fontFamily - フォントファミリー名
@@ -62,8 +73,8 @@ const FONT_CONFIGS = [
  * @returns {string[]} フォールバックフォント一覧
  */
 function getFallbackFonts(fontFamily, config) {
-  if (fontFamily.startsWith('Hiragino') || fontFamily.startsWith('ヒラギノ')) {
-    return ['San Francisco', '-apple-system', 'BlinkMacSystemFont'];
+  if (HIRAGINO_FAMILIES.has(fontFamily)) {
+    return MACOS_FALLBACKS;
   }
 
   return [config.fallbackFont];
