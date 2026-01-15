@@ -12,8 +12,11 @@
   // クラス名の衝突を防ぐためのユニークID生成
   const uniqueId = `preloadFontTag${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
-  // 処理済みドキュメントを追跡（重複処理を防止）
-  const processedDocs = new WeakSet();
+  // CSS注入済みドキュメントを追跡（重複処理を防止）
+  const cssInjectedDocs = new WeakSet();
+
+  // preload処理済みドキュメントを追跡（重複処理を防止）
+  const preloadedDocs = new WeakSet();
 
   // デバウンス用の変数
   let pendingIframes = [];
@@ -25,12 +28,12 @@
   const eventListeners = [];
 
   // CSSをヘッドに直接注入（描画前）- 重複チェック付き
-  function injectCSSEarly(elem) {
-    if (!elem || !elem.head) return;
+  function injectCSS(elem) {
+    if (!elem || !elem.head) return false;
 
     // 既に処理済みの場合はスキップ
-    if (processedDocs.has(elem)) return;
-    processedDocs.add(elem);
+    if (cssInjectedDocs.has(elem)) return true;
+    cssInjectedDocs.add(elem);
 
     for (const config of FONT_CONFIG) {
       const link = elem.createElement('link');
@@ -43,12 +46,13 @@
         console.error('[NotoSansへ置換するやつ(改修型)] CSS注入エラー:', e);
       }
     }
+    return true;
   }
 
   // document.body が利用可能になるまで待機してから処理
   function initializeWhenReady() {
-    // ページ読み込み初期段階でCSSを注入
-    injectCSSEarly(document);
+    // ページ読み込み初期段階でCSSを注入（headがあれば）
+    injectCSS(document);
 
     if (document.body) {
       initialize();
@@ -59,6 +63,9 @@
   }
 
   function initialize() {
+    // DOMContentLoaded時点でCSS注入を再試行（document_startでheadがなかった場合のフォールバック）
+    injectCSS(document);
+
     // ルートドキュメントにフォント読み込み
     createPreloadTag(document);
 
@@ -119,8 +126,8 @@
   function processIframe(iframe) {
     try {
       const iframeDoc = iframe.contentDocument;
-      if (iframeDoc && !processedDocs.has(iframeDoc)) {
-        injectCSSEarly(iframeDoc);
+      if (iframeDoc) {
+        injectCSS(iframeDoc);
         createPreloadTag(iframeDoc);
       }
     } catch (e) {
@@ -146,8 +153,8 @@
     }
 
     // 既に処理済みの場合はスキップ
-    if (processedDocs.has(elem)) return;
-    processedDocs.add(elem);
+    if (preloadedDocs.has(elem)) return;
+    preloadedDocs.add(elem);
 
     // DocumentFragmentを使用してDOM操作をバッチ化
     const fragment = elem.createDocumentFragment();
