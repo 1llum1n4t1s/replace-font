@@ -26,7 +26,13 @@ const FONT_FAMILIES = [
   'Meiryo UI',
   'M PLUS Rounded 1c',
   'Malgun Gothic',
-  'Arial Unicode MS'
+  'Arial Unicode MS',
+  'Hiragino Kaku Gothic ProN',
+  'Hiragino Kaku Gothic Pro',
+  'ヒラギノ角ゴ ProN',
+  'ヒラギノ角ゴ Pro',
+  'Hiragino Sans',
+  'Hiragino Sans Pro'
 ];
 
 // フォント設定
@@ -35,11 +41,7 @@ const FONT_CONFIGS = [
     weight: 'Regular',
     fileName: 'replacefont-extension-regular.css',
     fontWeight: null,
-    localFonts: [
-      'Noto Sans JP',
-      'Noto Sans CJK Variable',
-      'Noto Sans CJK JP'
-    ],
+    localFonts: [],
     webFont: 'NotoSansJP-Regular.woff2',
     fallbackFont: 'BIZ UDPGothic'
   },
@@ -47,15 +49,36 @@ const FONT_CONFIGS = [
     weight: 'Bold',
     fileName: 'replacefont-extension-bold.css',
     fontWeight: 'bold',
-    localFonts: [
-      'Noto Sans JP Bold',
-      'Noto Sans CJK Variable',
-      'Noto Sans CJK JP'
-    ],
+    localFonts: [],
     webFont: 'NotoSansJP-Bold.woff2',
     fallbackFont: 'BIZ UDPGothic'
   }
 ];
+
+const HIRAGINO_FAMILIES = new Set([
+  'Hiragino Kaku Gothic ProN',
+  'Hiragino Kaku Gothic Pro',
+  'ヒラギノ角ゴ ProN',
+  'ヒラギノ角ゴ Pro',
+  'Hiragino Sans',
+  'Hiragino Sans Pro'
+]);
+
+const MACOS_FALLBACKS = ['San Francisco', '-apple-system', 'BlinkMacSystemFont'];
+
+/**
+ * フォールバックフォントを取得
+ * @param {string} fontFamily - フォントファミリー名
+ * @param {object} config - フォント設定
+ * @returns {string[]} フォールバックフォント一覧
+ */
+function getFallbackFonts(fontFamily, config) {
+  if (HIRAGINO_FAMILIES.has(fontFamily)) {
+    return MACOS_FALLBACKS;
+  }
+
+  return [config.fallbackFont];
+}
 
 /**
  * @font-face ルールを生成
@@ -67,15 +90,14 @@ function generateFontFace(fontFamily, config) {
   const needsQuotes = fontFamily.includes(' ') || fontFamily.includes('　');
   const quotedFontFamily = needsQuotes ? `"${fontFamily}"` : `'${fontFamily}'`;
 
-  const localSources = config.localFonts.map(font => `local('${font}')`).join(',\n        ');
+  const localSources = config.localFonts.map(font => `local('${font}')`);
   const webFontUrl = `url('chrome-extension://__MSG_@@extension_id__/fonts/${config.webFont}') format('woff2')`;
-  const fallback = `local('${config.fallbackFont}')`;
+  const fallback = getFallbackFonts(fontFamily, config).map(font => `local('${font}')`);
+  const srcParts = [...localSources, webFontUrl, ...fallback];
 
   let rule = `@font-face {
   font-family: ${quotedFontFamily};
-  src:  ${localSources},
-        ${webFontUrl},
-        ${fallback};`;
+  src:  ${srcParts.join(',\n        ')};`;
 
   if (config.fontWeight) {
     rule += `\n  font-weight: ${config.fontWeight};`;
