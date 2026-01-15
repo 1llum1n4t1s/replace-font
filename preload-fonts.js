@@ -18,14 +18,38 @@
   // デバウンス用の変数
   let pendingIframes = [];
   let debounceTimer = null;
-  const DEBOUNCE_DELAY = 100; // ミリ秒
+  const DEBOUNCE_DELAY = 100;
 
   // クリーンアップ用のリソース管理
   let observer = null;
   const eventListeners = [];
 
+  // CSSをヘッドに直接注入（描画前）- 重複チェック付き
+  function injectCSSEarly(elem) {
+    if (!elem || !elem.head) return;
+
+    // 既に処理済みの場合はスキップ
+    if (processedDocs.has(elem)) return;
+    processedDocs.add(elem);
+
+    for (const config of FONT_CONFIG) {
+      const link = elem.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = config.cssUrl;
+      try {
+        elem.head.appendChild(link);
+      } catch (e) {
+        console.error('[NotoSansへ置換するやつ(改修型)] CSS注入エラー:', e);
+      }
+    }
+  }
+
   // document.body が利用可能になるまで待機してから処理
   function initializeWhenReady() {
+    // ページ読み込み初期段階でCSSを注入
+    injectCSSEarly(document);
+
     if (document.body) {
       initialize();
     } else {
@@ -94,8 +118,10 @@
 
   function processIframe(iframe) {
     try {
-      if (iframe.contentDocument && !processedDocs.has(iframe.contentDocument)) {
-        createPreloadTag(iframe.contentDocument);
+      const iframeDoc = iframe.contentDocument;
+      if (iframeDoc && !processedDocs.has(iframeDoc)) {
+        injectCSSEarly(iframeDoc);
+        createPreloadTag(iframeDoc);
       }
     } catch (e) {
       // クロスオリジンiframeへのアクセスエラーは無視
@@ -137,23 +163,6 @@
       // フォント読み込み成功時の処理
       const onFontLoad = () => {
         preloadTag.removeEventListener('load', onFontLoad);
-
-        // elem.body が存在するか再度確認（非同期処理のため）
-        if (!elem.body) {
-          console.warn('[NotoSansへ置換するやつ(改修型)] body が存在しないため CSS を適用できません');
-          return;
-        }
-
-        const loadCSS = elem.createElement('link');
-        loadCSS.rel = 'stylesheet';
-        loadCSS.type = 'text/css';
-        loadCSS.href = config.cssUrl;
-
-        try {
-          elem.body.appendChild(loadCSS);
-        } catch (e) {
-          console.error('[NotoSansへ置換するやつ(改修型)] CSS 適用エラー:', e);
-        }
       };
 
       // フォント読み込み失敗時のエラーハンドリング
@@ -164,20 +173,6 @@
           url: config.fontUrl,
           error: e
         });
-
-        // フォールバック：エラーが発生しても CSS は適用する
-        // （システムフォントや他のフォントにフォールバックさせるため）
-        if (elem.body) {
-          const loadCSS = elem.createElement('link');
-          loadCSS.rel = 'stylesheet';
-          loadCSS.type = 'text/css';
-          loadCSS.href = config.cssUrl;
-          try {
-            elem.body.appendChild(loadCSS);
-          } catch (err) {
-            console.error('[NotoSansへ置換するやつ(改修型)] フォールバック CSS 適用エラー:', err);
-          }
-        }
       };
 
       preloadTag.addEventListener('load', onFontLoad);
