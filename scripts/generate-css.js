@@ -25,7 +25,6 @@ const FONT_FAMILIES = [
   'Yu Gothic UI',
   'Meiryo UI',
   'Segoe UI',
-  'SegoeUI-Bold',
   'Arial',
   'ArialMT',
   'Roboto',
