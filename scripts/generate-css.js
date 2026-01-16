@@ -45,7 +45,7 @@ const FONT_CONFIGS = [
     weight: 'Regular',
     fileName: 'replacefont-extension-regular.css',
     fontWeight: null,
-    localFonts: [],
+    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Regular.woff2',
     fallbackFont: 'BIZ UDPGothic'
   },
@@ -53,7 +53,7 @@ const FONT_CONFIGS = [
     weight: 'Bold',
     fileName: 'replacefont-extension-bold.css',
     fontWeight: 'bold',
-    localFonts: [],
+    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Bold.woff2',
     fallbackFont: 'BIZ UDPGothic'
   }
