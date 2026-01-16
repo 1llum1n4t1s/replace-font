@@ -156,13 +156,6 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "SegoeUI-Bold";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Bold.woff2') format('woff2'),
-        local('BIZ UDPGothic');
-  font-weight: bold;
-  font-display: swap;
-}
-@font-face {
   font-family: "Arial";
   src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Bold.woff2') format('woff2'),
         local('BIZ UDPGothic');
