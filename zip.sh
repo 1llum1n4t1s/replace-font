@@ -29,6 +29,24 @@ done
 echo "Version synced: $PACKAGE_VERSION"
 echo ""
 
+# アイコン生成
+echo "🎨 アイコンを生成中..."
+node scripts/generate-icons.js
+if [ $? -ne 0 ]; then
+  echo "❌ アイコン生成に失敗しました"
+  exit 1
+fi
+echo ""
+
+# CSS生成
+echo "📝 CSSを生成中..."
+node scripts/generate-css.js
+if [ $? -ne 0 ]; then
+  echo "❌ CSS生成に失敗しました"
+  exit 1
+fi
+echo ""
+
 # zipコマンドの確認
 if ! command -v zip &> /dev/null; then
   echo "❌ zip をインストールしてください"
