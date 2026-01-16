@@ -80,6 +80,9 @@
 
     // ページアンロード時のクリーンアップ
     window.addEventListener('beforeunload', cleanup);
+
+    // ページ読み込み完了後、フォント preload 警告を回避
+    setupFontForceLoad();
   }
 
   function setupMutationObserver() {
@@ -194,6 +197,26 @@
     } catch (e) {
       console.error('[NotoSansへ置換するやつ(改修型)] フォントpreloadタグの追加エラー:', e);
     }
+  }
+
+  // ページ読み込み完了後、CSS Font Loading API でフォントを強制的にロードして preload 警告を回避
+  function setupFontForceLoad() {
+    window.addEventListener('load', () => {
+      // CSS Font Loading API を使用してフォントを明示的にロード（DOM操作不要）
+      for (const config of FONT_CONFIG) {
+        const fontFace = new FontFace(
+          `ForceLoadNotoSans${config.weight}`,
+          `url(${config.fontUrl})`,
+          { display: 'swap' }
+        );
+
+        fontFace.load()
+          .then(loadedFace => document.fonts.add(loadedFace))
+          .catch(() => {
+            // preloadタグで既にロード済みの場合があるためエラーは無視
+          });
+      }
+    });
   }
 
   // クリーンアップ処理
