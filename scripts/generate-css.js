@@ -49,7 +49,7 @@ const FONT_CONFIGS = [
     fontWeight: null,
     localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Regular.woff2',
-    fallbackFont: 'BIZ UDPGothic'
+    fallbackFont: null
   },
   {
     weight: 'Bold',
@@ -57,20 +57,9 @@ const FONT_CONFIGS = [
     fontWeight: 'bold',
     localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Bold.woff2',
-    fallbackFont: 'BIZ UDPGothic'
+    fallbackFont: null
   }
 ];
-
-const HIRAGINO_FAMILIES = new Set([
-  'Hiragino Kaku Gothic ProN',
-  'Hiragino Kaku Gothic Pro',
-  'ヒラギノ角ゴ ProN',
-  'ヒラギノ角ゴ Pro',
-  'Hiragino Sans',
-  'Hiragino Sans Pro'
-]);
-
-const MACOS_FALLBACKS = ['San Francisco', '-apple-system', 'BlinkMacSystemFont'];
 
 /**
  * フォールバックフォントを取得
@@ -79,8 +68,8 @@ const MACOS_FALLBACKS = ['San Francisco', '-apple-system', 'BlinkMacSystemFont']
  * @returns {string[]} フォールバックフォント一覧
  */
 function getFallbackFonts(fontFamily, config) {
-  if (HIRAGINO_FAMILIES.has(fontFamily)) {
-    return MACOS_FALLBACKS;
+  if (!config.fallbackFont) {
+    return [];
   }
 
   return [config.fallbackFont];
