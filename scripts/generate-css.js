@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 置換対象フォントの定義
-const FONT_FAMILIES = [
+const BASE_FONT_FAMILIES = [
   'MS PGothic',
   'ms pgothic',
   'MS Pゴシック',
@@ -33,13 +33,26 @@ const FONT_FAMILIES = [
   'M PLUS Rounded 1c',
   'Malgun Gothic',
   'Arial Unicode MS',
-  'Hiragino Kaku Gothic ProN',
-  'Hiragino Kaku Gothic Pro',
-  'ヒラギノ角ゴ ProN',
-  'ヒラギノ角ゴ Pro',
   'Hiragino Sans',
-  'Hiragino Sans Pro'
+  'Hiragino Sans Pro',
+  'Inter'
 ];
+
+// ヒラギノシリーズはウェイト指定バリエーション（W1〜W9）を動的に生成
+const HIRAGINO_WEIGHTS = Array.from({ length: 9 }, (_, i) => i + 1);
+const HIRAGINO_VARIANTS = [];
+for (const weight of HIRAGINO_WEIGHTS) {
+  HIRAGINO_VARIANTS.push(`Hiragino Kaku Gothic ProN W${weight}`);
+  HIRAGINO_VARIANTS.push(`Hiragino Kaku Gothic Pro W${weight}`);
+  HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ ProN W${weight}`);
+  HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ Pro W${weight}`);
+}
+
+// ウェイト指定なしのベース定義も追加
+HIRAGINO_VARIANTS.unshift('Hiragino Kaku Gothic ProN', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ ProN', 'ヒラギノ角ゴ Pro');
+
+// 最終的なフォントファミリー配列
+const FONT_FAMILIES = [...BASE_FONT_FAMILIES, ...HIRAGINO_VARIANTS];
 
 // フォント設定
 const FONT_CONFIGS = [

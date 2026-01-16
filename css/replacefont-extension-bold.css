@@ -272,6 +272,33 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Hiragino Sans";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Sans Pro";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
   font-family: "Hiragino Kaku Gothic ProN";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
@@ -308,7 +335,7 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Hiragino Sans";
+  font-family: "Hiragino Kaku Gothic ProN W1";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),
@@ -317,7 +344,313 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Hiragino Sans Pro";
+  font-family: "Hiragino Kaku Gothic Pro W1";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W1";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W1";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W2";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W2";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W2";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W2";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W3";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W3";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W3";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W3";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W4";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W4";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W4";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W4";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W5";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W5";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W5";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W5";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W6";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W6";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W6";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W6";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W7";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W7";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W7";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W7";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W8";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W8";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W8";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W8";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic ProN W9";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Kaku Gothic Pro W9";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ ProN W9";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ角ゴ Pro W9";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
         local('Noto Sans CJK JP'),

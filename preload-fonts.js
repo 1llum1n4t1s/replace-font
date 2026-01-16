@@ -199,51 +199,22 @@
     }
   }
 
-  // ページ読み込み完了後、ダミー要素でフォントを強制的に使用して preload 警告を回避
+  // ページ読み込み完了後、CSS Font Loading API でフォントを強制的にロードして preload 警告を回避
   function setupFontForceLoad() {
     window.addEventListener('load', () => {
-      // スタイルタグ: preload 警告回避用のダミーフォント定義（Regular と Bold）
-      const style = document.createElement('style');
-      let cssText = '';
+      // CSS Font Loading API を使用してフォントを明示的にロード（DOM操作不要）
       for (const config of FONT_CONFIG) {
-        cssText += `
-        @font-face {
-          font-family: 'ForceLoadNotoSans${config.weight}';
-          src: url('${config.fontUrl}') format('woff2');
-          font-display: swap;
-        }
-      `;
-      }
-      style.textContent = cssText;
-      document.head.appendChild(style);
+        const fontFace = new FontFace(
+          `ForceLoadNotoSans${config.weight}`,
+          `url(${config.fontUrl})`,
+          { display: 'swap' }
+        );
 
-      // ダミー要素を入れるコンテナ
-      const container = document.createElement('div');
-      container.style.position = 'absolute';
-      container.style.opacity = '0';
-      container.style.pointerEvents = 'none';
-
-      // ダミー要素: フォント読み込みをトリガーするための見えない要素
-      for (const config of FONT_CONFIG) {
-        const dummy = document.createElement('div');
-        dummy.style.fontFamily = `ForceLoadNotoSans${config.weight}`;
-        dummy.textContent = '.';
-        container.appendChild(dummy);
-      }
-      document.body.appendChild(container);
-
-      // requestIdleCallback で、ブラウザに余裕があるときに削除
-      if (typeof requestIdleCallback !== 'undefined') {
-        requestIdleCallback(() => {
-          container.remove();
-          style.remove();
-        });
-      } else {
-        // フォールバック: requestIdleCallback 非対応環境
-        setTimeout(() => {
-          container.remove();
-          style.remove();
-        }, 2000);
+        fontFace.load()
+          .then(loadedFace => document.fonts.add(loadedFace))
+          .catch(() => {
+            // preloadタグで既にロード済みの場合があるためエラーは無視
+          });
       }
     });
   }
