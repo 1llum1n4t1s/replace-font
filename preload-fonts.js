@@ -80,6 +80,9 @@
 
     // ページアンロード時のクリーンアップ
     window.addEventListener('beforeunload', cleanup);
+
+    // ページ読み込み完了後、フォント preload 警告を回避
+    setupFontForceLoad();
   }
 
   function setupMutationObserver() {
@@ -194,6 +197,55 @@
     } catch (e) {
       console.error('[NotoSansへ置換するやつ(改修型)] フォントpreloadタグの追加エラー:', e);
     }
+  }
+
+  // ページ読み込み完了後、ダミー要素でフォントを強制的に使用して preload 警告を回避
+  function setupFontForceLoad() {
+    window.addEventListener('load', () => {
+      // スタイルタグ: preload 警告回避用のダミーフォント定義（Regular と Bold）
+      const style = document.createElement('style');
+      let cssText = '';
+      for (const config of FONT_CONFIG) {
+        cssText += `
+        @font-face {
+          font-family: 'ForceLoadNotoSans${config.weight}';
+          src: url('${config.fontUrl}') format('woff2');
+          font-display: swap;
+        }
+      `;
+      }
+      style.textContent = cssText;
+      document.head.appendChild(style);
+
+      // ダミー要素を入れるコンテナ
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.opacity = '0';
+      container.style.pointerEvents = 'none';
+
+      // ダミー要素: フォント読み込みをトリガーするための見えない要素
+      for (const config of FONT_CONFIG) {
+        const dummy = document.createElement('div');
+        dummy.style.fontFamily = `ForceLoadNotoSans${config.weight}`;
+        dummy.textContent = '.';
+        container.appendChild(dummy);
+      }
+      document.body.appendChild(container);
+
+      // requestIdleCallback で、ブラウザに余裕があるときに削除
+      if (typeof requestIdleCallback !== 'undefined') {
+        requestIdleCallback(() => {
+          container.remove();
+          style.remove();
+        });
+      } else {
+        // フォールバック: requestIdleCallback 非対応環境
+        setTimeout(() => {
+          container.remove();
+          style.remove();
+        }, 2000);
+      }
+    });
   }
 
   // クリーンアップ処理
