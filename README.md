@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.10-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.16-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンス最適化済み。

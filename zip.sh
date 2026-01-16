@@ -29,6 +29,15 @@ done
 echo "Version synced: $PACKAGE_VERSION"
 echo ""
 
+# 依存関係のインストール（package-lock.jsonのバージョン同期も行われる）
+echo "📦 依存関係をインストール中..."
+npm install
+if [ $? -ne 0 ]; then
+  echo "❌ 依存関係のインストールに失敗しました"
+  exit 1
+fi
+echo ""
+
 # アイコン生成
 echo "🎨 アイコンを生成中..."
 node scripts/generate-icons.js
