@@ -24,6 +24,12 @@ const FONT_FAMILIES = [
   '游ゴシック Medium',
   'Yu Gothic UI',
   'Meiryo UI',
+  'Segoe UI',
+  'Arial',
+  'ArialMT',
+  'Roboto',
+  'RobotoDraft',
+  'Helvetica',
   'M PLUS Rounded 1c',
   'Malgun Gothic',
   'Arial Unicode MS',
@@ -41,44 +47,19 @@ const FONT_CONFIGS = [
     weight: 'Regular',
     fileName: 'replacefont-extension-regular.css',
     fontWeight: null,
-    localFonts: [],
+    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Regular.woff2',
-    fallbackFont: 'BIZ UDPGothic'
+    fallbackFont: null
   },
   {
     weight: 'Bold',
     fileName: 'replacefont-extension-bold.css',
     fontWeight: 'bold',
-    localFonts: [],
+    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
     webFont: 'NotoSansJP-Bold.woff2',
-    fallbackFont: 'BIZ UDPGothic'
+    fallbackFont: null
   }
 ];
-
-const HIRAGINO_FAMILIES = new Set([
-  'Hiragino Kaku Gothic ProN',
-  'Hiragino Kaku Gothic Pro',
-  'ヒラギノ角ゴ ProN',
-  'ヒラギノ角ゴ Pro',
-  'Hiragino Sans',
-  'Hiragino Sans Pro'
-]);
-
-const MACOS_FALLBACKS = ['San Francisco', '-apple-system', 'BlinkMacSystemFont'];
-
-/**
- * フォールバックフォントを取得
- * @param {string} fontFamily - フォントファミリー名
- * @param {object} config - フォント設定
- * @returns {string[]} フォールバックフォント一覧
- */
-function getFallbackFonts(fontFamily, config) {
-  if (HIRAGINO_FAMILIES.has(fontFamily)) {
-    return MACOS_FALLBACKS;
-  }
-
-  return [config.fallbackFont];
-}
 
 /**
  * @font-face ルールを生成
@@ -92,8 +73,7 @@ function generateFontFace(fontFamily, config) {
 
   const localSources = config.localFonts.map(font => `local('${font}')`);
   const webFontUrl = `url('chrome-extension://__MSG_@@extension_id__/fonts/${config.webFont}') format('woff2')`;
-  const fallback = getFallbackFonts(fontFamily, config).map(font => `local('${font}')`);
-  const srcParts = [...localSources, webFontUrl, ...fallback];
+  const srcParts = [...localSources, webFontUrl];
 
   let rule = `@font-face {
   font-family: ${quotedFontFamily};
