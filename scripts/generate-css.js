@@ -72,7 +72,7 @@ function generateFontFace(fontFamily, config) {
   const quotedFontFamily = needsQuotes ? `"${fontFamily}"` : `'${fontFamily}'`;
 
   const localSources = config.localFonts.map(font => `local('${font}')`);
-  const webFontUrl = `url('chrome-extension://__MSG_@@extension_id__/fonts/${config.webFont}') format('woff2')`;
+  const webFontUrl = `url('../fonts/${config.webFont}') format('woff2')`;
   const srcParts = [...localSources, webFontUrl];
 
   let rule = `@font-face {

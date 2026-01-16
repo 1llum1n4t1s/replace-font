@@ -27,9 +27,12 @@
   let observer = null;
   const eventListeners = [];
 
-  // CSSをヘッドに直接注入（描画前）- 重複チェック付き
+  // CSSをヘッドに直接注入（描画前）- 重複チェック付き（iframe用）
+  // メインドキュメントはmanifest.jsonで静的注入されるため、この関数はiframe用
   function injectCSS(elem) {
-    if (!elem || !elem.head) return false;
+    // headがなければdocumentElement(htmlタグ)に入れる
+    const target = elem?.head || elem?.documentElement;
+    if (!elem || !target) return false;
 
     // 既に処理済みの場合はスキップ
     if (cssInjectedDocs.has(elem)) return true;
@@ -41,7 +44,7 @@
       link.type = 'text/css';
       link.href = config.cssUrl;
       try {
-        elem.head.appendChild(link);
+        target.appendChild(link);
       } catch (e) {
         console.error('[NotoSansへ置換するやつ(改修型)] CSS注入エラー:', e);
       }
@@ -51,9 +54,7 @@
 
   // document.body が利用可能になるまで待機してから処理
   function initializeWhenReady() {
-    // ページ読み込み初期段階でCSSを注入（headがあれば）
-    injectCSS(document);
-
+    // メインドキュメントのCSSはmanifest.jsonで静的注入されるため、ここでは注入不要
     if (document.body) {
       initialize();
     } else {
@@ -63,8 +64,7 @@
   }
 
   function initialize() {
-    // DOMContentLoaded時点でCSS注入を再試行（document_startでheadがなかった場合のフォールバック）
-    injectCSS(document);
+    // メインドキュメントのCSSはmanifest.jsonで静的注入されるため、ここでは注入不要
 
     // ルートドキュメントにフォント読み込み
     createPreloadTag(document);

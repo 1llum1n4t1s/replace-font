@@ -20,6 +20,24 @@ foreach ($filePath in $filesToUpdate) {
 Write-Host "Version synced: $version" -ForegroundColor Green
 Write-Host ""
 
+# アイコン生成
+Write-Host "🎨 アイコンを生成中..." -ForegroundColor Cyan
+node scripts/generate-icons.js
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ アイコン生成に失敗しました" -ForegroundColor Red
+    exit 1
+}
+Write-Host ""
+
+# CSS生成
+Write-Host "📝 CSSを生成中..." -ForegroundColor Cyan
+node scripts/generate-css.js
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ CSS生成に失敗しました" -ForegroundColor Red
+    exit 1
+}
+Write-Host ""
+
 Write-Host "📦 Chrome Web Store用のZIPファイルを作成中..." -ForegroundColor Cyan
 
 # 古いZIPファイルを削除
