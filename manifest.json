@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NotoSansへ置換するやつ(改修型)",
-  "version": "2.0.17",
+  "version": "2.0.21",
   "description": "読みづらいフォントをNoto Sansに自動置換。パフォーマンス改善版。",
   "icons": {
     "16": "icons/icon-16x16.png",
