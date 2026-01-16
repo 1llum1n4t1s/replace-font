@@ -28,6 +28,8 @@ const FONT_FAMILIES = [
   'Arial',
   'ArialMT',
   'Roboto',
+  'RobotoDraft',
+  'Helvetica',
   'M PLUS Rounded 1c',
   'Malgun Gothic',
   'Arial Unicode MS',
