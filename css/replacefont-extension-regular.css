@@ -3,175 +3,262 @@
 /* Regular */
 @font-face {
   font-family: "MS PGothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ms pgothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "MS Pゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ms pゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ＭＳ Ｐゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "MS Gothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ms gothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "MS ゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ms ゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "ＭＳ ゴシック";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "MS UI Gothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: 'メイリオ';
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: 'Meiryo';
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: 'YuGothic';
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Yu Gothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: '游ゴシック';
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "YuGothic Medium";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Yu Gothic Medium";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "游ゴシック Medium";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Yu Gothic UI";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Meiryo UI";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Segoe UI";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
-  font-family: "Arial";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  font-family: 'Arial';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
-  font-family: "ArialMT";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  font-family: 'ArialMT';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
-  font-family: "Roboto";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  font-family: 'Roboto';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "M PLUS Rounded 1c";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Malgun Gothic";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Arial Unicode MS";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('BIZ UDPGothic');
   font-display: swap;
 }
 @font-face {
   font-family: "Hiragino Kaku Gothic ProN";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
@@ -179,7 +266,10 @@
 }
 @font-face {
   font-family: "Hiragino Kaku Gothic Pro";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
@@ -187,7 +277,10 @@
 }
 @font-face {
   font-family: "ヒラギノ角ゴ ProN";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
@@ -195,7 +288,10 @@
 }
 @font-face {
   font-family: "ヒラギノ角ゴ Pro";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
@@ -203,7 +299,10 @@
 }
 @font-face {
   font-family: "Hiragino Sans";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
@@ -211,7 +310,10 @@
 }
 @font-face {
   font-family: "Hiragino Sans Pro";
-  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
         local('San Francisco'),
         local('-apple-system'),
         local('BlinkMacSystemFont');
