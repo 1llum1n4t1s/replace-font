@@ -227,6 +227,24 @@
   font-display: swap;
 }
 @font-face {
+  font-family: 'RobotoDraft';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+        local('BIZ UDPGothic');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('chrome-extension://__MSG_@@extension_id__/fonts/NotoSansJP-Regular.woff2') format('woff2'),
+        local('BIZ UDPGothic');
+  font-display: swap;
+}
+@font-face {
   font-family: "M PLUS Rounded 1c";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),
