@@ -20,6 +20,15 @@ foreach ($filePath in $filesToUpdate) {
 Write-Host "Version synced: $version" -ForegroundColor Green
 Write-Host ""
 
+# 依存関係のインストール（package-lock.jsonのバージョン同期も行われる）
+Write-Host "📦 依存関係をインストール中..." -ForegroundColor Cyan
+npm install
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ 依存関係のインストールに失敗しました" -ForegroundColor Red
+    exit 1
+}
+Write-Host ""
+
 # アイコン生成
 Write-Host "🎨 アイコンを生成中..." -ForegroundColor Cyan
 node scripts/generate-icons.js
