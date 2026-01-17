@@ -47,14 +47,16 @@ if [ $? -ne 0 ]; then
 fi
 echo ""
 
-# CSS生成
-echo "📝 CSSを生成中..."
-node scripts/generate-css.js
-if [ $? -ne 0 ]; then
-  echo "❌ CSS生成に失敗しました"
-  exit 1
+# フォント変換（TTFがある場合）
+if ls fonts/*.ttf 1> /dev/null 2>&1; then
+  echo "🔄 フォントを変換中..."
+  node scripts/convert-fonts.js
+  if [ $? -ne 0 ]; then
+    echo "❌ フォント変換に失敗しました"
+    exit 1
+  fi
+  echo ""
 fi
-echo ""
 
 # スクリーンショット生成
 echo "📸 スクリーンショットを生成中..."

@@ -8,7 +8,6 @@ package-lock.json
 *.zip
 webstore-images/
 temp-build/
-css/
 
 # OS files
 .DS_Store
