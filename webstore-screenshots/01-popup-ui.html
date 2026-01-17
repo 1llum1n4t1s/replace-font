@@ -84,7 +84,8 @@
 
     .page-content {
       flex: 1;
-      max-width: 600px;
+      max-width: 420px;
+      margin-right: 380px;
     }
 
     .page-title {
@@ -107,13 +108,14 @@
       top: 60px;
       right: 60px;
       width: 360px;
-      min-height: 480px;
+      height: 450px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 12px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
       padding: 24px;
       color: white;
       animation: slideIn 0.3s ease-out;
+      overflow: hidden;
     }
 
     @keyframes slideIn {
@@ -127,24 +129,24 @@
       }
     }
 
-    .popup-header {
+    .header {
       text-align: center;
       margin-bottom: 24px;
     }
 
-    .popup-icon {
+    .icon {
       font-size: 48px;
       margin-bottom: 12px;
     }
 
-    .popup-title {
-      font-size: 22px;
+    .title {
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
+      margin-bottom: 0;
+      letter-spacing: 0.3px;
     }
 
-    .popup-badge {
+    .badge {
       display: inline-block;
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(10px);
@@ -173,10 +175,14 @@
       margin-bottom: 12px;
     }
 
-    .status-dot {
+    .dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .dot.active {
       background: #4ade80;
       box-shadow: 0 0 12px #4ade80;
       animation: pulse 2s ease-in-out infinite;
@@ -304,15 +310,14 @@
       </div>
 
       <div class="extension-popup">
-        <div class="popup-header">
-          <div class="popup-icon">📝</div>
-          <h1 class="popup-title">NotoSansへ置換するやつ(改修型)</h1>
-          <span class="popup-badge">改修版</span>
+        <div class="header">
+          <div class="icon">📝</div>
+          <h1 class="title">NotoSansへ置換するやつ(改修型)</h1>
         </div>
 
         <div class="status-card">
           <div class="status-indicator">
-            <span class="status-dot"></span>
+            <span class="dot active"></span>
             <span class="status-text">動作中</span>
           </div>
           <p class="description">読みづらい日本語フォントを自動的にNoto Sansに置換します</p>
@@ -334,12 +339,14 @@
         </div>
 
         <div class="info-section">
-          <h2 class="section-title">使用フォント</h2>
+          <h2 class="section-title">置換対象フォント</h2>
           <div class="font-list">
-            <span class="font-tag">Noto Sans JP</span>
-            <span class="font-tag">通常テキスト</span>
-            <span class="font-tag">UDEV Gothic JPDOC</span>
-            <span class="font-tag">コードブロック</span>
+            <span class="font-tag">MS Gothic</span>
+            <span class="font-tag">Meiryo</span>
+            <span class="font-tag">Yu Gothic</span>
+            <span class="font-tag">Segoe UI</span>
+            <span class="font-tag">Arial</span>
+            <span class="font-tag">Roboto</span>
           </div>
         </div>
 
