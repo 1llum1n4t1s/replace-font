@@ -4,7 +4,7 @@
 $packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
 $version = $packageJson.version
 
-$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html")
+$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html", "webstore-screenshots/04-promo-small.html", "webstore-screenshots/05-promo-marquee.html")
 foreach ($filePath in $filesToUpdate) {
     $content = Get-Content -Path $filePath -Raw -Encoding UTF8
     
@@ -43,6 +43,15 @@ Write-Host "📝 CSSを生成中..." -ForegroundColor Cyan
 node scripts/generate-css.js
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ CSS生成に失敗しました" -ForegroundColor Red
+    exit 1
+}
+Write-Host ""
+
+# スクリーンショット生成
+Write-Host "📸 スクリーンショットを生成中..." -ForegroundColor Cyan
+node scripts/generate-screenshots.js
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ スクリーンショット生成に失敗しました" -ForegroundColor Red
     exit 1
 }
 Write-Host ""

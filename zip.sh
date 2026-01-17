@@ -7,7 +7,7 @@ echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 # 更新対象ファイル
-FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html")
+FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html" "webstore-screenshots/04-promo-small.html" "webstore-screenshots/05-promo-marquee.html")
 
 for file in "${FILES_TO_UPDATE[@]}"; do
     if [ -f "$file" ]; then
@@ -52,6 +52,15 @@ echo "📝 CSSを生成中..."
 node scripts/generate-css.js
 if [ $? -ne 0 ]; then
   echo "❌ CSS生成に失敗しました"
+  exit 1
+fi
+echo ""
+
+# スクリーンショット生成
+echo "📸 スクリーンショットを生成中..."
+node scripts/generate-screenshots.js
+if [ $? -ne 0 ]; then
+  echo "❌ スクリーンショット生成に失敗しました"
   exit 1
 fi
 echo ""

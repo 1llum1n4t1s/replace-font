@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.21-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.24-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンス最適化済み。
@@ -10,6 +10,8 @@
 - ⚡ **高速処理**: 最適化されたフォントプリロード機構
 - 🔄 **自動検出**: 複数の日本語フォントを自動で検出・置換
 - 🖼️ **iframe対応**: 動的に追加されるiframe内のフォントも置換
+- 🌐 **CSP対応**: JavaScript経由でのCSS注入により厳格なCSPサイトでも動作
+- 🔮 **Shadow DOM対応**: Web Componentsを使用したサイトでも正常に動作
 - 🎨 **カスタムアイコン**: SVGから自動生成されるアイコン
 - 🚀 **Manifest V3**: 最新のChrome拡張仕様に対応
 - 💾 **軽量**: ローカルフォントがない場合は拡張機能内蔵フォント(Noto Sans JP)を読み込む
@@ -85,8 +87,10 @@ manifest.json
 ├── 静的CSS (manifest.json)
 │   ├── replacefont-extension-regular.css
 │   └── replacefont-extension-bold.css
-└── アイコン生成 (generate-icons.js)
-    └── SVG → PNG (16x16, 48x48, 128x128)
+├── アイコン生成 (generate-icons.js)
+│   └── SVG → PNG (16x16, 48x48, 128x128)
+└── スクリーンショット生成 (generate-screenshots.js)
+    └── HTML → PNG (1280x800, 640x400, 440x280, 1400x560)
 ```
 
 ### 置き換え仕組み
@@ -95,6 +99,41 @@ manifest.json
 2. **CSS Font Loading API**で明示的にフォント読み込み
 3. **複数ウェイト対応**で細字・太字を個別管理
 4. **ローカルフォント優先**で高速化（OSインストール版あれば使用）
+
+## 🛠️ 開発者向け
+
+### ビルド方法
+
+```bash
+# 依存関係のインストール
+npm install
+
+# アイコン生成
+npm run generate-icons
+
+# CSS生成
+npm run generate-css
+
+# スクリーンショット生成（Chrome Web Store用）
+npm run generate-screenshots
+
+# すべてビルド + ZIP作成
+# Windows PowerShell
+.\zip.ps1
+
+# Mac / Linux
+./zip.sh
+```
+
+### 生成される画像
+
+`zip.ps1` / `zip.sh` を実行すると、以下の画像が `webstore-images/` に自動生成されます：
+
+- **スクリーンショット**: 1280x800 および 640x400（最大5枚）
+- **プロモーションタイル（小）**: 440x280
+- **マーキープロモーションタイル**: 1400x560
+
+すべて PNG 形式（24ビット、アルファなし）で Chrome Web Store の仕様に準拠しています。
 
 ## 📄 ライセンス
 
