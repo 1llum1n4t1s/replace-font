@@ -6,6 +6,9 @@ package-lock.json
 *.log
 *.tmp
 *.zip
+webstore-images/
+temp-build/
+css/
 
 # OS files
 .DS_Store
@@ -14,6 +17,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+debug/
 *.swp
 *.swo
 

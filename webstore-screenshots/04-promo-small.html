@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promo Small - 440x280</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 440px;
+      height: 280px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .decorative-circles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .circle1 {
+      width: 180px;
+      height: 180px;
+      top: -60px;
+      left: -60px;
+    }
+
+    .circle2 {
+      width: 140px;
+      height: 140px;
+      bottom: -40px;
+      right: -40px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+    }
+
+    .logo {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .main-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.95;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      font-weight: 400;
+    }
+
+    .badges-container {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 10px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-icon {
+      font-size: 12px;
+    }
+
+    .version-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="decorative-circles">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+  </div>
+
+  <div class="version-badge">v2.0.24</div>
+
+  <div class="content">
+    <div class="logo">📝</div>
+    <h1 class="main-title">NotoSansへ置換するやつ</h1>
+    <p class="subtitle">読みづらいフォントを美しく</p>
+
+    <div class="badges-container">
+      <div class="badge">
+        <span class="badge-icon">⚡</span>
+        <span>高速</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">🔄</span>
+        <span>自動</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">🚀</span>
+        <span>V3</span>
+      </div>
+      <div class="badge">
+        <span class="badge-icon">✨</span>
+        <span>最適化</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
