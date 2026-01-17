@@ -3,10 +3,10 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-// 出力ディレクトリ
+// 出力ディレクトリのパス
 const OUTPUT_DIR = './webstore-images';
 
-// 画像設定
+// 生成する画像の各設定項目（入力パス、出力名、サイズ、タイプ）
 const IMAGE_CONFIGS = [
   // スクリーンショット：1280x800
   {
@@ -59,32 +59,36 @@ const IMAGE_CONFIGS = [
  * @param {string} type - 画像のタイプ
  */
 async function generateScreenshot(htmlPath, outputPath, width, height, type) {
+  // ブラウザの起動オプション（ヘッドレスモード、サンドボックス無効化など）
   const browser = await puppeteer.launch({
     headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   try {
+    // 新しいページ（タブ）を作成
     const page = await browser.newPage();
     
     // ビューポートを設定
+    // deviceScaleFactorを1に設定することで、指定したwidth/height通りのピクセルサイズで出力します
+    // 2以上にするとRetinaディスプレイ相当の解像度になりますが、Web Storeの要件に合わせるため1に固定します
     await page.setViewport({
       width: width,
       height: height,
-      deviceScaleFactor: 2 // Retina対応
+      deviceScaleFactor: 1
     });
 
-    // HTMLファイルを読み込み
+    // HTMLファイルの絶対パスを取得してブラウザで読み込み
     const absolutePath = path.resolve(htmlPath);
     await page.goto(`file://${absolutePath}`, {
       waitUntil: 'networkidle0',
       timeout: 30000
     });
 
-    // フォントの読み込みを待機
+    // フォントの読み込みやレンダリングの完了を待機するためのウェイト
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // スクリーンショットを撮影
+    // 指定した範囲（clip）でスクリーンショットを撮影して保存
     await page.screenshot({
       path: outputPath,
       type: 'png',
@@ -102,33 +106,36 @@ async function generateScreenshot(htmlPath, outputPath, width, height, type) {
     console.error(`❌ エラー: ${htmlPath} -> ${outputPath}`);
     console.error(error);
   } finally {
+    // ブラウザを確実に終了させる
     await browser.close();
   }
 }
 
 /**
- * メイン処理
+ * メイン処理：出力ディレクトリの準備と各画像の生成ループ
  */
 async function main() {
   console.log('🎨 Chrome Web Store用スクリーンショットを生成中...\n');
 
-  // 出力ディレクトリを作成
+  // 出力ディレクトリが存在しない場合は再帰的に作成
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     console.log(`📁 出力ディレクトリを作成: ${OUTPUT_DIR}\n`);
   }
 
-  // 各画像を生成
+  // 設定に基づいて各画像を順番に生成
   for (const config of IMAGE_CONFIGS) {
+    // 入力ファイルパスと出力先フルパスの決定
     const inputPath = config.input;
     const outputPath = path.join(OUTPUT_DIR, config.output);
 
-    // HTMLファイルの存在確認
+    // HTMLファイルの存在確認（存在しない場合はスキップ）
     if (!fs.existsSync(inputPath)) {
       console.error(`❌ HTMLファイルが見つかりません: ${inputPath}`);
       continue;
     }
 
+    // 画像生成関数の呼び出し
     await generateScreenshot(
       inputPath,
       outputPath,
@@ -142,7 +149,7 @@ async function main() {
   console.log(`\n📂 生成された画像は ${OUTPUT_DIR} ディレクトリにあります。`);
   console.log('\n📋 生成された画像一覧:');
   
-  // 生成された画像のサイズを表示
+  // 生成されたファイルのサイズを確認して表示
   const files = fs.readdirSync(OUTPUT_DIR);
   files.forEach(file => {
     const filePath = path.join(OUTPUT_DIR, file);
@@ -158,7 +165,7 @@ async function main() {
   console.log('   ✓ 形式: PNG (24ビット、アルファなし)');
 }
 
-// スクリプト実行
+// スクリプトの実行（エラーハンドリング付き）
 main().catch(error => {
   console.error('❌ エラーが発生しました:', error);
   process.exit(1);
