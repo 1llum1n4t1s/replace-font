@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.24-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.26-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンス最適化済み。
@@ -21,36 +21,18 @@
 ### Chrome
 https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
 
-## 🔤 置換対象フォント
+## 🔤 フォント置換
 
-以下の**45個以上のフォント**が **Noto Sans JP** に自動置換されます：
+### 通常テキスト
+すべてのテキストが **Noto Sans JP** に置換されます。
 
-### Microsoftフォント
-- **MS Gothic** / MS ゴシック / ＭＳ ゴシック
-- **MS PGothic** / MS Pゴシック / ＭＳ Ｐゴシック
-- **MS UI Gothic**
-- **Meiryo** / メイリオ
-- **Meiryo UI**
+### コードブロック
+コードブロック（`<code>`, `<pre>` など）には **UDEV Gothic JPDOC** が適用されます。
 
-### Adobeフォント
-- **Yu Gothic** / 游ゴシック / YuGothic (W1〜W9のウェイト指定)
-- **Yu Gothic Medium** / 游ゴシック Medium
-- **Yu Gothic UI**
-
-### ヒラギノシリーズ
-- **Hiragino Kaku Gothic Pro** / ヒラギノ角ゴ Pro (W1〜W9のウェイト指定)
-- **Hiragino Kaku Gothic ProN** / ヒラギノ角ゴ ProN (W1〜W9のウェイト指定)
-- **Hiragino Sans** / ヒラギノ sans
-- **Hiragino Sans Pro**
-
-### その他フォント
-- **M PLUS Rounded 1c**
-- **Malgun Gothic**
-- **Arial** / **ArialMT** / **Arial Unicode MS**
-- **Roboto** / **RobotoDraft**
-- **Helvetica**
-- **Segoe UI**
-- **Inter**
+- **UDEV Gothic JPDOC**: プログラミング向けの等幅フォント
+  - BIZ UDゴシック + JetBrains Mono の合成フォント
+  - 日本語文書頻出記号が全角表示
+  - 0（ゼロ）がスラッシュゼロで `O`（オー）と区別しやすい
 
 **ウェイト対応**: Regular (400) と Bold (700)
 
@@ -64,11 +46,11 @@ https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
   - CSS Font Loading APIを使用した効率的なフォント読み込み
   - 複数ウェイトの動的管理
 
-#### CSS生成
-- **generate-css.js**: 自動CSS生成スクリプト
-  - 45個以上のフォント定義を自動生成
-  - ヒラギノ角ゴのW1〜W9ウェイト指定を動的に生成
-  - ローカルフォント候補（Noto Sans JP、Noto Sans CJK）をフォールバック設定
+#### フォント変換
+- **convert-fonts.js**: TTF→WOFF2変換スクリプト
+  - TTFファイルを自動検出してWOFF2に変換
+  - ファイルサイズを約50%削減
+  - 既存のWOFF2ファイルはスキップ
 
 #### パフォーマンス最適化
 - **WeakSet**: 重複処理を防止（iframe処理）
@@ -81,24 +63,32 @@ https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe
 ```
 manifest.json
 ├── Content Script (preload-fonts.js)
-│   ├── CSS注入 (iframe用)
-│   ├── preloadタグ生成
-│   └── CSS Font Loading API
-├── 静的CSS (manifest.json)
-│   ├── replacefont-extension-regular.css
-│   └── replacefont-extension-bold.css
+│   ├── CSS注入（メインドキュメント、Shadow DOM）
+│   └── MutationObserver（Shadow DOM検出）
+├── CSS (universal-override.css)
+│   ├── Noto Sans JP（通常テキスト用）
+│   └── UDEV Gothic JPDOC（コードブロック用）
+├── フォント
+│   ├── NotoSansJP-Regular.woff2
+│   ├── NotoSansJP-Bold.woff2
+│   ├── UDEVGothicJPDOC-Regular.woff2
+│   └── UDEVGothicJPDOC-Bold.woff2
 ├── アイコン生成 (generate-icons.js)
 │   └── SVG → PNG (16x16, 48x48, 128x128)
+├── フォント変換 (convert-fonts.js)
+│   └── TTF → WOFF2
 └── スクリーンショット生成 (generate-screenshots.js)
     └── HTML → PNG (1280x800, 640x400, 440x280, 1400x560)
 ```
 
 ### 置き換え仕組み
 
-1. **@font-face定義**で指定フォント名をNoto Sans JPに再定義
+1. **ユニバーサルセレクタ**で全要素のフォントを強制的に置換（`!important`）
 2. **CSS Font Loading API**で明示的にフォント読み込み
 3. **複数ウェイト対応**で細字・太字を個別管理
 4. **ローカルフォント優先**で高速化（OSインストール版あれば使用）
+
+**注意**: 以前のバージョンでは `@font-face` でフォント名を再定義する方法を使用していましたが、最新のChromeではシステムフォントが優先されるため、ユニバーサルセレクタによる強制置換に変更しました。
 
 ## 🛠️ 開発者向け
 
@@ -111,8 +101,8 @@ npm install
 # アイコン生成
 npm run generate-icons
 
-# CSS生成
-npm run generate-css
+# フォント変換（TTFファイルがある場合）
+npm run convert-fonts
 
 # スクリーンショット生成（Chrome Web Store用）
 npm run generate-screenshots
@@ -165,21 +155,8 @@ This is a browser extension that automatically replaces hard-to-read Japanese fo
 
 ### Replaced Fonts
 
-- MS Gothic / MS ゴシック
-- MS PGothic / MS Pゴシック
-- Meiryo / メイリオ
-- Yu Gothic / 游ゴシック (W1-W9 weights)
-- Yu Gothic UI / Yu Gothic Medium
-- Meiryo UI
-- M PLUS Rounded 1c
-- Malgun Gothic
-- Arial Unicode MS / Arial / Helvetica
-- Roboto / RobotoDraft
-- Hiragino Kaku Gothic Pro / ProN (W1-W9 weights)
-- Hiragino Sans / Sans Pro
-- Segoe UI
-- Inter
-- And more... (45+ fonts total)
+- **Normal text**: Replaced with **Noto Sans JP**
+- **Code blocks**: Replaced with **UDEV Gothic JPDOC** (monospace font for programming)
 
 ### Implementation Details
 

@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+/* Noto Sans JPの定義 */
+@font-face {
+  font-family: "Noto Sans JP";
+  src: local('Noto Sans JP'),
+       local('Noto Sans CJK Variable'),
+       local('Noto Sans CJK JP'),
+       url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: local('Noto Sans JP'),
+       local('Noto Sans CJK Variable'),
+       local('Noto Sans CJK JP'),
+       url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* UDEV Gothic JPDOC の定義（コードブロック用） */
+@font-face {
+  font-family: "UDEV Gothic JPDOC";
+  src: local('UDEV Gothic JPDOC'),
+       local('UDEVGothicJPDOC'),
+       url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "UDEV Gothic JPDOC";
+  src: local('UDEV Gothic JPDOC Bold'),
+       local('UDEVGothicJPDOC-Bold'),
+       url('../fonts/UDEVGothicJPDOC-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* すべての要素に対してフォントを強制的に上書き */
+* {
+  font-family: "Noto Sans JP", "Noto Sans CJK JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif !important;
+}
+
+/* 特定のフォントが指定されている要素も上書き */
+[style*="font-family"] {
+  font-family: "Noto Sans JP", "Noto Sans CJK JP", sans-serif !important;
+}
+
+/* コードブロックなどの等幅フォントにUDEV Gothic JPDOCを適用 */
+code,
+pre,
+kbd,
+samp,
+tt,
+var,
+.code,
+.monospace,
+[class*="code"],
+[class*="Code"],
+[class*="mono"],
+[class*="Mono"] {
+  font-family: "UDEV Gothic JPDOC", 'Consolas', 'Monaco', 'Courier New', 'Menlo', 'Ubuntu Mono', monospace !important;
+  line-height: 1.2 !important;
+}
+
+/* GitHub専用のセレクタ（コード差分とファイル表示） */
+.blob-code,
+.blob-code-inner,
+.react-code-text {
+  font-family: "UDEV Gothic JPDOC", 'Consolas', 'Monaco', 'Courier New', 'Menlo', 'Ubuntu Mono', monospace !important;
+  line-height: 1.2 !important;
+}

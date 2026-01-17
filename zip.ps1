@@ -38,14 +38,16 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host ""
 
-# CSS生成
-Write-Host "📝 CSSを生成中..." -ForegroundColor Cyan
-node scripts/generate-css.js
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ CSS生成に失敗しました" -ForegroundColor Red
-    exit 1
+# フォント変換（TTFがある場合）
+if (Test-Path "fonts/*.ttf") {
+    Write-Host "🔄 フォントを変換中..." -ForegroundColor Cyan
+    node scripts/convert-fonts.js
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ フォント変換に失敗しました" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host ""
 }
-Write-Host ""
 
 # スクリーンショット生成
 Write-Host "📸 スクリーンショットを生成中..." -ForegroundColor Cyan
