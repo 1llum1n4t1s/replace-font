@@ -1,170 +1,225 @@
 (() => {
-  // 拡張機能の実行フラグを設定
-  window.REPLACE_FONT_EXTENSION = true;
-  
-  // デバッグログ
-  console.log('[NotoSansへ置換するやつ(改修型)] スクリプト実行開始', {
-    readyState: document.readyState,
-    hasHead: !!document.head,
-    hasBody: !!document.body
-  });
+  // ベースURL情報をキャッシュして効率化
+  const FONT_BASE_URL = chrome.runtime.getURL('fonts/');
+  const CSS_BASE_URL = chrome.runtime.getURL('css/');
 
-  // CSS URL（ユニバーサルセレクタ版）
-  const CSS_URL = chrome.runtime.getURL('css/universal-override.css');
+  // フォントURLをプリコンピュート（ループ内での文字列連結を回避）
+  const FONT_CONFIG = [
+    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-regular.css` },
+    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-bold.css` },
+    { weight: 'MonoRegular', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Regular.woff2` },
+    { weight: 'MonoBold', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Bold.woff2` }
+  ];
+
+  // クラス名の衝突を防ぐためのユニークID生成
+  const uniqueId = `preloadFontTag${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
   // CSS注入済みドキュメントを追跡（重複処理を防止）
   const cssInjectedDocs = new WeakSet();
 
+  // preload処理済みドキュメントを追跡（重複処理を防止）
+  const preloadedDocs = new WeakSet();
+
+  // デバウンス用の変数
+  let pendingIframes = [];
+  let debounceTimer = null;
+  const DEBOUNCE_DELAY = 100;
+
   // クリーンアップ用のリソース管理
   let observer = null;
+  const eventListeners = [];
 
-  // JavaScript経由でCSSを注入（link要素を使用、CSP対策）
+  // CSSをヘッドに直接注入（描画前）- 重複チェック付き（iframe用）
+  // メインドキュメントはmanifest.jsonで静的注入されるため、この関数はiframe用
   function injectCSS(elem) {
-    // link要素はhead内に配置する必要がある
-    const target = elem?.head;
-    if (!elem || !target) {
-      console.warn('[NotoSansへ置換するやつ(改修型)] CSS注入スキップ: headなし');
-      return false;
-    }
+    // headがなければdocumentElement(htmlタグ)に入れる
+    const target = elem?.head || elem?.documentElement;
+    if (!elem || !target) return false;
 
-    // IDによる存在チェック（実行コンテキストが異なる場合に対応）
-    const existingLink = elem.querySelector('link[data-replace-font-extension]');
-    if (existingLink) {
-      console.log('[NotoSansへ置換するやつ(改修型)] CSS注入スキップ: 既に存在');
-      return true;
-    }
-
-    // 既に処理済みの場合はスキップ（WeakSetによる二重チェック）
-    if (cssInjectedDocs.has(elem)) {
-      console.log('[NotoSansへ置換するやつ(改修型)] CSS注入スキップ: WeakSet');
-      return true;
-    }
+    // 既に処理済みの場合はスキップ
+    if (cssInjectedDocs.has(elem)) return true;
     cssInjectedDocs.add(elem);
 
-    try {
-      // 単一のCSS linkを作成（ユニバーサルセレクタ版）
+    for (const config of FONT_CONFIG) {
+      if (!config.cssUrl) continue;
       const link = elem.createElement('link');
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = CSS_URL;
-      link.setAttribute('data-replace-font-extension', 'universal');
-
-      // headの先頭に挿入（他のスタイルより優先）
-      if (target.firstChild) {
-        target.insertBefore(link, target.firstChild);
-      } else {
+      link.href = config.cssUrl;
+      try {
         target.appendChild(link);
+      } catch (e) {
+        console.error('[NotoSansへ置換するやつ(改修型)] CSS注入エラー:', e);
       }
+    }
+    return true;
+  }
 
-      console.log('[NotoSansへ置換するやつ(改修型)] CSS注入成功（ユニバーサルセレクタ版）', {
-        target: target.tagName,
-        url: CSS_URL
-      });
-      return true;
-    } catch (e) {
-      console.error('[NotoSansへ置換するやつ(改修型)] CSS注入エラー:', e);
-      return false;
+  // document.body が利用可能になるまで待機してから処理
+  function initializeWhenReady() {
+    // メインドキュメントのCSSはmanifest.jsonで静的注入されるため、ここでは注入不要
+    if (document.body) {
+      initialize();
+    } else {
+      // DOMContentLoaded を待つ
+      document.addEventListener('DOMContentLoaded', initialize);
     }
   }
 
-  // 初期化処理
   function initialize() {
-    // CSS注入はheadが必要
-    if (document.head) {
-      injectCSS(document);
-      console.log('[NotoSansへ置換するやつ(改修型)] CSS注入完了（head存在）');
-    } else {
-      // headが存在しない場合は、headが作成されるまで待つ
-      console.log('[NotoSansへ置換するやつ(改修型)] head待機中...');
-      
-      // MutationObserverでheadの作成を監視
-      const headObserver = new MutationObserver(() => {
-        if (document.head) {
-          headObserver.disconnect();
-          injectCSS(document);
-          console.log('[NotoSansへ置換するやつ(改修型)] CSS注入完了（head作成後）');
-        }
-      });
-      
-      headObserver.observe(document.documentElement, {
-        childList: true,
-        subtree: false
-      });
-      
-      // タイムアウト保険（100ms後にもう一度チェック）
-      setTimeout(() => {
-        if (document.head && !document.querySelector('link[data-replace-font-extension]')) {
-          headObserver.disconnect();
-          injectCSS(document);
-          console.log('[NotoSansへ置換するやつ(改修型)] CSS注入完了（タイムアウト後）');
-        }
-      }, 100);
+    // メインドキュメントのCSSはmanifest.jsonで静的注入されるため、ここでは注入不要
+
+    // ルートドキュメントにフォント読み込み
+    createPreloadTag(document);
+
+    // 既存のiframeを処理
+    const iframes = document.getElementsByTagName('iframe');
+    for (const iframe of iframes) {
+      processIframe(iframe);
     }
 
-    // Shadow DOMを監視（既存と動的追加の両方）
-    setupShadowDOMObserver();
+    // 動的に追加されるiframeを監視
+    setupMutationObserver();
 
     // ページアンロード時のクリーンアップ
     window.addEventListener('beforeunload', cleanup);
+
+    // ページ読み込み完了後、フォント preload 警告を回避
+    setupFontForceLoad();
   }
 
-  // Shadow DOM専用のMutationObserver
   function setupMutationObserver() {
     observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
-          if (node.nodeType === Node.ELEMENT_NODE && node.shadowRoot) {
-            // Shadow DOMが追加された場合のみ処理
-            injectCSSToShadowRoot(node.shadowRoot);
+          if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'IFRAME') {
+            // iframeのロード完了を待ってから処理（一度だけ）
+            const onLoad = () => {
+              node.removeEventListener('load', onLoad);
+              pendingIframes.push(node);
+
+              // デバウンス：複数のiframeが同時に追加された場合にまとめて処理
+              if (!debounceTimer) {
+                debounceTimer = setTimeout(processPendingIframes, DEBOUNCE_DELAY);
+              }
+            };
+
+            node.addEventListener('load', onLoad);
+            eventListeners.push({ element: node, event: 'load', handler: onLoad });
           }
         }
       }
     });
 
-    // DOM全体を監視（Shadow DOM検出のみ）
+    // DOM全体を監視
     observer.observe(document.documentElement, {
       childList: true,
       subtree: true
     });
   }
 
-  // Shadow DOM内にCSSを注入
-  function injectCSSToShadowRoot(shadowRoot) {
-    try {
-      // 既に注入済みかチェック
-      const existingLink = shadowRoot.querySelector('link[data-replace-font-extension]');
-      if (existingLink) return;
+  // デバウンスされたiframe処理
+  function processPendingIframes() {
+    const iframesToProcess = pendingIframes;
+    pendingIframes = [];
+    debounceTimer = null;
 
-      // 単一のCSS linkを作成（ユニバーサルセレクタ版）
-      const link = shadowRoot.ownerDocument.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = CSS_URL;
-      link.setAttribute('data-replace-font-extension', 'universal');
-
-      // Shadow Rootの先頭に挿入
-      if (shadowRoot.firstChild) {
-        shadowRoot.insertBefore(link, shadowRoot.firstChild);
-      } else {
-        shadowRoot.appendChild(link);
-      }
-    } catch (e) {
-      console.error('[NotoSansへ置換するやつ(改修型)] Shadow DOM CSS注入エラー:', e);
+    for (const iframe of iframesToProcess) {
+      processIframe(iframe);
     }
   }
 
-  // Shadow DOMを監視
-  function setupShadowDOMObserver() {
-    // 既存のShadow DOMを処理
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(element => {
-      if (element.shadowRoot) {
-        injectCSSToShadowRoot(element.shadowRoot);
+  function processIframe(iframe) {
+    try {
+      const iframeDoc = iframe.contentDocument;
+      if (iframeDoc) {
+        injectCSS(iframeDoc);
+        createPreloadTag(iframeDoc);
+      }
+    } catch (e) {
+      // クロスオリジンiframeへのアクセスエラーは無視
+      // SecurityError や DOMException のみ無視、その他のエラーはログ出力
+      if (e.name !== 'SecurityError' && !(e instanceof DOMException)) {
+        console.error('[NotoSansへ置換するやつ(改修型)] iframe処理エラー:', e);
+      }
+    }
+  }
+
+  function createPreloadTag(elem) {
+    if (!elem || !elem.body) {
+      // body が存在しない場合は、DOMContentLoaded を待つ
+      if (elem && elem.readyState !== 'complete') {
+        elem.addEventListener('DOMContentLoaded', () => {
+          if (elem.body) {
+            createPreloadTag(elem);
+          }
+        });
+      }
+      return;
+    }
+
+    // 既に処理済みの場合はスキップ
+    if (preloadedDocs.has(elem)) return;
+    preloadedDocs.add(elem);
+
+    // DocumentFragmentを使用してDOM操作をバッチ化
+    const fragment = elem.createDocumentFragment();
+
+    for (const config of FONT_CONFIG) {
+      const preloadTag = elem.createElement('link');
+      preloadTag.rel = 'preload';
+      preloadTag.as = 'font';
+      preloadTag.href = config.fontUrl;
+      preloadTag.crossOrigin = 'anonymous';
+      preloadTag.className = `${uniqueId}_${config.weight}`;
+
+      // フォント読み込み成功時の処理
+      const onFontLoad = () => {
+        preloadTag.removeEventListener('load', onFontLoad);
+      };
+
+      // フォント読み込み失敗時のエラーハンドリング
+      const onFontError = (e) => {
+        preloadTag.removeEventListener('error', onFontError);
+        console.error('[NotoSansへ置換するやつ(改修型)] フォント読み込み失敗:', {
+          weight: config.weight,
+          url: config.fontUrl,
+          error: e
+        });
+      };
+
+      preloadTag.addEventListener('load', onFontLoad);
+      preloadTag.addEventListener('error', onFontError);
+
+      fragment.appendChild(preloadTag);
+    }
+
+    // 一度のDOM操作でまとめて追加
+    try {
+      elem.body.appendChild(fragment);
+    } catch (e) {
+      console.error('[NotoSansへ置換するやつ(改修型)] フォントpreloadタグの追加エラー:', e);
+    }
+  }
+
+  // ページ読み込み完了後、CSS Font Loading API でフォントを強制的にロードして preload 警告を回避
+  function setupFontForceLoad() {
+    window.addEventListener('load', () => {
+      // CSS Font Loading API を使用してフォントを明示的にロード（DOM操作不要）
+      for (const config of FONT_CONFIG) {
+        const fontFace = new FontFace(
+          `ForceLoadNotoSans${config.weight}`,
+          `url(${config.fontUrl})`,
+          { display: 'swap' }
+        );
+
+        fontFace.load()
+          .then(loadedFace => document.fonts.add(loadedFace))
+          .catch(() => {
+            // preloadタグで既にロード済みの場合があるためエラーは無視
+          });
       }
     });
-
-    // 動的に追加されるShadow DOMを監視
-    setupMutationObserver();
   }
 
   // クリーンアップ処理
@@ -174,8 +229,27 @@
       observer.disconnect();
       observer = null;
     }
+
+    // デバウンスタイマーをクリア
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+
+    // イベントリスナーを削除
+    for (const { element, event, handler } of eventListeners) {
+      try {
+        element.removeEventListener(event, handler);
+      } catch (e) {
+        // 要素が既に削除されている場合は無視
+      }
+    }
+    eventListeners.length = 0;
+
+    // pendingIframes をクリア
+    pendingIframes = [];
   }
 
-  // 初期化開始（即座に実行）
-  initialize();
+  // 初期化開始
+  initializeWhenReady();
 })();
