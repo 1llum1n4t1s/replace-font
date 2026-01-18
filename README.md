@@ -10,12 +10,13 @@
 
 - ⚡ **高速**: ページの表示速度に影響を与えないよう、軽量に設計されています。
 - 🔄 **自動**: 拡張機能をインストールするだけで、対象のフォントが自動的に置換されます。
-- 📦 **iframe対応**: ページ内の埋め込みコンテンツ（iframe）内のフォントにも対応しています。
+- 📦 **iframe & Shadow DOM 対応**: ページ内の埋め込みコンテンツや、モダンなWebサイトで使われる Shadow DOM 内のフォントにも対応しています。
+- 🎨 **デザイン維持**: すべてのフォントを一律に置換するのではなく、元のフォントの種類（ゴシック/明朝/等幅）に合わせて最適なフォントへ置き換えます。
 
 ## 🔤 置換の仕組み
 
-### ゴシック体 → Noto Sans JP
-`ＭＳ Ｐゴシック`、`メイリオ`、`游ゴシック` などの一般的なゴシック体フォントを、視認性の高い **Noto Sans JP** に置換します。
+### 一般的なフォント（ゴシック体・明朝体） → Noto Sans JP
+`ＭＳ Ｐゴシック`、`メイリオ`、`游ゴシック` などのゴシック体だけでなく、画面上では読みづらい `ＭＳ Ｐ明朝` などの明朝体も、視認性の高い **Noto Sans JP** に置換します。
 
 ### 等幅フォント → UDEV Gothic JPDOC
 `ＭＳ ゴシック` や `Consolas` などの等幅フォントを、プログラミングや文書作成に最適な **UDEV Gothic JPDOC** に置換します。
@@ -28,8 +29,8 @@
 
 - **プロジェクト本体**: [MIT License](LICENSE)
 - **搭載フォント**:
-  - Noto Sans JP: [SIL Open Font License 1.1](fonts/LICENSE)
-  - UDEV Gothic JPDOC: [SIL Open Font License 1.1](fonts/LICENSE)
+  - Noto Sans JP: [SIL Open Font License 1.1](https://scripts.sil.org/OFL)
+  - UDEV Gothic JPDOC: [SIL Open Font License 1.1](https://scripts.sil.org/OFL)
 
 ---
 
@@ -41,8 +42,9 @@ It targets specific fonts like MS Gothic, Meiryo, and Yu Gothic to improve legib
 ### Features
 - ⚡ **Fast**: Lightweight design with minimal impact on page load speed.
 - 🔄 **Automatic**: Just install and it works instantly.
-- 📦 **Iframe Support**: Also works for embedded content within pages.
+- 📦 **Iframe & Shadow DOM Support**: Works for embedded content and Shadow DOM elements.
+- 🎨 **Preserve Design**: Replaces fonts based on their type (Gothic, Serif, or Monospace) to maintain the intended layout.
 
 ### Replacement Logic
-- **Gothic Fonts**: Replaced with **Noto Sans JP**.
+- **General Fonts (Gothic/Serif)**: Replaced with **Noto Sans JP** for better screen legibility.
 - **Monospace Fonts**: Replaced with **UDEV Gothic JPDOC** (high-legibility font for coding and documents).
