@@ -49,6 +49,8 @@ const MONO_FONT_FAMILIES = [
   'Consolas', 'Monaco', 'Courier New', 'Courier', 'Menlo',
   'Ubuntu Mono', 'source-code-pro',
   'Cascadia Code', 'Cascadia Mono',
+  'FK Grotesk Neue',
+  'FK Grotesk Neue Thin',
   'monospace' // 汎用等幅
 ];
 
