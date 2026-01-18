@@ -45,12 +45,13 @@
 }
 
 /* すべての要素に対してフォントを強制的に上書き */
-* {
+/* アイコン、数式、特定のUI要素などを除外 */
+*:not(i):not([class*="icon"]):not([class*="Icon"]):not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not(.material-icons):not([class*="material-symbols"]):not(.glyphicon):not(.octicon):not(.dashicons):not(.ui-icon):not(.MathJax):not(.jax):not(.katex) {
   font-family: "Noto Sans JP", "Noto Sans CJK JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif !important;
 }
 
-/* 特定のフォントが指定されている要素も上書き */
-[style*="font-family"] {
+/* 特定のフォントが指定されている要素も上書き（アイコン等は除外） */
+[style*="font-family"]:not(i):not([class*="icon"]):not([class*="Icon"]):not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not(.material-icons):not([class*="material-symbols"]):not(.glyphicon):not(.octicon):not(.dashicons):not(.ui-icon):not(.MathJax):not(.jax):not(.katex) {
   font-family: "Noto Sans JP", "Noto Sans CJK JP", sans-serif !important;
 }
 
