@@ -67,6 +67,15 @@ if [ $? -ne 0 ]; then
 fi
 echo ""
 
+# CSS生成
+echo "🎨 CSSを生成中..."
+node scripts/generate-css.js
+if [ $? -ne 0 ]; then
+  echo "❌ CSS生成に失敗しました"
+  exit 1
+fi
+echo ""
+
 # zipコマンドの確認
 if ! command -v zip &> /dev/null; then
   echo "❌ zip をインストールしてください"
