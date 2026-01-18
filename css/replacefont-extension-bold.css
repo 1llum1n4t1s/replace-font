@@ -991,6 +991,20 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "FK Grotesk Neue";
+  src:  local("UDEV Gothic JPDOC Bold"),
+        url('../fonts/UDEVGothicJPDOC-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk Neue Thin";
+  src:  local("UDEV Gothic JPDOC Bold"),
+        url('../fonts/UDEVGothicJPDOC-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
   font-family: "monospace";
   src:  local("UDEV Gothic JPDOC Bold"),
         url('../fonts/UDEVGothicJPDOC-Bold.woff2') format('woff2');

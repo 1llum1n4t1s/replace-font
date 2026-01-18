@@ -878,6 +878,18 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "FK Grotesk Neue";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk Neue Thin";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
   font-family: "monospace";
   src:  local("UDEV Gothic JPDOC"),
         url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
