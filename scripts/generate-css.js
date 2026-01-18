@@ -18,7 +18,6 @@ const GOTHIC_FONT_FAMILIES = [
   'Hiragino Sans', 'Hiragino Sans Pro',
   'Inter',
 
-  // --- 追加: 最新のシステムフォント指定 (Lv.1) ---
   'system-ui',
   '-apple-system',
   'BlinkMacSystemFont',
@@ -26,7 +25,6 @@ const GOTHIC_FONT_FAMILIES = [
   'Segoe UI Variable Display',
   'Segoe UI Variable Text',
 
-  // --- 追加: 一般的なWebフォント・欧文フォント (Lv.1) ---
   'Open Sans',
   'Lato',
   'Montserrat',
@@ -37,7 +35,7 @@ const GOTHIC_FONT_FAMILIES = [
   'Noto Sans', // Webフォント版をローカル版で上書き
   'Noto Sans CJK JP',
 
-  // --- 追加: 明朝体・セリフ体もゴシック化して統一する (Lv.2) ---
+
   'MS Mincho', 'ms mincho', 'MS PMincho', 'ＭＳ 明朝', 'ＭＳ Ｐ明朝',
   'YuMincho', 'Yu Mincho', '游明朝', '游明朝体',
   'HiraMinProN-W3', 'Hiragino Mincho ProN', 'ヒラギノ明朝 ProN',
@@ -122,11 +120,10 @@ const OUTPUT_CONFIGS = [
  * @font-face ルールを生成
  */
 function generateFontFace(fontFamily, config) {
-  const needsQuotes = fontFamily.includes(' ') || fontFamily.includes('　');
-  const quotedFontFamily = needsQuotes ? `"${fontFamily}"` : `'${fontFamily}'`;
+  const quotedFontFamily = `"${fontFamily}"`;
 
   // 既に local() 指定がある場合でも、エイリアス作成時は再度 local() で自分自身やターゲットを指定する
-  const localSources = config.localFonts.map(font => `local('${font}')`);
+  const localSources = config.localFonts.map(font => `local("${font}")`);
   const webFontUrl = `url('../fonts/${config.webFont}') format('woff2')`;
   const srcParts = [...localSources, webFontUrl];
 

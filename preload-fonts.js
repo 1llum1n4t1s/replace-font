@@ -14,6 +14,27 @@
   // クラス名の衝突を防ぐためのユニークID生成
   const uniqueId = `preloadFontTag${Date.now()}${Math.floor(Math.random() * 1000)}`;
   const cssUrls = FONT_CONFIG.filter(c => c.cssUrl).map(c => c.cssUrl);
+  
+  // キャッシュされた固定済みCSS
+  const fixedCSSCache = new Map();
+
+  /**
+   * CSSファイルをフェッチして、相対パスを絶対パスに置換したものを返す
+   */
+  async function getFixedCSS(url) {
+    if (fixedCSSCache.has(url)) return fixedCSSCache.get(url);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      let text = await response.text();
+      // 相対パス ../fonts/ を絶対パス chrome-extension://.../fonts/ に置換
+      text = text.replace(/\.\.\/fonts\//g, FONT_BASE_URL);
+      fixedCSSCache.set(url, text);
+      return text;
+    } catch (e) {
+      return null;
+    }
+  }
 
   /**
    * Shadow DOM (open/closed) 対応のためのスクリプト注入
@@ -26,7 +47,7 @@
         (() => {
           const cssUrls = ${JSON.stringify(cssUrls)};
           const inject = (root) => {
-            if (!root || root.querySelector('link[data-replace-font]')) return;
+            if (!root || root.querySelector('link[data-replace-font]') || root.querySelector('style[data-replace-font]')) return;
             for (const url of cssUrls) {
               const link = document.createElement('link');
               link.rel = 'stylesheet';
@@ -56,18 +77,31 @@
   /**
    * 指定したルート（ShadowRootなど）に CSS を注入する (Content Script側)
    */
-  function injectCSS(root) {
-    if (!root || root.querySelector('link[data-replace-font]')) return;
+  async function injectCSS(root) {
+    if (!root || root.querySelector('link[data-replace-font]') || root.querySelector('style[data-replace-font]')) return;
 
     for (const url of cssUrls) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = url;
-      link.dataset.replaceFont = 'true';
-      try {
-        root.appendChild(link);
-      } catch (e) {
-        // 静かに失敗
+      const fixedCSS = await getFixedCSS(url);
+      if (fixedCSS) {
+        const style = document.createElement('style');
+        style.textContent = fixedCSS;
+        style.dataset.replaceFont = 'true';
+        try {
+          root.appendChild(style);
+        } catch (e) {
+          // 静かに失敗
+        }
+      } else {
+        // フェッチに失敗した場合は link タグでフォールバック
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.dataset.replaceFont = 'true';
+        try {
+          root.appendChild(link);
+        } catch (e) {
+          // 静かに失敗
+        }
       }
     }
   }
@@ -115,14 +149,17 @@
 
   // 初期化処理
   function initialize() {
-    // 1. フォントのプリロード
+    // 1. メインドキュメントに修正済みCSSを注入 (Manifest V3の相対パス解決問題を回避)
+    injectCSS(document.head || document.documentElement);
+
+    // 2. フォントのプリロード
     createPreloadTag();
 
-    // 2. Shadow DOM 対応
+    // 3. Shadow DOM 対応
     injectShadowDOMHandler();
     setupShadowDOMObserver();
 
-    // 3. ページ読み込み完了後、フォント preload 警告を回避
+    // 4. ページ読み込み完了後、フォント preload 警告を回避
     setupFontForceLoad();
   }
 
@@ -152,17 +189,28 @@
   function setupFontForceLoad() {
     const forceLoad = () => {
       for (const config of FONT_CONFIG) {
-        const fontFace = new FontFace(
-          `ForceLoadNotoSans${config.weight}`,
-          `url(${config.fontUrl})`,
-          { display: 'swap' }
-        );
+        try {
+          // URL を引用符で囲み、より確実に解決させる
+          const fontFace = new FontFace(
+            `ForceLoadNotoSans${config.weight}`,
+            `url("${config.fontUrl}")`,
+            { display: 'swap' }
+          );
 
-        fontFace.load()
-          .then(loadedFace => document.fonts.add(loadedFace))
-          .catch(() => {
-            // preloadタグで既にロード済みの場合があるためエラーは無視
-          });
+          fontFace.load()
+            .then(loadedFace => {
+              try {
+                document.fonts.add(loadedFace);
+              } catch (e) {
+                // Ignore
+              }
+            })
+            .catch(() => {
+              // preloadタグで既にロード済みの場合があるためエラーは無視
+            });
+        } catch (e) {
+          // FontFace constructor might throw on invalid URLs
+        }
       }
     };
 
