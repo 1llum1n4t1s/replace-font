@@ -39,36 +39,16 @@
   /**
    * Shadow DOM (open/closed) 対応のためのスクリプト注入
    * ページ側の JS で作成される Shadow DOM を捕捉するために attachShadow をパッチする
+   * CSP (Content Security Policy) 回避のため、外部ファイルから読み込む
    */
   function injectShadowDOMHandler() {
     try {
       const script = document.createElement('script');
-      script.textContent = `
-        (() => {
-          const cssUrls = ${JSON.stringify(cssUrls)};
-          const inject = (root) => {
-            if (!root || root.querySelector('link[data-replace-font]') || root.querySelector('style[data-replace-font]')) return;
-            for (const url of cssUrls) {
-              const link = document.createElement('link');
-              link.rel = 'stylesheet';
-              link.href = url;
-              link.dataset.replaceFont = 'true';
-              root.appendChild(link);
-            }
-          };
-          const originalAttachShadow = Element.prototype.attachShadow;
-          Element.prototype.attachShadow = function(init) {
-            const shadowRoot = originalAttachShadow.apply(this, arguments);
-            if (shadowRoot) {
-              // 少し遅延させて、Shadow DOM の中身が作成されるタイミングに合わせる
-              setTimeout(() => inject(shadowRoot), 0);
-            }
-            return shadowRoot;
-          };
-        })();
-      `;
+      script.src = chrome.runtime.getURL('inject.js');
+      script.dataset.cssUrls = JSON.stringify(cssUrls);
+      script.async = false; // 実行順序を保証
       (document.head || document.documentElement).appendChild(script);
-      script.remove();
+      script.onload = () => script.remove();
     } catch (e) {
       // CSP などで制限されている場合は失敗する可能性がある
     }
