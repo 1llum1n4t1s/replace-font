@@ -474,6 +474,14 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "sans-serif";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
   font-family: "Hiragino Kaku Gothic ProN";
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
@@ -878,6 +886,24 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Berkeley Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
   font-family: "FK Grotesk Neue";
   src:  local("UDEV Gothic JPDOC"),
         url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
@@ -885,6 +911,12 @@
 }
 @font-face {
   font-family: "FK Grotesk Neue Thin";
+  src:  local("UDEV Gothic JPDOC"),
+        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Display";
   src:  local("UDEV Gothic JPDOC"),
         url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
