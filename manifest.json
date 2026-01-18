@@ -34,7 +34,8 @@
     {
       "resources": [
         "fonts/*.woff2",
-        "css/*.css"
+        "css/*.css",
+        "inject.js"
       ],
       "matches": [
         "<all_urls>"
