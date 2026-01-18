@@ -40,7 +40,8 @@ const GOTHIC_FONT_FAMILIES = [
   'YuMincho', 'Yu Mincho', '游明朝', '游明朝体',
   'HiraMinProN-W3', 'Hiragino Mincho ProN', 'ヒラギノ明朝 ProN',
   'Times New Roman', 'Times', 'Georgia',
-  'serif' // 一部のブラウザで有効
+  'serif', // 一部のブラウザで有効
+  'sans-serif' // 汎用サンセリフ
 ];
 
 // 置換対象フォントの定義（等幅系）
@@ -49,8 +50,11 @@ const MONO_FONT_FAMILIES = [
   'Consolas', 'Monaco', 'Courier New', 'Courier', 'Menlo',
   'Ubuntu Mono', 'source-code-pro',
   'Cascadia Code', 'Cascadia Mono',
+  'Berkeley Mono', 'IBM Plex Mono',
+  'FK Grotesk',
   'FK Grotesk Neue',
   'FK Grotesk Neue Thin',
+  'FK Display',
   'monospace' // 汎用等幅
 ];
 
