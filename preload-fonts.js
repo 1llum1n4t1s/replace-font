@@ -165,7 +165,8 @@
 
   // フォントの preload タグを生成して挿入
   function createPreloadTag() {
-    if (!document.body) return;
+    const root = document.head || document.documentElement;
+    if (!root) return;
 
     const fragment = document.createDocumentFragment();
     for (const config of FONT_CONFIG) {
@@ -179,7 +180,7 @@
     }
 
     try {
-      document.body.appendChild(fragment);
+      root.appendChild(fragment);
     } catch (e) {
       console.error('[NotoSansへ置換するやつ(改修型)] フォントpreloadタグの追加エラー:', e);
     }
