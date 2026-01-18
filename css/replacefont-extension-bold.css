@@ -254,6 +254,285 @@
   font-display: swap;
 }
 @font-face {
+  font-family: 'system-ui';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: '-apple-system';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'BlinkMacSystemFont';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Segoe UI Variable";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Segoe UI Variable Display";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Segoe UI Variable Text";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans Pro";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oswald';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Raleway';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Merriweather Sans";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans CJK JP";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "MS Mincho";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ms mincho";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "MS PMincho";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ＭＳ 明朝";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ＭＳ Ｐ明朝";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'YuMincho';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Yu Mincho";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: '游明朝';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: '游明朝体';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HiraMinProN-W3';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hiragino Mincho ProN";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ヒラギノ明朝 ProN";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Times New Roman";
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Times';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Georgia';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'serif';
+  src:  local('Noto Sans JP'),
+        local('Noto Sans CJK Variable'),
+        local('Noto Sans CJK JP'),
+        url('../fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
   font-family: "Hiragino Kaku Gothic ProN";
   src:  local('Noto Sans JP'),
         local('Noto Sans CJK Variable'),

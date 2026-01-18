@@ -1,58 +1,60 @@
 const fs = require('fs');
 const path = require('path');
 
-// 置換対象フォントの定義（ゴシック系）
+// ---------------------------------------------
+// 置換対象フォント
+// ---------------------------------------------
 const GOTHIC_FONT_FAMILIES = [
-  'MS PGothic',
-  'ms pgothic',
-  'MS Pゴシック',
-  'ms pゴシック',
-  'ＭＳ Ｐゴシック',
+  // --- 既存のゴシック系 ---
+  'MS PGothic', 'ms pgothic', 'MS Pゴシック', 'ms pゴシック', 'ＭＳ Ｐゴシック',
   'MS UI Gothic',
-  'メイリオ',
-  'Meiryo',
-  'YuGothic',
-  'Yu Gothic',
-  '游ゴシック',
-  'YuGothic Medium',
-  'Yu Gothic Medium',
-  '游ゴシック Medium',
-  'Yu Gothic UI',
-  'Meiryo UI',
-  'Segoe UI',
-  'Arial',
-  'ArialMT',
-  'Roboto',
-  'RobotoDraft',
-  'Helvetica',
-  'M PLUS Rounded 1c',
-  'Malgun Gothic',
+  'メイリオ', 'Meiryo',
+  'YuGothic', 'Yu Gothic', '游ゴシック',
+  'YuGothic Medium', 'Yu Gothic Medium', '游ゴシック Medium',
+  'Yu Gothic UI', 'Meiryo UI', 'Segoe UI',
+  'Arial', 'ArialMT', 'Roboto', 'RobotoDraft', 'Helvetica',
+  'M PLUS Rounded 1c', 'Malgun Gothic',
   'Arial Unicode MS',
-  'Hiragino Sans',
-  'Hiragino Sans Pro',
-  'Inter'
+  'Hiragino Sans', 'Hiragino Sans Pro',
+  'Inter',
+
+  // --- 追加: 最新のシステムフォント指定 (Lv.1) ---
+  'system-ui',
+  '-apple-system',
+  'BlinkMacSystemFont',
+  'Segoe UI Variable',
+  'Segoe UI Variable Display',
+  'Segoe UI Variable Text',
+
+  // --- 追加: 一般的なWebフォント・欧文フォント (Lv.1) ---
+  'Open Sans',
+  'Lato',
+  'Montserrat',
+  'Source Sans Pro',
+  'Oswald',
+  'Raleway',
+  'Merriweather Sans',
+  'Noto Sans', // Webフォント版をローカル版で上書き
+  'Noto Sans CJK JP',
+
+  // --- 追加: 明朝体・セリフ体もゴシック化して統一する (Lv.2) ---
+  'MS Mincho', 'ms mincho', 'MS PMincho', 'ＭＳ 明朝', 'ＭＳ Ｐ明朝',
+  'YuMincho', 'Yu Mincho', '游明朝', '游明朝体',
+  'HiraMinProN-W3', 'Hiragino Mincho ProN', 'ヒラギノ明朝 ProN',
+  'Times New Roman', 'Times', 'Georgia',
+  'serif' // 一部のブラウザで有効
 ];
 
 // 置換対象フォントの定義（等幅系）
 const MONO_FONT_FAMILIES = [
-  'MS Gothic',
-  'ms gothic',
-  'MS ゴシック',
-  'ms ゴシック',
-  'ＭＳ ゴシック',
-  'Consolas',
-  'Monaco',
-  'Courier New',
-  'Courier',
-  'Menlo',
-  'Ubuntu Mono',
-  'source-code-pro',
-  'Cascadia Code',
-  'Cascadia Mono',
-  'monospace'
+  'MS Gothic', 'ms gothic', 'MS ゴシック', 'ms ゴシック', 'ＭＳ ゴシック',
+  'Consolas', 'Monaco', 'Courier New', 'Courier', 'Menlo',
+  'Ubuntu Mono', 'source-code-pro',
+  'Cascadia Code', 'Cascadia Mono',
+  'monospace' // 汎用等幅
 ];
 
-// ヒラギノシリーズはウェイト指定バリエーション（W1〜W9）を動的に生成
+// ヒラギノシリーズのバリエーション生成（既存ロジック維持）
 const HIRAGINO_WEIGHTS = Array.from({ length: 9 }, (_, i) => i + 1);
 const HIRAGINO_VARIANTS = [];
 for (const weight of HIRAGINO_WEIGHTS) {
@@ -61,12 +63,10 @@ for (const weight of HIRAGINO_WEIGHTS) {
   HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ ProN W${weight}`);
   HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ Pro W${weight}`);
 }
-
-// ウェイト指定なしのベース定義も追加
 HIRAGINO_VARIANTS.unshift('Hiragino Kaku Gothic ProN', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ ProN', 'ヒラギノ角ゴ Pro');
 
 // 最終的なフォントファミリー配列
-const GOTHIC_FAMILIES = [...GOTHIC_FONT_FAMILIES, ...HIRAGINO_VARIANTS];
+const GOTHIC_FAMILIES = [...new Set([...GOTHIC_FONT_FAMILIES, ...HIRAGINO_VARIANTS])]; // 重複排除を追加
 
 // フォント設定
 const GOTHIC_CONFIGS = [
@@ -120,14 +120,12 @@ const OUTPUT_CONFIGS = [
 
 /**
  * @font-face ルールを生成
- * @param {string} fontFamily - フォントファミリー名
- * @param {object} config - フォント設定
- * @returns {string} CSS ルール
  */
 function generateFontFace(fontFamily, config) {
   const needsQuotes = fontFamily.includes(' ') || fontFamily.includes('　');
   const quotedFontFamily = needsQuotes ? `"${fontFamily}"` : `'${fontFamily}'`;
 
+  // 既に local() 指定がある場合でも、エイリアス作成時は再度 local() で自分自身やターゲットを指定する
   const localSources = config.localFonts.map(font => `local('${font}')`);
   const webFontUrl = `url('../fonts/${config.webFont}') format('woff2')`;
   const srcParts = [...localSources, webFontUrl];
@@ -139,10 +137,25 @@ function generateFontFace(fontFamily, config) {
   if (config.fontWeight) {
     rule += `\n  font-weight: ${config.fontWeight};`;
   }
-
+  
+  // display: swap は必須
   rule += `\n  font-display: swap;\n}`;
 
   return rule;
+}
+
+/**
+ * Lv.3: 強制モード用CSS (Global Override) を生成する関数を追加
+ * ※今回はファイルには書き出しませんが、必要に応じて OUTPUT_CONFIGS に追加可能
+ */
+function generateGlobalOverrideCSS() {
+  // アイコンフォントを除外して、全ての要素にNotoSansを強制するセレクタ
+  return `
+/* Global Override (Force Mode) */
+*:not([class*="icon"]):not([class*="fa-"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]):not([class*="material-icons"]):not(i) {
+  font-family: "Noto Sans JP", "UDEV Gothic JPDOC", sans-serif !important;
+}
+`;
 }
 
 /**
