@@ -16,7 +16,10 @@ const GOTHIC_FONT_FAMILIES = [
   'M PLUS Rounded 1c', 'Malgun Gothic',
   'Arial Unicode MS',
   'Hiragino Sans', 'Hiragino Sans Pro',
-  'Inter',
+  'Inter', 'Inter Variable',
+  'Public Sans', 'Roobert', 'Geist', 'Geist Sans',
+  'FK Grotesk', 'FK Grotesk Neue', 'FK Grotesk Neue Thin', 'FK Display',
+  'ABC Social', 'Graphik', 'Euclid Circular',
 
   'system-ui',
   '-apple-system',
@@ -50,11 +53,7 @@ const MONO_FONT_FAMILIES = [
   'Consolas', 'Monaco', 'Courier New', 'Courier', 'Menlo',
   'Ubuntu Mono', 'source-code-pro',
   'Cascadia Code', 'Cascadia Mono',
-  'Berkeley Mono', 'IBM Plex Mono',
-  'FK Grotesk',
-  'FK Grotesk Neue',
-  'FK Grotesk Neue Thin',
-  'FK Display',
+  'Berkeley Mono', 'IBM Plex Mono', 'Geist Mono',
   'monospace' // 汎用等幅
 ];
 
@@ -145,20 +144,6 @@ function generateFontFace(fontFamily, config) {
   rule += `\n  font-display: swap;\n}`;
 
   return rule;
-}
-
-/**
- * Lv.3: 強制モード用CSS (Global Override) を生成する関数を追加
- * ※今回はファイルには書き出しませんが、必要に応じて OUTPUT_CONFIGS に追加可能
- */
-function generateGlobalOverrideCSS() {
-  // アイコンフォントを除外して、全ての要素にNotoSansを強制するセレクタ
-  return `
-/* Global Override (Force Mode) */
-*:not([class*="icon"]):not([class*="fa-"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]):not([class*="material-icons"]):not(i) {
-  font-family: "Noto Sans JP", "UDEV Gothic JPDOC", sans-serif !important;
-}
-`;
 }
 
 /**
