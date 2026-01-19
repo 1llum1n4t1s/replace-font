@@ -117,29 +117,29 @@
     });
   }
 
-  // document.body が利用可能になるまで待機してから処理
-  function initializeWhenReady() {
-    if (document.body) {
-      initialize();
-    } else {
-      // DOMContentLoaded を待つ
-      document.addEventListener('DOMContentLoaded', initialize, { once: true });
-    }
-  }
-
   // 初期化処理
   function initialize() {
-    // 1. メインドキュメントに修正済みCSSを注入 (Manifest V3の相対パス解決問題を回避)
-    injectCSS(document.head || document.documentElement);
+    if (document.documentElement.dataset.replaceFontInitialized) return;
+    document.documentElement.dataset.replaceFontInitialized = 'true';
 
-    // 2. フォントのプリロード
+    const root = document.head || document.documentElement;
+    if (root) {
+      injectCSS(root);
+    }
+
+    if (!document.head && document.documentElement) {
+      const observer = new MutationObserver(() => {
+        if (document.head) {
+          observer.disconnect();
+          injectCSS(document.head);
+        }
+      });
+      observer.observe(document.documentElement, { childList: true });
+    }
+
     createPreloadTag();
-
-    // 3. Shadow DOM 対応
     injectShadowDOMHandler();
     setupShadowDOMObserver();
-
-    // 4. ページ読み込み完了後、フォント preload 警告を回避
     setupFontForceLoad();
   }
 
@@ -203,5 +203,15 @@
   }
 
   // 初期化開始
-  initializeWhenReady();
+  if (document.documentElement) {
+    initialize();
+  } else {
+    const rootObserver = new MutationObserver(() => {
+      if (document.documentElement) {
+        rootObserver.disconnect();
+        initialize();
+      }
+    });
+    rootObserver.observe(document, { childList: true });
+  }
 })();

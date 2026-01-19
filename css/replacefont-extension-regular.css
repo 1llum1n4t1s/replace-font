@@ -226,6 +226,102 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Inter Variable";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Public Sans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roobert";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Sans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk Neue";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Grotesk Neue Thin";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FK Display";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "ABC Social";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Graphik";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
   font-family: "system-ui";
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
@@ -898,25 +994,7 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "FK Grotesk";
-  src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
-  font-display: swap;
-}
-@font-face {
-  font-family: "FK Grotesk Neue";
-  src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
-  font-display: swap;
-}
-@font-face {
-  font-family: "FK Grotesk Neue Thin";
-  src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
-  font-display: swap;
-}
-@font-face {
-  font-family: "FK Display";
+  font-family: "Geist Mono";
   src:  local("UDEV Gothic JPDOC"),
         url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
