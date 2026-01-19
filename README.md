@@ -1,71 +1,53 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.28-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.32-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-読みづらい日本語フォントを自動的に **Noto Sans** に置換するブラウザ拡張機能です。パフォーマンスを重視して最適化されています。
+ウェブサイト上の読みづらい日本語フォントを、読みやすい **Noto Sans JP** や **UDEV Gothic JPDOC** に自動で置き換える拡張機能です。
+特定のフォント（MS ゴシック、メイリオ、Yu Gothic、システムフォントなど）を狙い撃ちで置換するため、サイトのデザインを極力崩さずに視認性を大幅に向上させます。
 
-## 🎯 特徴
+## ✨ 特徴
 
-- ⚡ **高速処理**: ページの読み込みを妨げない高速なフォント適用
-- 🔄 **自動置換**: サイト上の読みづらい日本語フォントを自動で検出して置換
-- 🖼️ **幅広い対応**: iframeや動的なコンテンツ、モダンなウェブサイトの仕組み（Shadow DOM等）にも対応
-- 🚀 **最新仕様**: 最新のブラウザ拡張仕様（Manifest V3）に準拠
-- 💾 **軽量設計**: パフォーマンスを最適化し、必要なリソースのみを効率的に管理
+- ⚡ **高速 & 軽量**: ページの表示速度に影響を与えないよう、徹底的に最適化されています。
+- 🔄 **完全自動**: インストールするだけで、あらゆるサイトのフォントが自動的に置換されます。
+- 📦 **モダンなWeb対応**: 一般的な拡張機能では対応が難しい **Shadow DOM** 内のフォントも漏らさず置換します（YouTube や各種モダンなWebアプリに対応）。
+- 🎨 **デザインを尊重**: フォントの種類（ゴシック/明朝/等幅）を判別し、元のデザイン意図を維持したまま最適なフォントへ置き換えます。
+- 🛠️ **広範なサポート**: Windows/Mac/Linux の標準フォントから、Inter や Roboto などの主要な Web フォントまで幅広くカバーしています。
 
-## 📥 インストール
+## 🔤 置換の仕組み
 
-### Chrome ウェブストア
-[こちらからインストール](https://chromewebstore.google.com/detail/ipfbjlmjgfobhnncbggaaiknhdgkcdfe)できます。
+### 一般的なフォント（ゴシック体・明朝体） → Noto Sans JP
+`ＭＳ Ｐゴシック`、`メイリオ`、`游ゴシック` などの標準的な日本語フォントに加え、`Arial`、`Helvetica`、`Inter`、`system-ui` などの欧文・システムフォントも **Noto Sans JP** に置換します。読みづらい明朝体も視認性の高いフォントに置き換わるため、長文の閲覧も快適になります。
 
-## 🔤 置換されるフォント
+### 等幅フォント・コード → UDEV Gothic JPDOC
+`ＭＳ ゴシック` や `Consolas`、`JetBrains Mono` などの等幅フォントを、プログラミングや文書作成に最適な **UDEV Gothic JPDOC** に置換します。
+GitHub のコード表示や、技術ブログのコードブロック、入力フォームなども圧倒的に読みやすくなります。
 
-### 通常テキスト
-標準的なテキストは **Noto Sans JP** に置換されます。
-
-### コードブロック
-プログラムのコードや等幅テキスト（`<code>`, `<pre>` など）には **UDEV Gothic JPDOC** が適用されます。
-
-- **UDEV Gothic JPDOC**: プログラミングに最適な読みやすさを追求した等幅フォント
-  - BIZ UDゴシック + JetBrains Mono をベースにした合成フォント
-  - 日本語文書で頻出する記号を全角で表示
-  - 0（ゼロ）と O（オー）を区別しやすいスラッシュゼロを採用
+- **UDEV Gothic JPDOC のメリット**:
+  - BIZ UDゴシックと JetBrains Mono をベースにした、視認性の高い等幅フォントです。
+  - 濁点・半濁点（「バ」と「パ」など）の判別がしやすく、英数字（「1」と「l」、「0」と「O」）もはっきりと区別できます。
 
 ## 📄 ライセンス
 
-このプロジェクトは [MIT License](LICENSE) の下でライセンスされています。
-
-### フォントライセンス
-
-- Noto Sans JP: [SIL Open Font License 1.1](fonts/LICENSE)
-- UDEV Gothic JPDOC: [SIL Open Font License 1.1](fonts/LICENSE)
-
-## 🤝 コントリビューション
-
-不具合の報告や機能改善の提案は、Issue または Pull Request にて受け付けています。
+- **プロジェクト本体**: [MIT License](LICENSE)
+- **搭載フォント**:
+  - Noto Sans JP: [SIL Open Font License 1.1](https://scripts.sil.org/OFL)
+  - UDEV Gothic JPDOC: [SIL Open Font License 1.1](https://scripts.sil.org/OFL)
 
 ---
 
 ## English
 
-This browser extension automatically replaces hard-to-read Japanese fonts with **Noto Sans**. It is optimized for high performance.
+This extension automatically replaces hard-to-read fonts on websites with **Noto Sans JP** and **UDEV Gothic JPDOC**.
+It targets specific fonts (MS Gothic, Meiryo, Yu Gothic, System fonts, etc.) to improve legibility while preserving the original site design.
 
 ### Features
+- ⚡ **Fast & Lightweight**: Optimized for minimal impact on page load speed.
+- 🔄 **Fully Automatic**: Works instantly across all websites without configuration.
+- 📦 **Modern Web Support**: Supports **Shadow DOM** elements (works on YouTube and modern web apps).
+- 🎨 **Preserve Intent**: Replaces fonts based on their type (Gothic, Serif, or Monospace) to maintain the intended layout.
+- 🛠️ **Broad Coverage**: Covers everything from OS standard fonts to popular web fonts like Inter and Roboto.
 
-- ⚡ **Fast Performance**: Quickly applies fonts without slowing down page loads
-- 🔄 **Automatic Replacement**: Detects and replaces various Japanese fonts automatically
-- 🖼️ **Wide Compatibility**: Supports iframes, dynamic content, and modern web structures (like Shadow DOM)
-- 🚀 **Modern Standard**: Fully compliant with Chrome Extension Manifest V3
-- 💾 **Lightweight**: Optimized resources for minimal impact on system performance
-
-### Replaced Fonts
-
-- **Normal Text**: Replaced with **Noto Sans JP**
-- **Code Blocks**: Replaced with **UDEV Gothic JPDOC** (a high-legibility monospace font for programming)
-
-### License
-
-Licensed under the [MIT License](LICENSE).
-
-- Noto Sans JP: [SIL Open Font License 1.1](fonts/LICENSE)
-- UDEV Gothic JPDOC: [SIL Open Font License 1.1](fonts/LICENSE)
+### Replacement Logic
+- **General Fonts (Gothic/Serif/System)**: Replaced with **Noto Sans JP** for better screen legibility.
+- **Monospace Fonts & Code**: Replaced with **UDEV Gothic JPDOC** (high-legibility font optimized for coding and documentation).
