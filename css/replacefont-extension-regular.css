@@ -1,12 +1,50 @@
 @charset "UTF-8";
 
 /* Regular */
+
+:root, :host, html, body, .prose, [class*="prose"], [class*="markdown"], [class*="content"], [class*="answer"], [class*="light"], [class*="dark"] {
+  /* Sans-serif 系 CSS 変数: Noto Sans JP を優先 */
+  --font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-inter: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-geist-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-fk-grotesk: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-fkgrotesk: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-fk-grotesk-neue: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-fkgrotesk-neue: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-body: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-sans-brand: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-family-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --tw-font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+
+  /* Monospace 系 CSS 変数: UDEV Gothic JPDOC を優先 */
+  --font-mono: "UDEV Gothic JPDOC", monospace !important;
+  --font-berkeley-mono: "UDEV Gothic JPDOC", monospace !important;
+  --font-geist-mono: "UDEV Gothic JPDOC", monospace !important;
+  --font-code: "UDEV Gothic JPDOC", monospace !important;
+  --font-family-mono: "UDEV Gothic JPDOC", monospace !important;
+  --tw-font-mono: "UDEV Gothic JPDOC", monospace !important;
+  --mono-font: "UDEV Gothic JPDOC", monospace !important;
+  --code-font: "UDEV Gothic JPDOC", monospace !important;
+  --font-family-code: "UDEV Gothic JPDOC", monospace !important;
+  --monospace-font: "UDEV Gothic JPDOC", monospace !important;
+  --pplx-font-mono: "UDEV Gothic JPDOC", monospace !important;
+}
+
+/* 汎用的な等幅フォント要素に対する強制指定（詳細度を高めて上書きを確実に） */
+:root :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
+:host :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
+:root :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) :not(i, .icon, [class*="icon"], [class*="Icon"]),
+:host :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) :not(i, .icon, [class*="icon"], [class*="Icon"]),
+[style*="monospace"], [style*="ui-monospace"] {
+  font-family: "UDEV Gothic JPDOC", "Berkeley Mono", "IBM Plex Mono", "Geist Mono", "Cascadia Code", "Cascadia Mono", "Consolas", "Monaco", "Courier New", monospace !important;
+}
+
 @font-face {
   font-family: "MS PGothic";
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -14,7 +52,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -22,7 +60,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -30,7 +68,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -38,7 +76,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -46,7 +84,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -54,7 +92,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -62,7 +100,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -70,7 +108,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -78,7 +116,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -86,7 +124,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -94,7 +132,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -102,7 +140,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -110,7 +148,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -118,7 +156,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -126,7 +164,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -134,7 +172,23 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Motiva Sans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "MotivaSans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -142,7 +196,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -150,7 +204,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -158,7 +212,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -166,7 +220,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -174,7 +228,47 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "HelveticaNeue";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Trebuchet MS";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "TrebuchetMS";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Verdana";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -182,7 +276,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -190,7 +284,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -198,7 +292,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -206,7 +300,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -214,7 +308,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -222,7 +316,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -230,7 +324,31 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter-Regular";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter-Bold";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter UI";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -238,7 +356,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -246,7 +364,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -254,7 +372,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -262,7 +380,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -270,7 +388,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -278,7 +396,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -286,7 +404,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -294,7 +412,55 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FKGrotesk";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FKGroteskNeue";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FKGroteskNeueThin";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "FKDisplay";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBMPlexSans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -302,7 +468,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -310,7 +476,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -318,7 +484,79 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Outfit";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne-Buch";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne-Kraft";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Signifer";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans JP";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -326,7 +564,23 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "ui-sans-serif";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "ui-serif";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -334,7 +588,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -342,7 +596,15 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "San Francisco";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -350,7 +612,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -358,7 +620,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -366,7 +628,15 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Segoe UI Historic";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -374,7 +644,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -382,7 +652,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -390,7 +660,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -398,7 +668,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -406,7 +676,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -414,7 +684,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -422,7 +692,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -430,7 +700,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -438,7 +708,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -446,7 +716,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -454,7 +724,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -462,7 +732,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -470,7 +740,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -478,7 +748,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -486,7 +756,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -494,7 +764,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -502,7 +772,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -510,7 +780,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -518,7 +788,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -526,7 +796,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -534,7 +804,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -542,7 +812,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -550,7 +820,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -558,7 +828,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -566,7 +836,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -574,7 +844,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -582,7 +852,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -590,7 +860,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -598,7 +868,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -606,7 +876,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -614,7 +884,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -622,7 +892,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -630,7 +900,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -638,7 +908,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -646,7 +916,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -654,7 +924,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -662,7 +932,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -670,7 +940,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -678,7 +948,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -686,7 +956,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -694,7 +964,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -702,7 +972,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -710,7 +980,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -718,7 +988,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -726,7 +996,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -734,7 +1004,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -742,7 +1012,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -750,7 +1020,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -758,7 +1028,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -766,7 +1036,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -774,7 +1044,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -782,7 +1052,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -790,7 +1060,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -798,7 +1068,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -806,7 +1076,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -814,7 +1084,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -822,7 +1092,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -830,7 +1100,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -838,7 +1108,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -846,7 +1116,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -854,7 +1124,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -862,7 +1132,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -870,7 +1140,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -878,7 +1148,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -886,7 +1156,7 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
@@ -894,114 +1164,192 @@
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
-        url('../fonts/NotoSansJP-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "MS Gothic";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "ms gothic";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "MS ゴシック";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "ms ゴシック";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "ＭＳ ゴシック";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Consolas";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Monaco";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Courier New";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Courier";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Menlo";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Ubuntu Mono";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "source-code-pro";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Code Pro";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Cascadia Code";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Cascadia Mono";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Berkeley Mono";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "BerkeleyMono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "IBM Plex Mono";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBMPlexMono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "Geist Mono";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Code";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inconsolata";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "SFMono-Regular";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "SF Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne Mono";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "UDEV Gothic JPDOC";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "ui-monospace";
+  src:  local("UDEV Gothic JPDOC"),
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: "monospace";
   src:  local("UDEV Gothic JPDOC"),
-        url('../fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
+        url('__REPLACE_FONT_BASE__fonts/UDEVGothicJPDOC-Regular.woff2') format('woff2');
   font-display: swap;
 }

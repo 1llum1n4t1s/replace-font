@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NotoSansへ置換するやつ(改修型)",
-  "version": "2.0.30",
+  "version": "2.0.32",
   "description": "読みづらいフォントをNoto Sansに自動置換。パフォーマンス改善版。",
   "icons": {
     "16": "icons/icon-16x16.png",
@@ -18,10 +18,6 @@
     {
       "matches": [
         "<all_urls>"
-      ],
-      "css": [
-        "css/replacefont-extension-regular.css",
-        "css/replacefont-extension-bold.css"
       ],
       "js": [
         "preload-fonts.js"
