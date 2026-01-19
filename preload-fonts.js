@@ -75,10 +75,13 @@
    */
   function injectShadowDOMHandler() {
     try {
+      const root = document.head;
+      if (!root) return;
+
       const script = document.createElement('script');
       script.src = chrome.runtime.getURL('inject.js');
       script.async = false;
-      (document.head || document.documentElement).appendChild(script);
+      root.appendChild(script);
       script.onload = () => script.remove();
     } catch (e) {}
   }
@@ -254,23 +257,28 @@
     if (document.documentElement.dataset.replaceFontInitialized) return;
     document.documentElement.dataset.replaceFontInitialized = 'true';
 
-    // メインドキュメントに CSS を注入
-    const root = document.head || document.documentElement;
-    if (root) {
-      injectCSS(root);
+    // メインドキュメントへの注入処理（head が利用可能になってから実行）
+    const performInjections = () => {
+      const head = document.head;
+      if (!head) return;
+
+      injectCSS(head);
+      createPreloadTag();
+      injectShadowDOMHandler();
+    };
+
+    if (document.head) {
+      performInjections();
     } else {
       const observer = new MutationObserver(() => {
-        const root = document.head || document.documentElement;
-        if (root) {
+        if (document.head) {
           observer.disconnect();
-          injectCSS(root);
+          performInjections();
         }
       });
       observer.observe(document.documentElement, { childList: true });
     }
 
-    createPreloadTag();
-    injectShadowDOMHandler();
     setupShadowDOMObserver(); // Shadow DOM 監視（Content Script側）
     setupFontForceLoad();
   }
