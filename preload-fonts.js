@@ -106,6 +106,12 @@
     // 既に適用済み、または注入実行中かチェック
     if (root._replaceFontApplied || root._replaceFontInProgress) return;
 
+    // styleタグ方式が既に存在するか念のため確認
+    if (root.querySelector && root.querySelector('[data-replace-font]')) {
+      root._replaceFontApplied = true;
+      return;
+    }
+
     root._replaceFontInProgress = true;
 
     try {
@@ -150,10 +156,13 @@
   function findShadowRoots(node) {
     if (node.nodeType !== Node.ELEMENT_NODE) return;
 
+    // 起点となるノード自体の Shadow DOM を処理
+    // createTreeWalker の nextNode() は起点ノードを含まないため、ここで明示的に処理する
     if (node.isConnected && node.shadowRoot) {
       injectCSS(node.shadowRoot);
     }
 
+    // 子孫要素の Shadow DOM を走査
     const walker = document.createTreeWalker(
       node,
       NodeFilter.SHOW_ELEMENT,
@@ -162,7 +171,6 @@
     );
     let currentNode;
     while ((currentNode = walker.nextNode())) {
-      if (currentNode === node) continue;
       if (currentNode.isConnected && currentNode.shadowRoot) {
         injectCSS(currentNode.shadowRoot);
       }
