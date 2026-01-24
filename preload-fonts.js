@@ -15,15 +15,18 @@
 
   // フォントURLとCSS URLの設定
   const FONT_CONFIG = [
-    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-regular.css` },
-    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-bold.css` },
+    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2` },
+    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2` },
     { weight: 'MonoRegular', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Regular.woff2` },
     { weight: 'MonoBold', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Bold.woff2` }
   ];
 
+  // 統合CSSファイルのURL
+  const CSS_URL = `${CSS_BASE_URL}replacefont-extension.css`;
+
   // クラス名の衝突を防ぐためのユニークID
   const uniqueId = `preloadFontTag${Date.now()}`;
-  const cssUrls = FONT_CONFIG.filter(c => c.cssUrl).map(c => c.cssUrl);
+  const cssUrls = [CSS_URL];
 
   // キャッシュされた固定済みCSS
   const fixedCSSCache = new Map();
@@ -102,7 +105,7 @@
 
     // 既に適用済み、または注入実行中かチェック
     if (root._replaceFontApplied || root._replaceFontInProgress) return;
-    
+
     // styleタグ方式が既に存在するか念のため確認
     if (root.querySelector && root.querySelector('[data-replace-font]')) {
       root._replaceFontApplied = true;
@@ -147,25 +150,42 @@
   }
 
   /**
+   * 指定されたノードとその子孫要素から Shadow DOM を持つ要素を検索して CSS を注入
+   * @param {Node} node - 走査対象のノード
+   */
+  function findShadowRoots(node) {
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+    // 起点となるノード自体の Shadow DOM を処理
+    // createTreeWalker の nextNode() は起点ノードを含まないため、ここで明示的に処理する
+    if (node.isConnected && node.shadowRoot) {
+      injectCSS(node.shadowRoot);
+    }
+
+    // 子孫要素の Shadow DOM を走査
+    const walker = document.createTreeWalker(
+      node,
+      NodeFilter.SHOW_ELEMENT,
+      null,
+      false
+    );
+    let currentNode;
+    while ((currentNode = walker.nextNode())) {
+      if (currentNode.isConnected && currentNode.shadowRoot) {
+        injectCSS(currentNode.shadowRoot);
+      }
+    }
+  }
+
+  /**
    * 既存の Open Shadow DOM と MutationObserver による監視
    */
   function setupShadowDOMObserver() {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        const addedNodes = mutation.addedNodes;
-        for (let i = 0; i < addedNodes.length; i++) {
-          const node = addedNodes[i];
-          if (node.nodeType === 1) { // Node.ELEMENT_NODE
-            if (node.shadowRoot) injectCSS(node.shadowRoot);
-            // 子要素の Shadow DOM もチェックが必要な場合があるが、
-            // MutationObserver は subtree: true であっても「新しく追加された要素の中にある既存の ShadowRoot」
-            // は検知できないため、必要に応じて走査する
-            if (node.firstElementChild) {
-              const shadows = node.querySelectorAll('*');
-              for (let j = 0; j < shadows.length; j++) {
-                if (shadows[j].shadowRoot) injectCSS(shadows[j].shadowRoot);
-              }
-            }
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            findShadowRoots(node);
           }
         }
       }
@@ -180,17 +200,29 @@
     const allElements = document.querySelectorAll('*');
     let index = 0;
     const CHUNK_SIZE = 200;
+    let scanAborted = false;
 
     function processChunks() {
+      if (scanAborted) return;
+
+      if (!document.documentElement?.isConnected) {
+        scanAborted = true;
+        return;
+      }
+
       const end = Math.min(index + CHUNK_SIZE, allElements.length);
       for (; index < end; index++) {
         const el = allElements[index];
-        if (el.shadowRoot) injectCSS(el.shadowRoot);
+        if (el.isConnected && el.shadowRoot) {
+          injectCSS(el.shadowRoot);
+        }
       }
       if (index < allElements.length) {
-        (window.requestIdleCallback || window.setTimeout)(processChunks);
+        (window.requestIdleCallback || window.setTimeout)(processChunks, 0);
       }
     }
+
+    window.addEventListener('pagehide', () => { scanAborted = true; }, { once: true });
     processChunks();
   }
 
