@@ -86,6 +86,7 @@ Write-Host "📂 必要なファイルをコピー中..." -ForegroundColor Yello
 
 Copy-Item "manifest.json" -Destination $tempDir
 Copy-Item "preload-fonts.js" -Destination $tempDir
+Copy-Item "inject.js" -Destination $tempDir
 Copy-Item "popup" -Destination $tempDir -Recurse
 Copy-Item "css" -Destination $tempDir -Recurse
 Copy-Item "fonts" -Destination $tempDir -Recurse
