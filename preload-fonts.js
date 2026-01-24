@@ -147,6 +147,26 @@
   }
 
   /**
+   * 指定されたノードとその子孫要素から Shadow DOM を持つ要素を検索して CSS を注入
+   * @param {Node} node - 走査対象のノード
+   */
+  function findShadowRoots(node) {
+    if (node.nodeType !== 1) return;
+    
+    const walker = document.createTreeWalker(
+      node,
+      NodeFilter.SHOW_ELEMENT,
+      null,
+      false
+    );
+    
+    let currentNode;
+    while ((currentNode = walker.nextNode())) {
+      if (currentNode.shadowRoot) injectCSS(currentNode.shadowRoot);
+    }
+  }
+
+  /**
    * 既存の Open Shadow DOM と MutationObserver による監視
    */
   function setupShadowDOMObserver() {
@@ -155,17 +175,8 @@
         const addedNodes = mutation.addedNodes;
         for (let i = 0; i < addedNodes.length; i++) {
           const node = addedNodes[i];
-          if (node.nodeType === 1) { // Node.ELEMENT_NODE
-            if (node.shadowRoot) injectCSS(node.shadowRoot);
-            // 子要素の Shadow DOM もチェックが必要な場合があるが、
-            // MutationObserver は subtree: true であっても「新しく追加された要素の中にある既存の ShadowRoot」
-            // は検知できないため、必要に応じて走査する
-            if (node.firstElementChild) {
-              const shadows = node.querySelectorAll('*');
-              for (let j = 0; j < shadows.length; j++) {
-                if (shadows[j].shadowRoot) injectCSS(shadows[j].shadowRoot);
-              }
-            }
+          if (node.nodeType === 1) {
+            findShadowRoots(node);
           }
         }
       }
@@ -180,17 +191,29 @@
     const allElements = document.querySelectorAll('*');
     let index = 0;
     const CHUNK_SIZE = 200;
+    let scanAborted = false;
 
     function processChunks() {
+      if (scanAborted) return;
+
+      if (!document.documentElement?.isConnected) {
+        scanAborted = true;
+        return;
+      }
+
       const end = Math.min(index + CHUNK_SIZE, allElements.length);
       for (; index < end; index++) {
         const el = allElements[index];
-        if (el.shadowRoot) injectCSS(el.shadowRoot);
+        if (el.isConnected && el.shadowRoot) {
+          injectCSS(el.shadowRoot);
+        }
       }
       if (index < allElements.length) {
-        (window.requestIdleCallback || window.setTimeout)(processChunks);
+        (window.requestIdleCallback || window.setTimeout)(processChunks, 0);
       }
     }
+
+    window.addEventListener('pagehide', () => { scanAborted = true; }, { once: true });
     processChunks();
   }
 
