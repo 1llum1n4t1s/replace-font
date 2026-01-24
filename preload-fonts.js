@@ -81,12 +81,18 @@
       const root = document.head;
       if (!root) return;
 
+      const scriptUrl = chrome.runtime.getURL('inject.js');
+      // 既にスクリプトが注入されているかチェック
+      if (document.querySelector(`script[src="${scriptUrl}"]`)) return;
+
       const script = document.createElement('script');
-      script.src = chrome.runtime.getURL('inject.js');
+      script.src = scriptUrl;
       script.async = false;
-      root.appendChild(script);
       script.onload = () => script.remove();
-    } catch (e) {}
+      root.appendChild(script);
+    } catch (e) {
+      console.debug('[NotoSans置換] Shadow DOM handler injection failed:', e);
+    }
   }
 
   // Shadow DOM 注入イベントの待機

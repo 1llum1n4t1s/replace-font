@@ -1,6 +1,6 @@
 # NotoSansへ置換するやつ(改修型)
 
-[![Version](https://img.shields.io/badge/version-2.0.36-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
+[![Version](https://img.shields.io/badge/version-2.0.38-blue.svg)](https://github.com/1llum1n4t1s/replace-font)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ウェブサイト上の読みづらい日本語フォントを、読みやすい **Noto Sans JP** や **UDEV Gothic JPDOC** に自動で置き換える拡張機能です。

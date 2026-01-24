@@ -92,6 +92,7 @@ echo "📦 Chrome Web Store用のZIPファイルを作成中..."
 zip -r ./replace-font-chrome.zip \
   manifest.json \
   preload-fonts.js \
+  inject.js \
   popup/ \
   css/ \
   fonts/ \
