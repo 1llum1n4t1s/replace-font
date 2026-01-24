@@ -15,15 +15,18 @@
 
   // フォントURLとCSS URLの設定
   const FONT_CONFIG = [
-    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-regular.css` },
-    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2`, cssUrl: `${CSS_BASE_URL}replacefont-extension-bold.css` },
+    { weight: 'Regular', fontUrl: `${FONT_BASE_URL}NotoSansJP-Regular.woff2` },
+    { weight: 'Bold', fontUrl: `${FONT_BASE_URL}NotoSansJP-Bold.woff2` },
     { weight: 'MonoRegular', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Regular.woff2` },
     { weight: 'MonoBold', fontUrl: `${FONT_BASE_URL}UDEVGothicJPDOC-Bold.woff2` }
   ];
 
+  // 統合CSSファイルのURL
+  const CSS_URL = `${CSS_BASE_URL}replacefont-extension.css`;
+
   // クラス名の衝突を防ぐためのユニークID
   const uniqueId = `preloadFontTag${Date.now()}`;
-  const cssUrls = FONT_CONFIG.filter(c => c.cssUrl).map(c => c.cssUrl);
+  const cssUrls = [CSS_URL];
 
   // キャッシュされた固定済みCSS
   const fixedCSSCache = new Map();
@@ -102,12 +105,6 @@
 
     // 既に適用済み、または注入実行中かチェック
     if (root._replaceFontApplied || root._replaceFontInProgress) return;
-    
-    // styleタグ方式が既に存在するか念のため確認
-    if (root.querySelector && root.querySelector('[data-replace-font]')) {
-      root._replaceFontApplied = true;
-      return;
-    }
 
     root._replaceFontInProgress = true;
 
@@ -152,17 +149,23 @@
    */
   function findShadowRoots(node) {
     if (node.nodeType !== Node.ELEMENT_NODE) return;
-    
+
+    if (node.isConnected && node.shadowRoot) {
+      injectCSS(node.shadowRoot);
+    }
+
     const walker = document.createTreeWalker(
       node,
       NodeFilter.SHOW_ELEMENT,
       null,
       false
     );
-    
     let currentNode;
     while ((currentNode = walker.nextNode())) {
-      if (currentNode.shadowRoot) injectCSS(currentNode.shadowRoot);
+      if (currentNode === node) continue;
+      if (currentNode.isConnected && currentNode.shadowRoot) {
+        injectCSS(currentNode.shadowRoot);
+      }
     }
   }
 
