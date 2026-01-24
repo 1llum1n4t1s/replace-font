@@ -28,6 +28,13 @@
   --pplx-font-mono: "UDEV Gothic JPDOC", monospace !important;
 }
 
+/* 通常のテキスト要素に対するフォント強制適用（コードブロック以外） */
+:root *:not(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]):not(i, .icon, [class*="icon"], [class*="Icon"], svg, [class*="svg"], path, [class*="path"]),
+:host *:not(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]):not(i, .icon, [class*="icon"], [class*="Icon"], svg, [class*="svg"], path, [class*="path"]),
+body *:not(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]):not(i, .icon, [class*="icon"], [class*="Icon"], svg, [class*="svg"], path, [class*="path"]) {
+  font-family: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+}
+
 /* 汎用的な等幅フォント要素に対する強制指定（詳細度を高めて上書きを確実に） */
 :root :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
 :host :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
