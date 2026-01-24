@@ -13,6 +13,8 @@
   --font-sans-brand: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --font-family-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --tw-font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-serif: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
 
   /* Monospace 系 CSS 変数: UDEV Gothic JPDOC を優先 */
   --font-mono: "UDEV Gothic JPDOC", monospace !important;
@@ -543,6 +545,22 @@
 }
 @font-face {
   font-family: "Signifer";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Serif Web Text";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Sans Web Text";
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),
@@ -1734,6 +1752,24 @@
 }
 @font-face {
   font-family: "Signifer";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Serif Web Text";
+  src:  local("Noto Sans JP"),
+        local("Noto Sans CJK Variable"),
+        local("Noto Sans CJK JP"),
+        url('__REPLACE_FONT_BASE__fonts/NotoSansJP-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Sans Web Text";
   src:  local("Noto Sans JP"),
         local("Noto Sans CJK Variable"),
         local("Noto Sans CJK JP"),

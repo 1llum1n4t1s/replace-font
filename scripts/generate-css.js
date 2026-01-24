@@ -27,6 +27,8 @@ const GOTHIC_FONT_FAMILIES = [
   'Manrope', 'Poppins', 'Outfit', 'Plus Jakarta Sans',
   'Söhne', 'Söhne-Buch', 'Söhne-Kraft',
   'Signifer',
+  'Anthropic Serif Web Text',
+  'Anthropic Sans Web Text',
   'Noto Sans JP',
 
   'system-ui',
@@ -191,6 +193,8 @@ function generateCSS(outputConfig) {
   --font-sans-brand: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --font-family-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --tw-font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-serif: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
 
   /* Monospace 系 CSS 変数: UDEV Gothic JPDOC を優先 */
   --font-mono: "UDEV Gothic JPDOC", monospace !important;
