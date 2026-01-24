@@ -27,6 +27,8 @@ const GOTHIC_FONT_FAMILIES = [
   'Manrope', 'Poppins', 'Outfit', 'Plus Jakarta Sans',
   'Söhne', 'Söhne-Buch', 'Söhne-Kraft',
   'Signifer',
+  'Anthropic Serif Web Text',
+  'Anthropic Sans Web Text',
   'Noto Sans JP',
 
   'system-ui',
@@ -125,18 +127,12 @@ const MONO_CONFIGS = [
 
 const OUTPUT_CONFIGS = [
   {
-    fileName: 'replacefont-extension-regular.css',
-    title: 'Regular',
+    fileName: 'replacefont-extension.css',
+    title: 'Regular & Bold',
     configs: [
       { families: GOTHIC_FAMILIES, config: GOTHIC_CONFIGS[0] },
-      { families: MONO_FONT_FAMILIES, config: MONO_CONFIGS[0] }
-    ]
-  },
-  {
-    fileName: 'replacefont-extension-bold.css',
-    title: 'Bold',
-    configs: [
       { families: GOTHIC_FAMILIES, config: GOTHIC_CONFIGS[1] },
+      { families: MONO_FONT_FAMILIES, config: MONO_CONFIGS[0] },
       { families: MONO_FONT_FAMILIES, config: MONO_CONFIGS[1] }
     ]
   }
@@ -180,9 +176,7 @@ function generateFontFace(fontFamily, config) {
  */
 function generateCSS(outputConfig) {
   /** @type {string} CSSファイルのヘッダー */
-  const header = `@charset "UTF-8";
-
-/* ${outputConfig.title} */`;
+  const header = `@charset "UTF-8";`;
 
   /** @type {string} 共通のCSS変数によるフォント指定を上書きするスタイル定義 */
   const variableOverrides = `
@@ -199,6 +193,8 @@ function generateCSS(outputConfig) {
   --font-sans-brand: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --font-family-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
   --tw-font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-serif: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
+  --font-anthropic-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
 
   /* Monospace 系 CSS 変数: UDEV Gothic JPDOC を優先 */
   --font-mono: "UDEV Gothic JPDOC", monospace !important;
