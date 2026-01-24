@@ -151,7 +151,7 @@
    * @param {Node} node - 走査対象のノード
    */
   function findShadowRoots(node) {
-    if (node.nodeType !== 1) return;
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
     
     const walker = document.createTreeWalker(
       node,
@@ -172,10 +172,8 @@
   function setupShadowDOMObserver() {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        const addedNodes = mutation.addedNodes;
-        for (let i = 0; i < addedNodes.length; i++) {
-          const node = addedNodes[i];
-          if (node.nodeType === 1) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
             findShadowRoots(node);
           }
         }
