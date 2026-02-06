@@ -67,7 +67,8 @@
         sheetCache.set(url, sheet);
         return sheet;
       } catch (e) {
-        return cssText; // フォールバック
+        sheetCache.set(url, cssText); // フォールバック時もキャッシュに保存
+        return cssText;
       }
     }
     return cssText;
