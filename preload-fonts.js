@@ -123,14 +123,25 @@
 
     try {
       const resources = await Promise.all(cssUrls.map(url => getStyleSheet(url)));
-      const validResources = resources.filter(Boolean);
+      // url と resource のペアで管理し、filter 後もインデックス対応を保持
+      const validPairs = cssUrls.map((url, i) => ({ url, resource: resources[i] }))
+                                .filter(pair => pair.resource);
 
-      if (validResources.length === 0) return;
+      if (validPairs.length === 0) {
+        // 一時的なエラーの可能性があるため、3回まで再試行を許可
+        root._replaceFontRetryCount = (root._replaceFontRetryCount || 0) + 1;
+        if (root._replaceFontRetryCount >= 3) {
+          root._replaceFontApplied = true;
+        }
+        return;
+      }
 
       if (isConstructableSupported && root instanceof ShadowRoot) {
         // Constructable Stylesheets を使用（メモリ効率が良い）
         // 既存のシートを壊さないようにスプレッド演算子で追加
-        const sheets = validResources.filter(res => res instanceof CSSStyleSheet);
+        const sheets = validPairs
+          .filter(pair => pair.resource instanceof CSSStyleSheet)
+          .map(pair => pair.resource);
         if (sheets.length > 0) {
           root.adoptedStyleSheets = [...root.adoptedStyleSheets, ...sheets];
           root._replaceFontApplied = true;
@@ -140,10 +151,10 @@
 
       // 通常の style タグ方式（fallback または非 ShadowRoot 用）
       const fragment = document.createDocumentFragment();
-      validResources.forEach((res, i) => {
+      validPairs.forEach(pair => {
         const style = document.createElement('style');
-        // res が文字列ならそのまま、Sheet なら元のテキスト（キャッシュ）を使用
-        style.textContent = typeof res === 'string' ? res : fixedCSSCache.get(cssUrls[i]);
+        // resource が文字列ならそのまま、Sheet なら元のテキスト（キャッシュ）を使用
+        style.textContent = typeof pair.resource === 'string' ? pair.resource : fixedCSSCache.get(pair.url);
         style.dataset.replaceFont = 'true';
         fragment.appendChild(style);
       });
@@ -203,9 +214,13 @@
       subtree: true
     });
 
-    // 既存の要素を非同期（チャンク分け）でチェックして、メインスレッドのブロックを防ぐ
-    const allElements = document.querySelectorAll('*');
-    let index = 0;
+    // 既存の要素をTreeWalkerで逐次走査（querySelectorAll('*')と違い全要素リストをメモリに保持しない）
+    const walker = document.createTreeWalker(
+      document.documentElement,
+      NodeFilter.SHOW_ELEMENT,
+      null,
+      false
+    );
     const CHUNK_SIZE = 200;
     let scanAborted = false;
 
@@ -217,14 +232,17 @@
         return;
       }
 
-      const end = Math.min(index + CHUNK_SIZE, allElements.length);
-      for (; index < end; index++) {
-        const el = allElements[index];
-        if (el.isConnected && el.shadowRoot) {
-          injectCSS(el.shadowRoot);
+      let count = 0;
+      let currentNode;
+      while (count < CHUNK_SIZE && (currentNode = walker.nextNode())) {
+        if (currentNode.isConnected && currentNode.shadowRoot) {
+          injectCSS(currentNode.shadowRoot);
         }
+        count++;
       }
-      if (index < allElements.length) {
+
+      if (count === CHUNK_SIZE) {
+        // まだ要素がある可能性がある
         (window.requestIdleCallback || window.setTimeout)(processChunks, 0);
       }
     }
@@ -256,7 +274,9 @@
 
     try {
       root.appendChild(fragment);
-    } catch (e) {}
+    } catch (e) {
+      console.debug('[NotoSans置換] Preload tag insertion failed:', e.message);
+    }
   }
 
   // ページ読み込み完了後、CSS Font Loading API でフォントを強制的にロード
@@ -277,10 +297,12 @@
             if (document.fonts) {
               document.fonts.add(loadedFace);
             }
-          }).catch(() => {
-            // CSPなどで失敗した場合は無視
+          }).catch((e) => {
+            console.debug('[NotoSans置換] Font preload failed:', config.weight, e.message);
           });
-        } catch (e) {}
+        } catch (e) {
+          console.debug('[NotoSans置換] FontFace creation failed:', config.weight, e.message);
+        }
       }
     };
 

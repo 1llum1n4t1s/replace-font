@@ -51,27 +51,19 @@ const IMAGE_CONFIGS = [
 ];
 
 /**
- * HTMLファイルから画像を生成
+ * 共有ブラウザインスタンスを使用してHTMLファイルから画像を生成
+ * @param {import('puppeteer').Browser} browser - 共有ブラウザインスタンス
  * @param {string} htmlPath - HTMLファイルのパス
  * @param {string} outputPath - 出力画像のパス
  * @param {number} width - 画像の幅
  * @param {number} height - 画像の高さ
- * @param {string} type - 画像のタイプ
  */
-async function generateScreenshot(htmlPath, outputPath, width, height, type) {
-  // ブラウザの起動オプション（ヘッドレスモード、サンドボックス無効化など）
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+async function generateScreenshot(browser, htmlPath, outputPath, width, height) {
+  const page = await browser.newPage();
 
   try {
-    // 新しいページ（タブ）を作成
-    const page = await browser.newPage();
-    
     // ビューポートを設定
     // deviceScaleFactorを1に設定することで、指定したwidth/height通りのピクセルサイズで出力します
-    // 2以上にするとRetinaディスプレイ相当の解像度になりますが、Web Storeの要件に合わせるため1に固定します
     await page.setViewport({
       width: width,
       height: height,
@@ -106,13 +98,12 @@ async function generateScreenshot(htmlPath, outputPath, width, height, type) {
     console.error(`❌ エラー: ${htmlPath} -> ${outputPath}`);
     console.error(error);
   } finally {
-    // ブラウザを確実に終了させる
-    await browser.close();
+    await page.close();
   }
 }
 
 /**
- * メイン処理：出力ディレクトリの準備と各画像の生成ループ
+ * メイン処理：出力ディレクトリの準備と各画像の並列生成
  */
 async function main() {
   console.log('🎨 Chrome Web Store用スクリーンショットを生成中...\n');
@@ -123,26 +114,28 @@ async function main() {
     console.log(`📁 出力ディレクトリを作成: ${OUTPUT_DIR}\n`);
   }
 
-  // 設定に基づいて各画像を順番に生成
-  for (const config of IMAGE_CONFIGS) {
-    // 入力ファイルパスと出力先フルパスの決定
-    const inputPath = config.input;
-    const outputPath = path.join(OUTPUT_DIR, config.output);
+  // ブラウザを1回だけ起動して全画像で共有
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
 
-    // HTMLファイルの存在確認（存在しない場合はスキップ）
-    if (!fs.existsSync(inputPath)) {
-      console.error(`❌ HTMLファイルが見つかりません: ${inputPath}`);
-      continue;
-    }
+  try {
+    // 全画像を並列生成
+    await Promise.all(IMAGE_CONFIGS.map(config => {
+      const inputPath = config.input;
+      const outputPath = path.join(OUTPUT_DIR, config.output);
 
-    // 画像生成関数の呼び出し
-    await generateScreenshot(
-      inputPath,
-      outputPath,
-      config.width,
-      config.height,
-      config.type
-    );
+      // HTMLファイルの存在確認（存在しない場合はスキップ）
+      if (!fs.existsSync(inputPath)) {
+        console.error(`❌ HTMLファイルが見つかりません: ${inputPath}`);
+        return Promise.resolve();
+      }
+
+      return generateScreenshot(browser, inputPath, outputPath, config.width, config.height);
+    }));
+  } finally {
+    await browser.close();
   }
 
   console.log('\n✨ すべての画像生成が完了しました！');

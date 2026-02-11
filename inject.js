@@ -15,5 +15,7 @@
       }
       return shadowRoot;
     };
-  } catch (e) {}
+  } catch (e) {
+    console.debug('[NotoSans置換] attachShadow override failed:', e.message);
+  }
 })();

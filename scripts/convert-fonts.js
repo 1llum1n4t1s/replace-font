@@ -44,9 +44,9 @@ for (const ttfFile of ttfFiles) {
     // WOFF2ファイルを保存
     fs.writeFileSync(woff2Path, woff2Buffer);
     
-    const ttfSize = (fs.statSync(ttfPath).size / 1024 / 1024).toFixed(2);
-    const woff2Size = (fs.statSync(woff2Path).size / 1024 / 1024).toFixed(2);
-    const reduction = ((1 - woff2Size / ttfSize) * 100).toFixed(1);
+    const ttfSize = (ttfBuffer.length / 1024 / 1024).toFixed(2);
+    const woff2Size = (woff2Buffer.length / 1024 / 1024).toFixed(2);
+    const reduction = ((1 - woff2Buffer.length / ttfBuffer.length) * 100).toFixed(1);
     
     console.log(`✅ 完了: ${woff2File} (${ttfSize}MB → ${woff2Size}MB, ${reduction}%削減)`);
     convertedCount++;
