@@ -1,6 +1,6 @@
 {
   "name": "notosans-font-replacer",
-  "version": "2.0.40",
+  "version": "2.0.42",
   "description": "Chrome extension to replace hard-to-read fonts with Noto Sans",
   "scripts": {
     "generate-icons": "node scripts/generate-icons.js",
@@ -10,7 +10,7 @@
     "build": "npm run generate-icons && npm run generate-css && npm run generate-screenshots"
   },
   "devDependencies": {
-    "puppeteer": "^22.0.0",
+    "puppeteer": "^24.38.0",
     "sharp": "^0.33.0",
     "ttf2woff2": "^8.0.0"
   },

@@ -1,17 +1,24 @@
 (() => {
+  // 二重注入防止（manifest content_scripts と動的注入の両方で実行される可能性がある）
+  if (window.__replaceFontShadowInterceptor) return;
+  window.__replaceFontShadowInterceptor = true;
+
   try {
     const originalAttachShadow = Element.prototype.attachShadow;
     Element.prototype.attachShadow = function(init) {
       const shadowRoot = originalAttachShadow.apply(this, arguments);
       if (shadowRoot) {
-        // Content Script 側に通知して CSS を注入させる
-        // detail に shadowRoot を直接渡す（Content Script側からはアクセス可能）
-        const event = new CustomEvent('replace-font-inject-shadow', {
-          detail: shadowRoot,
-          bubbles: true,
-          composed: true
-        });
-        window.dispatchEvent(event);
+        // Host element に目印を付ける（Content Script 側が検出できるように）
+        // ※ CustomEvent.detail で DOM オブジェクト（ShadowRoot）を渡しても
+        //   MAIN → ISOLATED World 間の構造化クローンで null になるため、
+        //   data 属性で host element を特定する方式を使用
+        try {
+          this.setAttribute('data-rfs-shadow', '');
+        } catch (_) {
+          // SVGElement 等で setAttribute が使えない場合は無視
+        }
+        // Content Script 側に通知（detail なしのシンプルなイベント）
+        window.dispatchEvent(new Event('replace-font-shadow-created'));
       }
       return shadowRoot;
     };

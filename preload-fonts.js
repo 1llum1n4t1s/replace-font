@@ -97,10 +97,17 @@
   }
 
   // Shadow DOM 注入イベントの待機
-  window.addEventListener('replace-font-inject-shadow', (e) => {
-    const shadowRoot = e.detail;
-    if (shadowRoot) {
-      injectCSS(shadowRoot);
+  // inject.js (MAIN World) が attachShadow インターセプト時に
+  // host element に data-rfs-shadow 属性を付与 → Event で通知
+  // ※ CustomEvent.detail に DOM オブジェクトを渡しても MAIN → ISOLATED World 間の
+  //   構造化クローンで null になるため、data 属性方式を使用
+  window.addEventListener('replace-font-shadow-created', () => {
+    const elements = document.querySelectorAll('[data-rfs-shadow]:not([data-rfs-done])');
+    for (const el of elements) {
+      el.setAttribute('data-rfs-done', '');
+      if (el.shadowRoot) {
+        injectCSS(el.shadowRoot);
+      }
     }
   });
 
@@ -243,7 +250,11 @@
 
       if (count === CHUNK_SIZE) {
         // まだ要素がある可能性がある
-        (window.requestIdleCallback || window.setTimeout)(processChunks, 0);
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(processChunks, { timeout: 100 });
+        } else {
+          setTimeout(processChunks, 0);
+        }
       }
     }
 
