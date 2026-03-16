@@ -7,7 +7,7 @@ echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 # 更新対象ファイル
-FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore-screenshots/01-popup-ui.html" "webstore-screenshots/03-hero-promo.html" "webstore-screenshots/04-promo-small.html" "webstore-screenshots/05-promo-marquee.html")
+FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore/screenshots/01-popup-ui.html" "webstore/screenshots/03-hero-promo.html" "webstore/screenshots/04-promo-small.html" "webstore/screenshots/05-promo-marquee.html")
 
 for file in "${FILES_TO_UPDATE[@]}"; do
     if [ -f "$file" ]; then
@@ -27,44 +27,6 @@ for file in "${FILES_TO_UPDATE[@]}"; do
 done
 
 echo "Version synced: $PACKAGE_VERSION"
-echo ""
-
-# 依存関係のインストール（package-lock.jsonのバージョン同期も行われる）
-echo "📦 依存関係をインストール中..."
-npm install
-if [ $? -ne 0 ]; then
-  echo "❌ 依存関係のインストールに失敗しました"
-  exit 1
-fi
-echo ""
-
-# アイコン生成
-echo "🎨 アイコンを生成中..."
-node scripts/generate-icons.js
-if [ $? -ne 0 ]; then
-  echo "❌ アイコン生成に失敗しました"
-  exit 1
-fi
-echo ""
-
-# フォント変換（TTFがある場合）
-if ls fonts/*.ttf 1> /dev/null 2>&1; then
-  echo "🔄 フォントを変換中..."
-  node scripts/convert-fonts.js
-  if [ $? -ne 0 ]; then
-    echo "❌ フォント変換に失敗しました"
-    exit 1
-  fi
-  echo ""
-fi
-
-# スクリーンショット生成
-echo "📸 スクリーンショットを生成中..."
-node scripts/generate-screenshots.js
-if [ $? -ne 0 ]; then
-  echo "❌ スクリーンショット生成に失敗しました"
-  exit 1
-fi
 echo ""
 
 # CSS生成

@@ -4,27 +4,27 @@ const fs = require('fs');
 const path = require('path');
 
 // 出力ディレクトリのパス
-const OUTPUT_DIR = './webstore-images';
+const OUTPUT_DIR = './webstore/images';
 
 // 生成する画像の各設定項目（入力パス、出力名、サイズ、タイプ）
 const IMAGE_CONFIGS = [
   // スクリーンショット：1280x800
   {
-    input: 'webstore-screenshots/01-popup-ui.html',
+    input: 'webstore/screenshots/01-popup-ui.html',
     output: '01-popup-ui-1280x800.png',
     width: 1280,
     height: 800,
     type: 'screenshot'
   },
   {
-    input: 'webstore-screenshots/02-before-after.html',
+    input: 'webstore/screenshots/02-before-after.html',
     output: '02-before-after-1280x800.png',
     width: 1280,
     height: 800,
     type: 'screenshot'
   },
   {
-    input: 'webstore-screenshots/03-hero-promo.html',
+    input: 'webstore/screenshots/03-hero-promo.html',
     output: '03-hero-promo-1280x800.png',
     width: 1280,
     height: 800,
@@ -33,7 +33,7 @@ const IMAGE_CONFIGS = [
   
   // プロモーション タイル（小）：440x280
   {
-    input: 'webstore-screenshots/04-promo-small.html',
+    input: 'webstore/screenshots/04-promo-small.html',
     output: 'promo-small-440x280.png',
     width: 440,
     height: 280,
@@ -42,7 +42,7 @@ const IMAGE_CONFIGS = [
   
   // マーキー プロモーション タイル：1400x560
   {
-    input: 'webstore-screenshots/05-promo-marquee.html',
+    input: 'webstore/screenshots/05-promo-marquee.html',
     output: 'promo-marquee-1400x560.png',
     width: 1400,
     height: 560,

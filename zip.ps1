@@ -4,7 +4,7 @@
 $packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
 $version = $packageJson.version
 
-$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "popup/popup.html", "webstore-screenshots/01-popup-ui.html", "webstore-screenshots/03-hero-promo.html", "webstore-screenshots/04-promo-small.html", "webstore-screenshots/05-promo-marquee.html")
+$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "popup/popup.html", "webstore/screenshots/01-popup-ui.html", "webstore/screenshots/03-hero-promo.html", "webstore/screenshots/04-promo-small.html", "webstore/screenshots/05-promo-marquee.html")
 foreach ($filePath in $filesToUpdate) {
     $content = Get-Content -Path $filePath -Raw -Encoding UTF8
     
@@ -18,44 +18,6 @@ foreach ($filePath in $filesToUpdate) {
     $content | Out-File -FilePath $filePath -Encoding UTF8 -NoNewline
 }
 Write-Host "Version synced: $version" -ForegroundColor Green
-Write-Host ""
-
-# 依存関係のインストール（package-lock.jsonのバージョン同期も行われる）
-Write-Host "📦 依存関係をインストール中..." -ForegroundColor Cyan
-npm install
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ 依存関係のインストールに失敗しました" -ForegroundColor Red
-    exit 1
-}
-Write-Host ""
-
-# アイコン生成
-Write-Host "🎨 アイコンを生成中..." -ForegroundColor Cyan
-node scripts/generate-icons.js
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ アイコン生成に失敗しました" -ForegroundColor Red
-    exit 1
-}
-Write-Host ""
-
-# フォント変換（TTFがある場合）
-if (Test-Path "fonts/*.ttf") {
-    Write-Host "🔄 フォントを変換中..." -ForegroundColor Cyan
-    node scripts/convert-fonts.js
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "❌ フォント変換に失敗しました" -ForegroundColor Red
-        exit 1
-    }
-    Write-Host ""
-}
-
-# スクリーンショット生成
-Write-Host "📸 スクリーンショットを生成中..." -ForegroundColor Cyan
-node scripts/generate-screenshots.js
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ スクリーンショット生成に失敗しました" -ForegroundColor Red
-    exit 1
-}
 Write-Host ""
 
 # CSS生成

@@ -12,13 +12,20 @@
         // ※ CustomEvent.detail で DOM オブジェクト（ShadowRoot）を渡しても
         //   MAIN → ISOLATED World 間の構造化クローンで null になるため、
         //   data 属性で host element を特定する方式を使用
-        try {
-          this.setAttribute('data-rfs-shadow', '');
-        } catch (_) {
-          // SVGElement 等で setAttribute が使えない場合は無視
-        }
-        // Content Script 側に通知（detail なしのシンプルなイベント）
-        window.dispatchEvent(new Event('replace-font-shadow-created'));
+        // ※ queueMicrotask で遅延実行する理由：
+        //   カスタム要素のコンストラクタ内で attachShadow が呼ばれた場合、
+        //   同期的に setAttribute を実行すると Web Components 仕様違反
+        //   (NotSupportedError) になるため、コンストラクタ完了後に実行する
+        const host = this;
+        queueMicrotask(() => {
+          try {
+            host.setAttribute('data-rfs-shadow', '');
+          } catch (_) {
+            // SVGElement 等で setAttribute が使えない場合は無視
+          }
+          // Content Script 側に通知（detail なしのシンプルなイベント）
+          window.dispatchEvent(new Event('replace-font-shadow-created'));
+        });
       }
       return shadowRoot;
     };
