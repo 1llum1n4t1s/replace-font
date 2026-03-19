@@ -15,26 +15,21 @@ async function generateIcons() {
     process.exit(1);
   }
 
-  // iconsディレクトリの確認
-  if (!fs.existsSync(iconsDir)) {
-    fs.mkdirSync(iconsDir, { recursive: true });
-  }
+  fs.mkdirSync(iconsDir, { recursive: true });
 
-  // 各サイズのPNGを生成
-  for (const size of sizes) {
+  // 各サイズのPNGを並列生成
+  await Promise.all(sizes.map(async (size) => {
     const outputPath = path.join(iconsDir, `icon-${size}x${size}.png`);
-
     try {
       await sharp(svgPath)
         .resize(size, size)
         .png()
         .toFile(outputPath);
-
       console.log(`✅ ${size}x${size} アイコンを生成しました: ${path.basename(outputPath)}`);
     } catch (error) {
       console.error(`❌ ${size}x${size} アイコンの生成に失敗しました:`, error.message);
     }
-  }
+  }));
 
   console.log('\n🎉 アイコン生成が完了しました！');
   console.log('\n📂 生成されたファイル:');

@@ -97,6 +97,7 @@ async function generateScreenshot(browser, htmlPath, outputPath, width, height) 
   } catch (error) {
     console.error(`❌ エラー: ${htmlPath} -> ${outputPath}`);
     console.error(error);
+    throw error;
   } finally {
     await page.close();
   }
@@ -108,32 +109,30 @@ async function generateScreenshot(browser, htmlPath, outputPath, width, height) 
 async function main() {
   console.log('🎨 Chrome Web Store用スクリーンショットを生成中...\n');
 
-  // 出力ディレクトリが存在しない場合は再帰的に作成
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    console.log(`📁 出力ディレクトリを作成: ${OUTPUT_DIR}\n`);
-  }
+  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
   // ブラウザを1回だけ起動して全画像で共有
   const browser = await puppeteer.launch({
-    headless: 'new',
+    headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   try {
-    // 全画像を並列生成
-    await Promise.all(IMAGE_CONFIGS.map(config => {
+    // 全画像を並列生成（失敗を個別キャッチし、最後にまとめて報告）
+    const results = await Promise.allSettled(IMAGE_CONFIGS.map(config => {
       const inputPath = config.input;
       const outputPath = path.join(OUTPUT_DIR, config.output);
 
-      // HTMLファイルの存在確認（存在しない場合はスキップ）
       if (!fs.existsSync(inputPath)) {
-        console.error(`❌ HTMLファイルが見つかりません: ${inputPath}`);
-        return Promise.resolve();
+        return Promise.reject(new Error(`HTMLファイルが見つかりません: ${inputPath}`));
       }
 
       return generateScreenshot(browser, inputPath, outputPath, config.width, config.height);
     }));
+    const failures = results.filter(r => r.status === 'rejected');
+    if (failures.length > 0) {
+      throw new Error(`${failures.length}件の画像生成に失敗しました`);
+    }
   } finally {
     await browser.close();
   }

@@ -21,7 +21,7 @@
   --transition-fast: 0.3s ease;
 }
 
-* {
+html, body, div, h1, h2, p, span {
   margin: 0;
   padding: 0;
   box-sizing: border-box;

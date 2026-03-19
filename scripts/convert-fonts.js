@@ -61,5 +61,5 @@ console.log(`  ⏭️  スキップ: ${skippedCount}個`);
 
 if (convertedCount > 0) {
   console.log('\n💡 TTFファイルを削除する場合は、以下のコマンドを実行してください:');
-  console.log('   Remove-Item fonts/*.ttf');
+  console.log('   rm fonts/*.ttf');
 }

@@ -24,9 +24,7 @@
   // 統合CSSファイルのURL
   const CSS_URL = `${CSS_BASE_URL}replacefont-extension.css`;
 
-  // クラス名の衝突を防ぐためのユニークID
-  const uniqueId = `preloadFontTag${Date.now()}`;
-  const cssUrls = [CSS_URL];
+  const PRELOAD_CLASS = 'preloadFontTag';
 
   // キャッシュされた固定済みCSS
   const fixedCSSCache = new Map();
@@ -101,14 +99,22 @@
   // host element に data-rfs-shadow 属性を付与 → Event で通知
   // ※ CustomEvent.detail に DOM オブジェクトを渡しても MAIN → ISOLATED World 間の
   //   構造化クローンで null になるため、data 属性方式を使用
+  // ※ attachShadow が連続呼び出しされる場合（YouTube等）のバースト対策として、
+  //   同一マイクロタスク内のイベントをまとめて1回の querySelectorAll で処理する
+  let shadowEventPending = false;
   window.addEventListener('replace-font-shadow-created', () => {
-    const elements = document.querySelectorAll('[data-rfs-shadow]:not([data-rfs-done])');
-    for (const el of elements) {
-      el.setAttribute('data-rfs-done', '');
-      if (el.shadowRoot) {
-        injectCSS(el.shadowRoot);
+    if (shadowEventPending) return;
+    shadowEventPending = true;
+    queueMicrotask(() => {
+      shadowEventPending = false;
+      const elements = document.querySelectorAll('[data-rfs-shadow]:not([data-rfs-done])');
+      for (const el of elements) {
+        el.setAttribute('data-rfs-done', '');
+        if (el.shadowRoot) {
+          injectCSS(el.shadowRoot);
+        }
       }
-    }
+    });
   });
 
   /**
@@ -129,12 +135,9 @@
     root._replaceFontInProgress = true;
 
     try {
-      const resources = await Promise.all(cssUrls.map(url => getStyleSheet(url)));
-      // url と resource のペアで管理し、filter 後もインデックス対応を保持
-      const validPairs = cssUrls.map((url, i) => ({ url, resource: resources[i] }))
-                                .filter(pair => pair.resource);
+      const resource = await getStyleSheet(CSS_URL);
 
-      if (validPairs.length === 0) {
+      if (!resource) {
         // 一時的なエラーの可能性があるため、3回まで再試行を許可
         root._replaceFontRetryCount = (root._replaceFontRetryCount || 0) + 1;
         if (root._replaceFontRetryCount >= 3) {
@@ -143,29 +146,18 @@
         return;
       }
 
-      if (isConstructableSupported && root instanceof ShadowRoot) {
+      if (isConstructableSupported && root instanceof ShadowRoot && resource instanceof CSSStyleSheet) {
         // Constructable Stylesheets を使用（メモリ効率が良い）
-        // 既存のシートを壊さないようにスプレッド演算子で追加
-        const sheets = validPairs
-          .filter(pair => pair.resource instanceof CSSStyleSheet)
-          .map(pair => pair.resource);
-        if (sheets.length > 0) {
-          root.adoptedStyleSheets = [...root.adoptedStyleSheets, ...sheets];
-          root._replaceFontApplied = true;
-          return;
-        }
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, resource];
+        root._replaceFontApplied = true;
+        return;
       }
 
       // 通常の style タグ方式（fallback または非 ShadowRoot 用）
-      const fragment = document.createDocumentFragment();
-      validPairs.forEach(pair => {
-        const style = document.createElement('style');
-        // resource が文字列ならそのまま、Sheet なら元のテキスト（キャッシュ）を使用
-        style.textContent = typeof pair.resource === 'string' ? pair.resource : fixedCSSCache.get(pair.url);
-        style.dataset.replaceFont = 'true';
-        fragment.appendChild(style);
-      });
-      root.appendChild(fragment);
+      const style = document.createElement('style');
+      style.textContent = typeof resource === 'string' ? resource : fixedCSSCache.get(CSS_URL);
+      style.dataset.replaceFont = 'true';
+      root.appendChild(style);
       root._replaceFontApplied = true;
     } catch (e) {
       console.debug('[NotoSans置換] Injection failed:', e);
@@ -279,7 +271,7 @@
       preloadTag.as = 'font';
       preloadTag.href = config.fontUrl;
       preloadTag.crossOrigin = 'anonymous';
-      preloadTag.className = `${uniqueId}_${config.weight}`;
+      preloadTag.className = `${PRELOAD_CLASS}_${config.weight}`;
       fragment.appendChild(preloadTag);
     }
 

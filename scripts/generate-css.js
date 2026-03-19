@@ -166,11 +166,6 @@ function generateFontFace(fontFamily, config) {
 
 /**
  * CSS ファイルを生成
- * @param {object} outputConfig - 出力設定
- * @returns {string} CSS 内容
- */
-/**
- * CSS ファイルを生成するためのメインロジック
  * @param {object} outputConfig - 出力設定（ファイル名、タイトル、設定リスト）
  * @returns {string} 生成された CSS 内容
  */
@@ -238,10 +233,7 @@ async function main() {
 
   const cssDir = path.join(__dirname, '../css');
 
-  // css ディレクトリの確認
-  if (!fs.existsSync(cssDir)) {
-    fs.mkdirSync(cssDir, { recursive: true });
-  }
+  fs.mkdirSync(cssDir, { recursive: true });
 
   // 各設定ごとに CSS を生成
   for (const outputConfig of OUTPUT_CONFIGS) {
