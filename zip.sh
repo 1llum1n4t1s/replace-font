@@ -7,7 +7,7 @@ echo "Version syncing..."
 PACKAGE_VERSION=$(grep '"version"' package.json | head -1 | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 # 更新対象ファイル
-FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "popup/popup.html" "webstore/screenshots/01-popup-ui.html" "webstore/screenshots/03-hero-promo.html" "webstore/screenshots/04-promo-small.html" "webstore/screenshots/05-promo-marquee.html")
+FILES_TO_UPDATE=("manifest.json" "README.md" "docs/index.html" "src/popup/popup.html" "webstore/screenshots/01-popup-ui.html" "webstore/screenshots/03-hero-promo.html" "webstore/screenshots/04-promo-small.html" "webstore/screenshots/05-promo-marquee.html")
 
 for file in "${FILES_TO_UPDATE[@]}"; do
     if [ -f "$file" ]; then
@@ -53,12 +53,8 @@ echo "📦 Chrome Web Store用のZIPファイルを作成中..."
 # 必要なファイルのみをZIPに含める
 zip -r ./replace-font-chrome.zip \
   manifest.json \
-  preload-fonts.js \
-  inject.js \
-  popup/ \
-  css/ \
-  fonts/ \
   icons/ \
+  src/ \
   -x "*.DS_Store" "*.swp" "*~"
 
 if [ $? -eq 0 ]; then

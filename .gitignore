@@ -9,6 +9,9 @@ package-lock.json
 webstore/images/
 temp-build/
 
+# Generated icons (from scripts/generate-icons.js)
+icons/icon-*.png
+
 # OS files
 .DS_Store
 Thumbs.db

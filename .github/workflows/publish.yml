@@ -48,7 +48,7 @@ jobs:
 
       - name: zip パッケージを作成
         run: |
-          zip -r replace-font-chrome.zip manifest.json preload-fonts.js inject.js popup css fonts icons \
+          zip -r replace-font-chrome.zip manifest.json icons src \
             -x "*.DS_Store" "*.swp" "*~"
           ls -lh replace-font-chrome.zip
 

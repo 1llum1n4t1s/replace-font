@@ -10,8 +10,8 @@
   };
 
   const BASE_URL = getExtensionBaseURL();
-  const FONT_BASE_URL = `${BASE_URL}fonts/`;
-  const CSS_BASE_URL = `${BASE_URL}css/`;
+  const FONT_BASE_URL = `${BASE_URL}src/fonts/`;
+  const CSS_BASE_URL = `${BASE_URL}src/css/`;
 
   // フォントURLとCSS URLの設定
   const FONT_CONFIG = [
@@ -74,18 +74,23 @@
 
   /**
    * Shadow DOM (open/closed) 対応のためのスクリプト注入
+   * inject.js は MAIN World で attachShadow をフックし、取得した ShadowRoot に
+   * 直接 CSS を注入する。closed Shadow Root にも届かせるため、CSS URL と BASE_URL を
+   * dataset で渡す (CustomEvent.detail では DOM 参照を渡せないが data 属性なら確実)。
    */
   function injectShadowDOMHandler() {
     try {
       const root = document.head;
       if (!root) return;
 
-      const scriptUrl = chrome.runtime.getURL('inject.js');
+      const scriptUrl = chrome.runtime.getURL('src/content/inject.js');
       // 既にスクリプトが注入されているかチェック
       if (document.querySelector(`script[src="${scriptUrl}"]`)) return;
 
       const script = document.createElement('script');
       script.src = scriptUrl;
+      script.dataset.rfsCssUrl = CSS_URL;
+      script.dataset.rfsBaseUrl = BASE_URL;
       script.async = false;
       script.onload = () => script.remove();
       root.appendChild(script);

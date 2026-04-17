@@ -5,7 +5,7 @@ const ttf2woff2Module = require('ttf2woff2');
 // ttf2woff2 のインポート方法を確認
 const ttf2woff2 = ttf2woff2Module.default || ttf2woff2Module;
 
-const fontsDir = path.join(__dirname, '..', 'fonts');
+const fontsDir = path.join(__dirname, '..', 'src', 'fonts');
 
 // TTFファイルを検索
 const ttfFiles = fs.readdirSync(fontsDir).filter(file => file.endsWith('.ttf'));
@@ -61,5 +61,5 @@ console.log(`  ⏭️  スキップ: ${skippedCount}個`);
 
 if (convertedCount > 0) {
   console.log('\n💡 TTFファイルを削除する場合は、以下のコマンドを実行してください:');
-  console.log('   rm fonts/*.ttf');
+  console.log('   rm src/fonts/*.ttf');
 }
