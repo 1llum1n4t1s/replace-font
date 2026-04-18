@@ -9,7 +9,7 @@
     "128": "icons/icon-128x128.png"
   },
   "action": {
-    "default_popup": "popup/popup.html"
+    "default_popup": "src/popup/popup.html"
   },
   "host_permissions": [
     "<all_urls>"
@@ -20,7 +20,7 @@
         "<all_urls>"
       ],
       "js": [
-        "preload-fonts.js"
+        "src/content/preload-fonts.js"
       ],
       "all_frames": true,
       "run_at": "document_start"
@@ -29,9 +29,9 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "fonts/*.woff2",
-        "css/*.css",
-        "inject.js"
+        "src/fonts/*.woff2",
+        "src/css/*.css",
+        "src/content/inject.js"
       ],
       "matches": [
         "<all_urls>"

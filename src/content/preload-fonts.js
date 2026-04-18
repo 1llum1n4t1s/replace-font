@@ -10,8 +10,8 @@
   };
 
   const BASE_URL = getExtensionBaseURL();
-  const FONT_BASE_URL = `${BASE_URL}fonts/`;
-  const CSS_BASE_URL = `${BASE_URL}css/`;
+  const FONT_BASE_URL = `${BASE_URL}src/fonts/`;
+  const CSS_BASE_URL = `${BASE_URL}src/css/`;
 
   // フォントURLとCSS URLの設定
   const FONT_CONFIG = [
@@ -74,20 +74,35 @@
 
   /**
    * Shadow DOM (open/closed) 対応のためのスクリプト注入
+   * inject.js は MAIN World で attachShadow をフックし、closed Shadow Root にのみ
+   * CSS を注入する (open は ISOLATED 側で処理)。CSS テキストはこちらで fetch し、
+   * inject.js ロード完了後に window.postMessage で MAIN World に送る。
+   * → MAIN 側で fetch するとページの CSP (connect-src) に阻まれる可能性があるため。
    */
   function injectShadowDOMHandler() {
     try {
       const root = document.head;
       if (!root) return;
 
-      const scriptUrl = chrome.runtime.getURL('inject.js');
+      const scriptUrl = chrome.runtime.getURL('src/content/inject.js');
       // 既にスクリプトが注入されているかチェック
       if (document.querySelector(`script[src="${scriptUrl}"]`)) return;
 
       const script = document.createElement('script');
       script.src = scriptUrl;
       script.async = false;
-      script.onload = () => script.remove();
+      script.onload = async () => {
+        script.remove();
+        // inject.js のリスナー登録完了後に CSS テキストを MAIN World へ転送
+        try {
+          const cssText = await getFixedCSS(CSS_URL);
+          if (cssText) {
+            window.postMessage({ type: 'replace-font-css-payload', css: cssText }, '*');
+          }
+        } catch (e) {
+          console.debug('[NotoSans置換] CSS payload dispatch failed:', e.message);
+        }
+      };
       root.appendChild(script);
     } catch (e) {
       console.debug('[NotoSans置換] Shadow DOM handler injection failed:', e);

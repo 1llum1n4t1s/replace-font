@@ -147,7 +147,8 @@ function generateFontFace(fontFamily, config) {
   // 既に local() 指定がある場合でも、エイリアス作成時は再度 local() で自分自身やターゲットを指定する
   const localSources = config.localFonts.map(font => `local("${font}")`);
   // 拡張機能IDが動的なため、プレースホルダーを使用し、Content Script側で置換する
-  const webFontUrl = `url('__REPLACE_FONT_BASE__fonts/${config.webFont}') format('woff2')`;
+  // フォントは src/fonts/ 配下に配置されている (manifest.json の web_accessible_resources と一致させる)
+  const webFontUrl = `url('__REPLACE_FONT_BASE__src/fonts/${config.webFont}') format('woff2')`;
   const srcParts = [...localSources, webFontUrl];
 
   let rule = `@font-face {
@@ -213,6 +214,102 @@ function generateCSS(outputConfig) {
 [style*="monospace"], [style*="ui-monospace"] {
   font-family: "UDEV Gothic JPDOC", "Berkeley Mono", "IBM Plex Mono", "Geist Mono", "Cascadia Code", "Cascadia Mono", "Consolas", "Monaco", "Courier New", monospace !important;
 }
+
+/* ============================================================================
+   編集可能領域（RTE / 入力フィールド / コードエディタ）の除外ゾーン
+   ----------------------------------------------------------------------------
+   Excel Online / Googleスプレッドシート / Word Online / PowerPoint Online /
+   ブログエディタ等、ブラウザ上でフォントを選択して編集するアプリの置換を
+   無効化する。DOM構造で判別するためドメインリストのメンテナンス不要。
+   - CSS変数の上書き（Layer 1）は要素スコープで無効化可能。ただしCSS変数は
+     inherited のため 'revert' だと親から継承されてしまう（親の :root で
+     !important 済みのため）。'initial' で guaranteed-invalid value にすると、
+     子孫の var() 参照時に fallback 値もしくは IACVT → unset に落ちる
+   - @font-face 再定義（Layer 2）はドキュメントグローバルのため要素単位での
+     無効化は原理的に不可。モダンRTEは主にCSS変数経由で font-family を指定する
+     ため、実用上これで大半のケースをカバーできる
+   - 上の variableOverrides にCSS変数を追加したら、ここのリストも同期更新すること
+   ============================================================================ */
+:is(
+  [contenteditable="true"],
+  [contenteditable=""],
+  [contenteditable="plaintext-only"],
+  input,
+  textarea,
+  [role="textbox"],
+  .ProseMirror,
+  .ql-editor,
+  .mce-content-body,
+  .cke_editable,
+  .fr-element,
+  .tox-edit-area,
+  .note-editable,
+  .trix-content,
+  .public-DraftEditor-content,
+  .CodeMirror,
+  .cm-editor,
+  .monaco-editor,
+  .ace_editor
+) {
+  /* Sans-serif 系 CSS 変数を guaranteed-invalid に（var() fallback または IACVT へ） */
+  --font-sans: initial !important;
+  --font-inter: initial !important;
+  --font-geist-sans: initial !important;
+  --font-fk-grotesk: initial !important;
+  --font-fkgrotesk: initial !important;
+  --font-fk-grotesk-neue: initial !important;
+  --font-fkgrotesk-neue: initial !important;
+  --font-body: initial !important;
+  --font-sans-brand: initial !important;
+  --font-family-sans: initial !important;
+  --tw-font-sans: initial !important;
+  --font-anthropic-serif: initial !important;
+  --font-anthropic-sans: initial !important;
+
+  /* Monospace 系 CSS 変数 */
+  --font-mono: initial !important;
+  --font-berkeley-mono: initial !important;
+  --font-geist-mono: initial !important;
+  --font-code: initial !important;
+  --font-family-mono: initial !important;
+  --tw-font-mono: initial !important;
+  --mono-font: initial !important;
+  --code-font: initial !important;
+  --font-family-code: initial !important;
+  --monospace-font: initial !important;
+  --pplx-font-mono: initial !important;
+
+  /* font-family は標準プロパティなので revert で UA value に戻せる
+     （input/textarea では UA のフォームコントロール default、その他は inherit） */
+  font-family: revert !important;
+}
+
+/* 除外ゾーン内の pre/code/kbd/samp は上の :root/:host :is(pre, code, ...) の
+   強制 mono 指定に負けないよう、:is(:root, :host) 前置で同等以上のspecificityで
+   revert する（Shadow DOM 内のコードエディタにも対応） */
+:is(:root, :host) :is(
+  [contenteditable="true"],
+  [contenteditable=""],
+  [contenteditable="plaintext-only"],
+  input,
+  textarea,
+  [role="textbox"],
+  .ProseMirror,
+  .ql-editor,
+  .mce-content-body,
+  .cke_editable,
+  .fr-element,
+  .tox-edit-area,
+  .note-editable,
+  .trix-content,
+  .public-DraftEditor-content,
+  .CodeMirror,
+  .cm-editor,
+  .monaco-editor,
+  .ace_editor
+) :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) {
+  font-family: revert !important;
+}
 `;
 
   /** @type {string[]} 各セクション（Gothic/Mono）の @font-face ルール */
@@ -231,7 +328,7 @@ function generateCSS(outputConfig) {
 async function main() {
   console.log('🎨 CSS ファイル生成を開始します...\n');
 
-  const cssDir = path.join(__dirname, '../css');
+  const cssDir = path.join(__dirname, '../src/css');
 
   fs.mkdirSync(cssDir, { recursive: true });
 
@@ -254,7 +351,7 @@ async function main() {
   console.log('\n🎉 CSS ファイル生成が完了しました！');
   console.log('\n📂 生成されたファイル:');
   OUTPUT_CONFIGS.forEach(config => {
-    console.log(`   - css/${config.fileName}`);
+    console.log(`   - src/css/${config.fileName}`);
   });
 }
 
