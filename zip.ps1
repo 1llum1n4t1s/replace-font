@@ -1,23 +1,14 @@
 # Chrome Web Store用のZIPファイルを作成するスクリプト (Windows PowerShell版)
+# バージョン同期ロジックは scripts/sync-version.js に一元化済み。
 
-# バージョン同期: package.json から全ファイルにバージョンを自動同期
-$packageJson = Get-Content -Path "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
-$version = $packageJson.version
+$ErrorActionPreference = "Stop"
 
-$filesToUpdate = @("manifest.json", "README.md", "docs/index.html", "src/popup/popup.html", "webstore/screenshots/01-popup-ui.html", "webstore/screenshots/03-hero-promo.html", "webstore/screenshots/04-promo-small.html", "webstore/screenshots/05-promo-marquee.html")
-foreach ($filePath in $filesToUpdate) {
-    $content = Get-Content -Path $filePath -Raw -Encoding UTF8
-    
-    # バージョン番号の置換
-    $content = [regex]::Replace($content, 'v[0-9]+\.[0-9]+\.[0-9]+', "v$version")
-    $content = [regex]::Replace($content, 'Version [0-9]+\.[0-9]+\.[0-9]+', "Version $version")
-    $content = [regex]::Replace($content, '"version": "[^"]+"', "`"version`": `"$version`"")
-    $content = [regex]::Replace($content, 'version-[0-9]+\.[0-9]+\.[0-9]+-', "version-$version-")
-    
-    # ファイルに書き戻す
-    $content | Out-File -FilePath $filePath -Encoding UTF8 -NoNewline
+Write-Host "🔄 バージョン同期中..." -ForegroundColor Cyan
+node scripts/sync-version.js
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ バージョン同期に失敗しました" -ForegroundColor Red
+    exit 1
 }
-Write-Host "Version synced: $version" -ForegroundColor Green
 Write-Host ""
 
 # CSS生成

@@ -1,4 +1,15 @@
 (() => {
+  // === 定数 ===
+  // Why: B3 #I-1 でマジック値が定数化されていない指摘 → 設定変更時の影響範囲を局所化
+  const MAX_RETRY_COUNT = 3;          // injectCSS の fetch 失敗リトライ上限
+  const FAILURE_TTL_MS = 5000;        // フェッチ失敗の負キャッシュ TTL（ストーム抑制）
+  const RETRY_RESET_MS = 30000;       // リトライ上限到達後、再試行を許可するまでの待機
+  const CHUNK_SIZE = 200;             // TreeWalker チャンクあたりの要素数
+  const IDLE_TIMEOUT_MS = 100;        // requestIdleCallback の最大待ち時間
+  const PAYLOAD_TYPE = 'replace-font-css-payload'; // inject.js と一致させること
+  // 共有フラグ名: inject.js の APPLIED_FLAG と一字一句一致させる必要がある
+  const APPLIED_FLAG = '__replaceFontApplied';
+
   // ベースURL情報を取得。常に絶対パスになるようにする。
   const getExtensionBaseURL = () => {
     try {
@@ -25,27 +36,41 @@
   const CSS_URL = `${CSS_BASE_URL}replacefont-extension.css`;
 
   const PRELOAD_CLASS = 'preloadFontTag';
+  // メインフレームかどうか: iframe 多用ページで preload/CSS 注入が重複しないよう判定
+  const IS_TOP_FRAME = (() => {
+    try { return window.top === window; } catch (_) { return false; }
+  })();
 
   // キャッシュされた固定済みCSS
   const fixedCSSCache = new Map();
+  // フェッチ失敗の負キャッシュ (URL → 失敗時刻 ms)。ストーム抑制用。
+  const fetchFailureCache = new Map();
   // Constructable Stylesheets のキャッシュ
   const sheetCache = new Map();
   const isConstructableSupported = typeof CSSStyleSheet !== 'undefined' && 'replaceSync' in CSSStyleSheet.prototype;
 
   /**
-   * CSSファイルをフェッチして、プレースホルダーを絶対パスに置換したものを返す
+   * CSSファイルをフェッチして、プレースホルダーを絶対パスに置換したものを返す。
+   * 失敗時は FAILURE_TTL_MS の負キャッシュで以降の連続フェッチを抑制する。
    */
   async function getFixedCSS(url) {
     if (fixedCSSCache.has(url)) return fixedCSSCache.get(url);
+    const failedAt = fetchFailureCache.get(url);
+    if (failedAt && Date.now() - failedAt < FAILURE_TTL_MS) return null;
     try {
       const response = await fetch(url);
-      if (!response.ok) return null;
+      if (!response.ok) {
+        fetchFailureCache.set(url, Date.now());
+        return null;
+      }
       let text = await response.text();
       text = text.replace(/__REPLACE_FONT_BASE__/g, BASE_URL)
                  .replace(/\.\.\/fonts\//g, FONT_BASE_URL);
       fixedCSSCache.set(url, text);
+      fetchFailureCache.delete(url);
       return text;
     } catch (e) {
+      fetchFailureCache.set(url, Date.now());
       return null;
     }
   }
@@ -73,39 +98,21 @@
   }
 
   /**
-   * Shadow DOM (open/closed) 対応のためのスクリプト注入
-   * inject.js は MAIN World で attachShadow をフックし、closed Shadow Root にのみ
-   * CSS を注入する (open は ISOLATED 側で処理)。CSS テキストはこちらで fetch し、
-   * inject.js ロード完了後に window.postMessage で MAIN World に送る。
-   * → MAIN 側で fetch するとページの CSP (connect-src) に阻まれる可能性があるため。
+   * Shadow DOM (open/closed) 対応のためのスクリプト注入。
+   * inject.js が manifest 側で declarative に world:"MAIN" content_script として
+   * 起動するため、ここでは <script> タグの動的注入を行わない（旧設計を撤廃）。
+   * CSS テキストだけを postMessage で MAIN world に転送する。
    */
-  function injectShadowDOMHandler() {
+  async function dispatchCSSToMainWorld() {
     try {
-      const root = document.head;
-      if (!root) return;
-
-      const scriptUrl = chrome.runtime.getURL('src/content/inject.js');
-      // 既にスクリプトが注入されているかチェック
-      if (document.querySelector(`script[src="${scriptUrl}"]`)) return;
-
-      const script = document.createElement('script');
-      script.src = scriptUrl;
-      script.async = false;
-      script.onload = async () => {
-        script.remove();
-        // inject.js のリスナー登録完了後に CSS テキストを MAIN World へ転送
-        try {
-          const cssText = await getFixedCSS(CSS_URL);
-          if (cssText) {
-            window.postMessage({ type: 'replace-font-css-payload', css: cssText }, '*');
-          }
-        } catch (e) {
-          console.debug('[NotoSans置換] CSS payload dispatch failed:', e.message);
-        }
-      };
-      root.appendChild(script);
+      const cssText = await getFixedCSS(CSS_URL);
+      if (cssText) {
+        // targetOrigin '*' を使うが、inject.js 側で構造検証・@import 排除等を行うため
+        // 受信側スプーフィング対策はそちらに集約。
+        window.postMessage({ type: PAYLOAD_TYPE, css: cssText }, '*');
+      }
     } catch (e) {
-      console.debug('[NotoSans置換] Shadow DOM handler injection failed:', e);
+      console.debug('[NotoSans置換] CSS payload dispatch failed:', e.message);
     }
   }
 
@@ -138,12 +145,12 @@
   async function injectCSS(root) {
     if (!root) return;
 
-    // 既に適用済み、または注入実行中かチェック
-    if (root._replaceFontApplied || root._replaceFontInProgress) return;
+    // 既に適用済み、または注入実行中かチェック (inject.js と同じフラグ名で重複防止)
+    if (root[APPLIED_FLAG] || root._replaceFontInProgress) return;
 
     // styleタグ方式が既に存在するか念のため確認
     if (root.querySelector && root.querySelector('[data-replace-font]')) {
-      root._replaceFontApplied = true;
+      root[APPLIED_FLAG] = true;
       return;
     }
 
@@ -153,18 +160,26 @@
       const resource = await getStyleSheet(CSS_URL);
 
       if (!resource) {
-        // 一時的なエラーの可能性があるため、3回まで再試行を許可
-        root._replaceFontRetryCount = (root._replaceFontRetryCount || 0) + 1;
-        if (root._replaceFontRetryCount >= 3) {
-          root._replaceFontApplied = true;
+        // 一時的なエラーの可能性を考慮し、MAX_RETRY_COUNT 回まで連続失敗をカウントする。
+        // 上限到達後は RETRY_RESET_MS 経過後に自動でカウントをリセットして再試行を許可する
+        // （永久ロックを避け、ネットワーク回復後に自然復旧）
+        const retries = (root._replaceFontRetryCount || 0) + 1;
+        root._replaceFontRetryCount = retries;
+        if (retries >= MAX_RETRY_COUNT) {
+          setTimeout(() => {
+            try { root._replaceFontRetryCount = 0; } catch (_) {}
+          }, RETRY_RESET_MS);
         }
         return;
       }
 
       if (isConstructableSupported && root instanceof ShadowRoot && resource instanceof CSSStyleSheet) {
-        // Constructable Stylesheets を使用（メモリ効率が良い）
-        root.adoptedStyleSheets = [...root.adoptedStyleSheets, resource];
-        root._replaceFontApplied = true;
+        // Constructable Stylesheets を使用（メモリ効率が良い）。
+        // includes ガードで重複追加を防ぐ（inject.js と同じセマンティクス）
+        if (!root.adoptedStyleSheets.includes(resource)) {
+          root.adoptedStyleSheets = [...root.adoptedStyleSheets, resource];
+        }
+        root[APPLIED_FLAG] = true;
         return;
       }
 
@@ -173,7 +188,7 @@
       style.textContent = typeof resource === 'string' ? resource : fixedCSSCache.get(CSS_URL);
       style.dataset.replaceFont = 'true';
       root.appendChild(style);
-      root._replaceFontApplied = true;
+      root[APPLIED_FLAG] = true;
     } catch (e) {
       console.debug('[NotoSans置換] Injection failed:', e);
     } finally {
@@ -213,13 +228,35 @@
    * 既存の Open Shadow DOM と MutationObserver による監視
    */
   function setupShadowDOMObserver() {
+    // mutation バーストを microtask で集約 → 1 tick あたり 1 回だけ走査する。
+    // これにより React/Vue の初期マウント時の O(M×N) スキャンを抑制
+    const pendingMutationNodes = new Set();
+    let mutationFlushPending = false;
+
+    function flushMutationQueue() {
+      mutationFlushPending = false;
+      const nodes = pendingMutationNodes;
+      // 新しい Set に切り替えて走査中の追加を分離
+      const snapshot = [...nodes];
+      nodes.clear();
+      for (const node of snapshot) {
+        if (node.isConnected) {
+          findShadowRoots(node);
+        }
+      }
+    }
+
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           if (node.nodeType === Node.ELEMENT_NODE) {
-            findShadowRoots(node);
+            pendingMutationNodes.add(node);
           }
         }
+      }
+      if (!mutationFlushPending && pendingMutationNodes.size > 0) {
+        mutationFlushPending = true;
+        queueMicrotask(flushMutationQueue);
       }
     });
 
@@ -235,7 +272,6 @@
       null,
       false
     );
-    const CHUNK_SIZE = 200;
     let scanAborted = false;
 
     function processChunks() {
@@ -258,28 +294,41 @@
       if (count === CHUNK_SIZE) {
         // まだ要素がある可能性がある
         if (window.requestIdleCallback) {
-          window.requestIdleCallback(processChunks, { timeout: 100 });
+          window.requestIdleCallback(processChunks, { timeout: IDLE_TIMEOUT_MS });
         } else {
           setTimeout(processChunks, 0);
         }
       }
     }
 
-    window.addEventListener('pagehide', () => { scanAborted = true; }, { once: true });
+    // pagehide で観測停止 + チャンクスキャン中断（リスナー残存・MutationObserver 永続発火を防ぐ）
+    window.addEventListener('pagehide', () => {
+      scanAborted = true;
+      try { observer.disconnect(); } catch (_) {}
+    }, { once: true });
     processChunks();
   }
 
-  // フォントの preload タグを生成して挿入
+  // フォントの preload タグを生成して挿入（メインフレーム限定）。
+  // Why: all_frames=true で iframe 数だけ <link> が増える問題を緩和。
+  // chrome-extension:// の WOFF2 は同一プロセスでブラウザに cache されるため、
+  // メインフレーム 1 回の preload だけで子フレームでも即座に利用可能。
   function createPreloadTag() {
+    if (!IS_TOP_FRAME) return;
     const root = document.head || document.documentElement;
     if (!root) return;
+
+    // 既存 preload <link> を一括取得して Set 化（毎ループで querySelector しない）
+    const existingHrefs = new Set();
+    for (const link of document.querySelectorAll('link[rel="preload"][as="font"]')) {
+      if (link.href) existingHrefs.add(link.href);
+    }
 
     const fragment = document.createDocumentFragment();
     for (const config of FONT_CONFIG) {
       // 有効な絶対URLであることを確認
       if (!config.fontUrl || !config.fontUrl.includes('://')) continue;
-      // 重複チェック
-      if (document.querySelector(`link[href="${config.fontUrl}"]`)) continue;
+      if (existingHrefs.has(config.fontUrl)) continue;
 
       const preloadTag = document.createElement('link');
       preloadTag.rel = 'preload';
@@ -297,39 +346,10 @@
     }
   }
 
-  // ページ読み込み完了後、CSS Font Loading API でフォントを強制的にロード
-  function setupFontForceLoad() {
-    const forceLoad = () => {
-      for (const config of FONT_CONFIG) {
-        // 有効な絶対URLであることを確認
-        if (!config.fontUrl || !config.fontUrl.includes('://')) continue;
-
-        try {
-          const fontFace = new FontFace(
-            `ForceLoadNotoSans${config.weight}`,
-            `url("${config.fontUrl}")`,
-            { display: 'swap' }
-          );
-          fontFace.load().then(loadedFace => {
-            // ドキュメントが有効な場合のみ追加
-            if (document.fonts) {
-              document.fonts.add(loadedFace);
-            }
-          }).catch((e) => {
-            console.debug('[NotoSans置換] Font preload failed:', config.weight, e.message);
-          });
-        } catch (e) {
-          console.debug('[NotoSans置換] FontFace creation failed:', config.weight, e.message);
-        }
-      }
-    };
-
-    if (document.readyState === 'complete') {
-      forceLoad();
-    } else {
-      window.addEventListener('load', forceLoad, { once: true });
-    }
-  }
+  // NOTE: setupFontForceLoad (FontFace.load) は削除した。
+  // - <link rel="preload"> と二重取得になりリクエスト数を倍増させていた (C2 #1)
+  // - 旧名 "ForceLoadNotoSans${weight}" は UDEV を Mono で誤認識させる命名でもあった (B3 #I-6)
+  // - chrome-extension:// プロトコルは FS 直読みのため <link rel="preload"> 一本で十分
 
   // 初期化処理
   function initialize() {
@@ -343,7 +363,9 @@
 
       injectCSS(head);
       createPreloadTag();
-      injectShadowDOMHandler();
+      // inject.js は manifest の world:"MAIN" content_script で起動するため
+      // 動的 <script> 注入は不要。CSS テキストのみ MAIN world へ転送する。
+      dispatchCSSToMainWorld();
     };
 
     if (document.head) {
@@ -359,7 +381,6 @@
     }
 
     setupShadowDOMObserver(); // Shadow DOM 監視（Content Script側）
-    setupFontForceLoad();
   }
 
   // 実行開始

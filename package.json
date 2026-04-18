@@ -1,13 +1,17 @@
 {
   "name": "notosans-font-replacer",
-  "version": "2.0.49",
+  "version": "2.0.50",
   "description": "Chrome extension to replace hard-to-read fonts with Noto Sans",
   "scripts": {
     "generate-icons": "node scripts/generate-icons.js",
     "generate-screenshots": "node scripts/generate-screenshots.js",
     "generate-css": "node scripts/generate-css.js",
     "convert-fonts": "node scripts/convert-fonts.js",
+    "sync-version": "node scripts/sync-version.js",
     "build": "npm run generate-icons && npm run generate-css && npm run generate-screenshots"
+  },
+  "devDependencies": {
+    "chrome-webstore-upload-cli": "3.3.2"
   },
   "optionalDependencies": {
     "puppeteer": "^24.38.0",

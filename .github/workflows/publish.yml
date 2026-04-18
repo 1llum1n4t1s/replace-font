@@ -14,34 +14,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: リポジトリをチェックアウト
-        uses: actions/checkout@v5
+        # actions/checkout@v5.0.0 の commit SHA。タグ書き換え攻撃を防ぐため SHA pin する。
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
 
       - name: バージョンを取得
         id: version
         run: |
-          version=$(grep -oP '(?<="version": ")[^"]+' manifest.json)
+          version=$(node -p "require('./package.json').version")
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::不正なバージョン形式: $version"
+            exit 1
+          fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "📦 公開対象バージョン: $version"
 
       - name: ブランチ名とバージョンの整合性を確認
         env:
           BRANCH_VERSION: ${{ github.ref_name }}
-          MANIFEST_VERSION: ${{ steps.version.outputs.version }}
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          expected="release/${MANIFEST_VERSION}"
+          expected="release/${PACKAGE_VERSION}"
           if [ "$BRANCH_VERSION" != "$expected" ]; then
-            echo "::error::ブランチ名 ($BRANCH_VERSION) と manifest.json のバージョン ($MANIFEST_VERSION) が一致しません。期待値: $expected"
+            echo "::error::ブランチ名 ($BRANCH_VERSION) と package.json のバージョン ($PACKAGE_VERSION) が一致しません。期待値: $expected"
             exit 1
           fi
-          echo "✅ ブランチ名と manifest バージョン一致: $expected"
+          echo "✅ ブランチ名と package バージョン一致: $expected"
 
       - name: Node セットアップ
-        uses: actions/setup-node@v5
+        # actions/setup-node@v5.0.0 の commit SHA。
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: 依存インストール
-        run: npm ci || npm install
+      - name: 依存インストール (deterministic)
+        # `|| npm install` フォールバックは lockfile 乖離を握り潰すため撤廃。
+        # publish では chrome-webstore-upload-cli 以外は不要なので optional を除外する。
+        run: npm ci --omit=optional
+
+      - name: バージョン同期
+        run: node scripts/sync-version.js
 
       - name: CSS生成
         run: node scripts/generate-css.js
@@ -58,8 +70,10 @@ jobs:
           CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
           CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
           CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+        # devDependencies に固定した chrome-webstore-upload-cli を使用する
+        # (npx --yes による毎回 fetch は SHA 未固定 → lockfile integrity で検証される本ローカル呼出に変更)
         run: |
-          npx --yes chrome-webstore-upload-cli@3 upload \
+          ./node_modules/.bin/chrome-webstore-upload upload \
             --source replace-font-chrome.zip \
             --extension-id "$CWS_EXTENSION_ID" \
             --client-id "$CWS_CLIENT_ID" \

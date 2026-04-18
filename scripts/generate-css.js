@@ -29,7 +29,6 @@ const GOTHIC_FONT_FAMILIES = [
   'Signifer',
   'Anthropic Serif Web Text',
   'Anthropic Sans Web Text',
-  'Noto Sans JP',
 
   'system-ui',
   'ui-sans-serif',
@@ -50,7 +49,6 @@ const GOTHIC_FONT_FAMILIES = [
   'Raleway',
   'Merriweather Sans',
   'Noto Sans', // Webフォント版をローカル版で上書き
-  'Noto Sans CJK JP',
 
   'MS Mincho', 'ms mincho', 'MS PMincho', 'ＭＳ 明朝', 'ＭＳ Ｐ明朝',
   'YuMincho', 'Yu Mincho', '游明朝', '游明朝体',
@@ -138,18 +136,27 @@ const OUTPUT_CONFIGS = [
   }
 ];
 
+// CSS 文字列リテラル ("..." 内) として安全に埋め込めるようエスケープ
+// Why: フォントファミリ名リストが将来 バックスラッシュ / " / コメント終端記号 を
+//      含む可能性に備える (現状リストでは未含だが供給チェーン経路を塞ぐ)
+function escapeCSSString(str) {
+  return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, ' ');
+}
+
 /**
  * @font-face ルールを生成
  */
 function generateFontFace(fontFamily, config) {
-  const quotedFontFamily = `"${fontFamily}"`;
+  const quotedFontFamily = `"${escapeCSSString(fontFamily)}"`;
 
-  // 既に local() 指定がある場合でも、エイリアス作成時は再度 local() で自分自身やターゲットを指定する
-  const localSources = config.localFonts.map(font => `local("${font}")`);
   // 拡張機能IDが動的なため、プレースホルダーを使用し、Content Script側で置換する
   // フォントは src/fonts/ 配下に配置されている (manifest.json の web_accessible_resources と一致させる)
-  const webFontUrl = `url('__REPLACE_FONT_BASE__src/fonts/${config.webFont}') format('woff2')`;
-  const srcParts = [...localSources, webFontUrl];
+  const safeWebFont = escapeCSSString(config.webFont);
+  const webFontUrl = `url('__REPLACE_FONT_BASE__src/fonts/${safeWebFont}') format('woff2')`;
+  // local() を src の末尾に置く: 同期 fingerprint (FontFace.load による loaded/unloaded 判定) の
+  // 表面積を縮小しつつ、システムにインストール済みの場合は WOFF2 ダウンロード前にローカル使用される
+  const localSources = config.localFonts.map(font => `local("${escapeCSSString(font)}")`);
+  const srcParts = [webFontUrl, ...localSources];
 
   let rule = `@font-face {
   font-family: ${quotedFontFamily};
@@ -158,7 +165,7 @@ function generateFontFace(fontFamily, config) {
   if (config.fontWeight) {
     rule += `\n  font-weight: ${config.fontWeight};`;
   }
-  
+
   // display: swap は必須
   rule += `\n  font-display: swap;\n}`;
 

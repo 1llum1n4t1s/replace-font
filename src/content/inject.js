@@ -16,12 +16,45 @@
   let cachedSheet = null;
   let cachedCSSText = null;
   const pendingClosedRoots = new Set();
+  // 全ファイル横断で共有するフラグ名（preload-fonts.js も同名を参照する）
   const APPLIED_FLAG = '__replaceFontApplied';
   const PAYLOAD_TYPE = 'replace-font-css-payload';
+  // CSS 受信前にメモリリークしないよう pending Set の上限を設ける
+  const PENDING_CAP = 256;
+  // CSS 文字列のサイズ上限（実 CSS は ~100KB なので 1MB は十分余裕）
+  const MAX_CSS_BYTES = 1024 * 1024;
+  // 構造化検証で受け入れるべき先頭 prefix（生成 CSS は @charset で始まる）
+  const CSS_PREFIX = '@charset "UTF-8"';
+
+  /**
+   * 受信した CSS テキストが拡張正規のものかを構造で判定する。
+   * Why: postMessage は MAIN world の任意ページスクリプトが偽装可能。
+   *      nonce による認証は document_start 時点では DOM 読み取りで突破されうる。
+   *      そこで CSS 内容自身を検査し、外部リソース取得や JS 風記述を含むものは拒否する。
+   */
+  function isAcceptableCSS(text) {
+    if (typeof text !== 'string') return false;
+    if (text.length < 1024) return false;            // 短すぎる
+    if (text.length > MAX_CSS_BYTES) return false;   // 大きすぎる
+    if (!text.startsWith(CSS_PREFIX)) return false;  // 生成 CSS の固定 prefix
+    // 外部リソース取得・スクリプト系構文を弾く
+    if (/@import\b/i.test(text)) return false;
+    if (/url\(\s*['"]?(?:https?:|\/\/)/i.test(text)) return false;
+    if (/expression\s*\(/i.test(text)) return false;
+    if (/behavior\s*:/i.test(text)) return false;
+    if (/javascript\s*:/i.test(text)) return false;
+    if (/<\s*script/i.test(text)) return false;
+    return true;
+  }
 
   function applyToShadowRoot(shadowRoot) {
     if (!shadowRoot || shadowRoot[APPLIED_FLAG]) return;
     if (cachedCSSText === null) {
+      // 上限まで保留。超過分は古いものから捨てる (FIFO) ことで永続的なメモリリークを防ぐ
+      if (pendingClosedRoots.size >= PENDING_CAP) {
+        const first = pendingClosedRoots.values().next().value;
+        if (first) pendingClosedRoots.delete(first);
+      }
       pendingClosedRoots.add(shadowRoot);
       return;
     }
@@ -43,14 +76,13 @@
   }
 
   // ISOLATED World から CSS テキストを postMessage で受信
-  // (CustomEvent.detail は Chrome の isolated world 跨ぎで型保証が弱いため postMessage 採用)
   window.addEventListener('message', (event) => {
     if (event.source !== window) return;
     const data = event.data;
     if (!data || data.type !== PAYLOAD_TYPE) return;
     if (cachedCSSText !== null) return; // 初回のみ受理
     const text = typeof data.css === 'string' ? data.css : null;
-    if (!text) return;
+    if (!isAcceptableCSS(text)) return; // 構造検査でスプーフィング防止
     cachedCSSText = text;
     if (canConstructSheet) {
       try {

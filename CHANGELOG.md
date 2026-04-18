@@ -1,5 +1,36 @@
 # Changelog
 
+## [2.0.50] - 2026-04-18
+
+### 🛡️ セキュリティ
+
+- `inject.js` を `world: "MAIN"` 宣言式 content_scripts に移行し、`web_accessible_resources` からの露出を解消
+- `postMessage` で受信する CSS を構造検証 (`@import` / 外部 `url()` / `expression()` / `behavior:` / `javascript:` / `<script` 排除、長さ上限 1MB)
+- `manifest.json` に明示的 CSP と `exclude_matches` (Stripe/PayPal/reCAPTCHA/hCaptcha/Cloudflare/Google/Microsoft/Auth0) を追加
+- `.github/workflows/publish.yml` を SHA pin 化、`|| npm install` フォールバック撤廃、`chrome-webstore-upload-cli` を `devDependencies` に固定
+
+### ⚡ パフォーマンス
+
+- MutationObserver を `queueMicrotask` でバッチ化して O(M×N) → O(M+N) に改善
+- `pagehide` で MutationObserver を disconnect してリスナー永続発火を防止
+- `createPreloadTag()` をトップフレーム限定にして iframe 重複注入を解消
+- `FontFace.load()` を削除して二重フォント取得を撤廃
+- fetch 失敗時の負キャッシュ + リトライ永久ロック撤廃 (30s 後に自動リセット)
+
+### 🏗️ 内部改善
+
+- `scripts/sync-version.js` を新設してバージョン同期処理を一本化 (zip.sh / zip.ps1 / publish.yml の 3 重実装解消)
+- `APPLIED_FLAG` を inject.js / preload-fonts.js で統一、`adoptedStyleSheets.includes()` ガード追加
+- `pendingClosedRoots` Set を 256 件 FIFO 上限化でメモリリーク緩和
+- `GOTHIC_FONT_FAMILIES` から `Noto Sans JP` / `Noto Sans CJK JP` の自己参照削除
+- フォント名 CSS エスケープ + `local()` を `webFontUrl` の後ろに移動 (fingerprint 緩和)
+- マジック値を `MAX_RETRY_COUNT` / `CHUNK_SIZE` / `IDLE_TIMEOUT_MS` 等で定数化
+
+### 📚 ドキュメント
+
+- `docs/privacy.html` の最終更新日を `privacy-policy.md` と同期
+- `CLAUDE.md` を新アーキテクチャに追従
+
 ## [2.0.49] - 2026-04-18
 
 - fix: フォントパス追従・Closed Shadow DOM対応・エディタ除外CSS (#16)
