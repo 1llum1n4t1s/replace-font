@@ -23,6 +23,7 @@ const FILES_TO_UPDATE = [
   'manifest.json',
   'README.md',
   'docs/index.html',
+  'docs/privacy.html',
   'src/popup/popup.html',
   'webstore/screenshots/01-popup-ui.html',
   'webstore/screenshots/02-before-after.html',

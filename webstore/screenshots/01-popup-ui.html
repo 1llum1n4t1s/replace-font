@@ -48,15 +48,15 @@
       gap: 6px;
     }
 
-    .dot {
+    .browser-dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
     }
 
-    .dot.red { background: #ff5f57; }
-    .dot.yellow { background: #ffbd2e; }
-    .dot.green { background: #28ca42; }
+    .browser-dot.red { background: #ff5f57; }
+    .browser-dot.yellow { background: #ffbd2e; }
+    .browser-dot.green { background: #28ca42; }
 
     .browser-url {
       flex: 1;
@@ -78,14 +78,12 @@
       padding: 40px;
       display: flex;
       align-items: center;
-      justify-content: center;
       position: relative;
     }
 
     .page-content {
       flex: 1;
       max-width: 420px;
-      margin-right: 380px;
     }
 
     .page-title {
@@ -102,181 +100,140 @@
       margin-bottom: 12px;
     }
 
-    /* Extension Popup */
+    /* ===== Extension Popup (matches src/popup/style.css light theme) ===== */
     .extension-popup {
       position: absolute;
       top: 60px;
       right: 60px;
-      width: 360px;
-      height: 450px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      width: 340px;
+      background: #f8f9fa;
       border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-      padding: 24px;
-      color: white;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      padding: 20px;
+      color: #1a1a1a;
       animation: slideIn 0.3s ease-out;
       overflow: hidden;
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
+    .popup-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .icon {
-      font-size: 48px;
-      margin-bottom: 12px;
+    .popup-icon {
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
     }
 
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 0;
-      letter-spacing: 0.3px;
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(10px);
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+    .popup-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      color: #1a1a1a;
     }
 
     .status-card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border: 1px solid #e2e5e9;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .status-indicator {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 12px;
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
+    .status-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #94a3b8;
-    }
-
-    .dot.active {
-      background: #4ade80;
-      box-shadow: 0 0 12px #4ade80;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.35);
       animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
+      50% { opacity: 0.5; }
     }
 
     .status-text {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      color: #1a1a1a;
     }
 
     .description {
-      font-size: 13px;
-      line-height: 1.6;
-      opacity: 0.95;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .feature-item {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 16px 8px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .feature-icon {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
-    .feature-text {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #6b7280;
+      margin-top: 8px;
     }
 
     .info-section {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid #e2e5e9;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     .section-title {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 12px;
-      opacity: 0.95;
-      letter-spacing: 0.3px;
     }
 
     .font-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .font-tag {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 6px 12px;
+      background: #f1f3f5;
+      color: #374151;
+      padding: 5px 10px;
       border-radius: 8px;
       font-size: 11px;
       font-weight: 500;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid #d1d5db;
       letter-spacing: 0.2px;
     }
 
-    .footer {
+    .popup-footer {
       text-align: center;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 8px;
     }
 
     .version {
       font-size: 11px;
+      color: #6b7280;
       opacity: 0.7;
-      letter-spacing: 0.2px;
     }
 
     .watermark {
@@ -294,9 +251,9 @@
   <div class="browser-mockup">
     <div class="browser-header">
       <div class="browser-dots">
-        <div class="dot red"></div>
-        <div class="dot yellow"></div>
-        <div class="dot green"></div>
+        <div class="browser-dot red"></div>
+        <div class="browser-dot yellow"></div>
+        <div class="browser-dot green"></div>
       </div>
       <div class="browser-url">
         https://example.com
@@ -305,37 +262,24 @@
     <div class="browser-content">
       <div class="page-content">
         <h1 class="page-title">美しい日本語フォント</h1>
-        <p class="page-text">このページの日本語フォントは自動的にNoto Sansに置換されています。読みやすく、美しいタイポグラフィを実現します。</p>
-        <p class="page-text">読みづらいフォントを自動的にNoto Sans JPに置換します。コードブロックにはUDEV Gothic JPDOCを適用します。</p>
+        <p class="page-text">このページの日本語フォントは自動的に Noto Sans JP に置換されています。読みやすく、美しいタイポグラフィを実現します。</p>
+        <p class="page-text">読みづらいフォントを自動的に Noto Sans JP / UDEV Gothic JPDOC に置換します。</p>
       </div>
 
       <div class="extension-popup">
-        <div class="header">
-          <div class="icon">📝</div>
-          <h1 class="title">NotoSansへ置換するやつ(改修型)</h1>
+        <div class="popup-header">
+          <div class="popup-icon">Aa</div>
+          <h1 class="popup-title">NotoSansへ置換するやつ</h1>
         </div>
 
         <div class="status-card">
-          <div class="status-indicator">
-            <span class="dot active"></span>
-            <span class="status-text">動作中</span>
+          <div class="status-row">
+            <div class="status-indicator">
+              <span class="status-dot"></span>
+              <span class="status-text">動作中</span>
+            </div>
           </div>
-          <p class="description">読みづらい日本語フォントを自動的にNoto Sansに置換します</p>
-        </div>
-
-        <div class="features">
-          <div class="feature-item">
-            <span class="feature-icon">⚡</span>
-            <span class="feature-text">高速処理</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">🔄</span>
-            <span class="feature-text">自動検出</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">✨</span>
-            <span class="feature-text">最適化済</span>
-          </div>
+          <p class="description">読みづらいフォントを Noto Sans JP / UDEV Gothic JPDOC に自動置換します</p>
         </div>
 
         <div class="info-section">
@@ -347,11 +291,13 @@
             <span class="font-tag">Segoe UI</span>
             <span class="font-tag">Arial</span>
             <span class="font-tag">Roboto</span>
+            <span class="font-tag">Helvetica</span>
+            <span class="font-tag">その他</span>
           </div>
         </div>
 
-        <div class="footer">
-          <p class="version">v2.0.50</p>
+        <div class="popup-footer">
+          <p class="version">v2.0.52</p>
         </div>
       </div>
     </div>

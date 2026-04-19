@@ -1,9 +1,31 @@
 const fs = require('fs');
 const path = require('path');
+// フォント定義は src/content/font-config.js が単一の真実の源泉。
+// 両経路（ビルド / ランタイム）の食い違いを物理的に防ぐ。
+const { BODY_FONT, MONO_FONT } = require('../src/content/font-config');
+
+// ---------------------------------------------
+// 多言語対応ポリシー
+// ---------------------------------------------
+// unicode-range は指定しない。置換フォントが持つ全グリフ範囲を使用し、
+// フォントに含まれない文字は CSS font fallback によって次の candidate
+// （元サイトの指定 / システムフォント）へ自然に落ちる。
+
+// ---------------------------------------------
+// フォントウェイト境界定数
+// 100-599 → Regular woff2、600-900 → Bold woff2
+// ---------------------------------------------
+const WEIGHT_REGULAR_RANGE = '100 599';
+const WEIGHT_BOLD_RANGE = '600 900';
 
 // ---------------------------------------------
 // 置換対象フォント
 // ---------------------------------------------
+// 注: 'serif' / 'sans-serif' / 'monospace' / 'system-ui' / 'ui-sans-serif' /
+// 'ui-serif' / 'ui-monospace' / '-apple-system' / 'BlinkMacSystemFont' 等は
+// CSS 汎用キーワード (generic family) であり、@font-face の font-family 記述子に
+// 指定すると仕様上未定義動作。ブラウザに黙殺され得るため対象に含めない。
+// これらへの対応は BODY_CSS_VARS / MONO_CSS_VARS の上書きで行う。
 const GOTHIC_FONT_FAMILIES = [
   // --- 既存のゴシック系 ---
   'MS PGothic', 'ms pgothic', 'MS Pゴシック', 'ms pゴシック', 'ＭＳ Ｐゴシック',
@@ -23,24 +45,18 @@ const GOTHIC_FONT_FAMILIES = [
   'FK Grotesk', 'FK Grotesk Neue', 'FK Grotesk Neue Thin', 'FK Display',
   'FKGrotesk', 'FKGroteskNeue', 'FKGroteskNeueThin', 'FKDisplay',
   'IBM Plex Sans', 'IBMPlexSans',
-  'ABC Social',   'Graphik', 'Euclid Circular',
+  'ABC Social', 'Graphik', 'Euclid Circular',
   'Manrope', 'Poppins', 'Outfit', 'Plus Jakarta Sans',
   'Söhne', 'Söhne-Buch', 'Söhne-Kraft',
   'Signifer',
   'Anthropic Serif Web Text',
   'Anthropic Sans Web Text',
-
-  'system-ui',
-  'ui-sans-serif',
-  'ui-serif',
-  '-apple-system',
-  'BlinkMacSystemFont',
+  'pplxSans', 'pplxSerif',
   'San Francisco',
   'Segoe UI Variable',
   'Segoe UI Variable Display',
   'Segoe UI Variable Text',
   'Segoe UI Historic',
-
   'Open Sans',
   'Lato',
   'Montserrat',
@@ -48,14 +64,12 @@ const GOTHIC_FONT_FAMILIES = [
   'Oswald',
   'Raleway',
   'Merriweather Sans',
-  'Noto Sans', // Webフォント版をローカル版で上書き
-
+  // 注: 'Noto Sans CJK JP' は BODY_FONT.localFontsRegular/Bold に含まれるため
+  // 置換対象に入れると自己参照になる。validateConsistency() で検出済み。
   'MS Mincho', 'ms mincho', 'MS PMincho', 'ＭＳ 明朝', 'ＭＳ Ｐ明朝',
   'YuMincho', 'Yu Mincho', '游明朝', '游明朝体',
   'HiraMinProN-W3', 'Hiragino Mincho ProN', 'ヒラギノ明朝 ProN',
-  'Times New Roman', 'Times', 'Georgia',
-  'serif', // 一部のブラウザで有効
-  'sans-serif' // 汎用サンセリフ
+  'Times New Roman', 'Times', 'Georgia'
 ];
 
 // 置換対象フォントの定義（等幅系）
@@ -73,54 +87,27 @@ const MONO_FONT_FAMILIES = [
   'Inconsolata',
   'SFMono-Regular', 'SF Mono',
   'Söhne Mono',
-  'UDEV Gothic JPDOC',
-  'ui-monospace',
-  'monospace' // 汎用等幅
+  'pplxSansMono'
 ];
 
-// ヒラギノシリーズのバリエーション生成（既存ロジック維持）
-const HIRAGINO_WEIGHTS = Array.from({ length: 9 }, (_, i) => i + 1);
-const HIRAGINO_VARIANTS = [];
-for (const weight of HIRAGINO_WEIGHTS) {
-  HIRAGINO_VARIANTS.push(`Hiragino Kaku Gothic ProN W${weight}`);
-  HIRAGINO_VARIANTS.push(`Hiragino Kaku Gothic Pro W${weight}`);
-  HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ ProN W${weight}`);
-  HIRAGINO_VARIANTS.push(`ヒラギノ角ゴ Pro W${weight}`);
-}
-HIRAGINO_VARIANTS.unshift('Hiragino Kaku Gothic ProN', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ ProN', 'ヒラギノ角ゴ Pro');
+// ヒラギノシリーズのバリエーション生成
+const HIRAGINO_BASES = ['Hiragino Kaku Gothic ProN', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ ProN', 'ヒラギノ角ゴ Pro'];
+const HIRAGINO_VARIANTS = [
+  ...HIRAGINO_BASES,
+  ...Array.from({ length: 9 }, (_, i) => i + 1).flatMap(w => HIRAGINO_BASES.map(b => `${b} W${w}`))
+];
 
-// 最終的なフォントファミリー配列
-const GOTHIC_FAMILIES = [...new Set([...GOTHIC_FONT_FAMILIES, ...HIRAGINO_VARIANTS])]; // 重複排除を追加
+const GOTHIC_FAMILIES = [...new Set([...GOTHIC_FONT_FAMILIES, ...HIRAGINO_VARIANTS])];
 
-// フォント設定
+// フォント設定（プレースホルダーを使用）
 const GOTHIC_CONFIGS = [
-  {
-    weight: 'Regular',
-    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
-    webFont: 'NotoSansJP-Regular.woff2',
-    fontWeight: null
-  },
-  {
-    weight: 'Bold',
-    localFonts: ['Noto Sans JP', 'Noto Sans CJK Variable', 'Noto Sans CJK JP'],
-    webFont: 'NotoSansJP-Bold.woff2',
-    fontWeight: 'bold'
-  }
+  { weight: 'Regular', localFonts: '__BODY_LOCAL_REGULAR__', webFont: '__BODY_WOFF2_REGULAR__', fontWeight: WEIGHT_REGULAR_RANGE },
+  { weight: 'Bold',    localFonts: '__BODY_LOCAL_BOLD__',    webFont: '__BODY_WOFF2_BOLD__',    fontWeight: WEIGHT_BOLD_RANGE }
 ];
 
 const MONO_CONFIGS = [
-  {
-    weight: 'Regular',
-    localFonts: ['UDEV Gothic JPDOC'],
-    webFont: 'UDEVGothicJPDOC-Regular.woff2',
-    fontWeight: null
-  },
-  {
-    weight: 'Bold',
-    localFonts: ['UDEV Gothic JPDOC Bold'],
-    webFont: 'UDEVGothicJPDOC-Bold.woff2',
-    fontWeight: 'bold'
-  }
+  { weight: 'Regular', localFonts: '__MONO_LOCAL_REGULAR__', webFont: '__MONO_WOFF2_REGULAR__', fontWeight: WEIGHT_REGULAR_RANGE },
+  { weight: 'Bold',    localFonts: '__MONO_LOCAL_BOLD__',    webFont: '__MONO_WOFF2_BOLD__',    fontWeight: WEIGHT_BOLD_RANGE }
 ];
 
 const OUTPUT_CONFIGS = [
@@ -136,27 +123,134 @@ const OUTPUT_CONFIGS = [
   }
 ];
 
-// CSS 文字列リテラル ("..." 内) として安全に埋め込めるようエスケープ
-// Why: フォントファミリ名リストが将来 バックスラッシュ / " / コメント終端記号 を
-//      含む可能性に備える (現状リストでは未含だが供給チェーン経路を塞ぐ)
-function escapeCSSString(str) {
-  return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, ' ');
+// ---------------------------------------------
+// CSS変数・セレクタの単一の真実の源泉
+// ---------------------------------------------
+
+const BODY_CSS_VARS = [
+  '--font-sans', '--font-inter', '--font-geist-sans',
+  '--font-fk-grotesk', '--font-fkgrotesk',
+  '--font-fk-grotesk-neue', '--font-fkgrotesk-neue',
+  '--font-body', '--font-sans-brand', '--font-family-sans', '--tw-font-sans',
+  '--font-anthropic-serif', '--font-anthropic-sans',
+  '--font-ui', '--font-ui-serif',
+  '--font-user-message', '--font-claude-response',
+  '--font-sans-serif', '--font-serif',
+];
+
+const MONO_CSS_VARS = [
+  '--font-mono', '--font-berkeley-mono', '--font-geist-mono', '--font-code',
+  '--font-family-mono', '--font-family-code', '--tw-font-mono',
+  '--mono-font', '--code-font', '--monospace-font', '--pplx-font-mono',
+];
+
+const EDITABLE_SELECTORS = [
+  '[contenteditable="true"]',
+  '[contenteditable=""]',
+  '[contenteditable="plaintext-only"]',
+  'input',
+  'textarea',
+  '[role="textbox"]',
+  '.ProseMirror',
+  '.ql-editor',
+  '.mce-content-body',
+  '.cke_editable',
+  '.CodeMirror',
+  '.cm-editor',
+  '.monaco-editor',
+  '.ace_editor',
+];
+
+const VAR_OVERRIDE_CLASS_SELECTORS = [
+  '[class*="prose"]', '[class*="markdown"]',
+];
+
+const VAR_OVERRIDE_SELECTORS = [
+  ':root', ':host', 'html', 'body',
+  ...VAR_OVERRIDE_CLASS_SELECTORS,
+];
+
+const MONO_FORCE_TARGETS = [
+  'pre', 'code', 'kbd', 'samp', '.mono',
+  '[class*="font-mono"]',
+  '[class*="codeblock"]',
+  '[class*="shiki"]',
+  '[class*="hljs"]',
+  '[class*="prism"]',
+  '[class*="language-"]',
+];
+
+function buildEditableExclusionList() {
+  return [
+    ...EDITABLE_SELECTORS,
+    ...EDITABLE_SELECTORS.map(s => `${s} *`),
+  ].join(', ');
+}
+
+function buildVariableOverrides() {
+  const selector = VAR_OVERRIDE_SELECTORS.join(', ');
+  const bodyVarsSet = BODY_CSS_VARS
+    .map(v => `  ${v}: "__BODY_FONT_NAME__", __BODY_FONT_FALLBACK__ !important;`)
+    .join('\n');
+  const monoVarsSet = MONO_CSS_VARS
+    .map(v => `  ${v}: "__MONO_FONT_NAME__", __MONO_FONT_FALLBACK__ !important;`)
+    .join('\n');
+  const monoForceCompound = MONO_FORCE_TARGETS.join(', ');
+  const editableExclusion = buildEditableExclusionList();
+
+  return `
+${selector} {
+${bodyVarsSet}
+
+${monoVarsSet}
+}
+
+:root :is(${monoForceCompound}):not(:where(${editableExclusion})),
+:host :is(${monoForceCompound}):not(:where(${editableExclusion})),
+[style*="monospace"]:not(:where(${editableExclusion})),
+[style*="ui-monospace"]:not(:where(${editableExclusion})) {
+  font-family: "__MONO_FONT_NAME__", "Berkeley Mono", "IBM Plex Mono", "Geist Mono", "Cascadia Code", "Cascadia Mono", "Consolas", "Monaco", "Courier New", __MONO_FONT_FALLBACK__ !important;
+}
+`;
+}
+
+function buildExclusionZone() {
+  const editableList = EDITABLE_SELECTORS.map(s => `  ${s}`).join(',\n');
+  const bodyVarsReset = BODY_CSS_VARS.map(v => `  ${v}: initial !important;`).join('\n');
+  const monoVarsReset = MONO_CSS_VARS.map(v => `  ${v}: initial !important;`).join('\n');
+  const overrideClassTargets = VAR_OVERRIDE_CLASS_SELECTORS.join(', ');
+
+  return `
+/* 編集可能領域の除外ゾーン (RTE / input / code editor) */
+:is(:root, :host) :is(
+${editableList}
+) {
+${bodyVarsReset}
+
+${monoVarsReset}
+}
+
+:is(:root, :host) :is(
+${editableList}
+) :is(${overrideClassTargets}) {
+${bodyVarsReset}
+
+${monoVarsReset}
+}
+`;
 }
 
 /**
- * @font-face ルールを生成
+ * @font-face ルールを生成（プレースホルダー版）
+ * family 名の " は CSS 構造破壊防止のため除去する。
  */
 function generateFontFace(fontFamily, config) {
-  const quotedFontFamily = `"${escapeCSSString(fontFamily)}"`;
+  const sanitized = String(fontFamily).replace(/"/g, '');
+  const quotedFontFamily = `"${sanitized}"`;
 
-  // 拡張機能IDが動的なため、プレースホルダーを使用し、Content Script側で置換する
-  // フォントは src/fonts/ 配下に配置されている (manifest.json の web_accessible_resources と一致させる)
-  const safeWebFont = escapeCSSString(config.webFont);
-  const webFontUrl = `url('__REPLACE_FONT_BASE__src/fonts/${safeWebFont}') format('woff2')`;
-  // local() を src の末尾に置く: 同期 fingerprint (FontFace.load による loaded/unloaded 判定) の
-  // 表面積を縮小しつつ、システムにインストール済みの場合は WOFF2 ダウンロード前にローカル使用される
-  const localSources = config.localFonts.map(font => `local("${escapeCSSString(font)}")`);
-  const srcParts = [webFontUrl, ...localSources];
+  const localSources = config.localFonts;
+  const webFontUrl = `url('__REPLACE_FONT_BASE__src/fonts/${config.webFont}') format('woff2')`;
+  const srcParts = [localSources, webFontUrl];
 
   let rule = `@font-face {
   font-family: ${quotedFontFamily};
@@ -166,203 +260,162 @@ function generateFontFace(fontFamily, config) {
     rule += `\n  font-weight: ${config.fontWeight};`;
   }
 
-  // display: swap は必須
-  rule += `\n  font-display: swap;\n}`;
+  rule += `\n  font-display: swap;`;
+  rule += `\n}`;
 
   return rule;
 }
 
-/**
- * CSS ファイルを生成
- * @param {object} outputConfig - 出力設定（ファイル名、タイトル、設定リスト）
- * @returns {string} 生成された CSS 内容
- */
 function generateCSS(outputConfig) {
-  /** @type {string} CSSファイルのヘッダー */
-  const header = `@charset "UTF-8";`;
-
-  /** @type {string} 共通のCSS変数によるフォント指定を上書きするスタイル定義 */
-  const variableOverrides = `
-:root, :host, html, body, .prose, [class*="prose"], [class*="markdown"], [class*="content"], [class*="answer"], [class*="light"], [class*="dark"] {
-  /* Sans-serif 系 CSS 変数: Noto Sans JP を優先 */
-  --font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-inter: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-geist-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-fk-grotesk: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-fkgrotesk: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-fk-grotesk-neue: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-fkgrotesk-neue: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-body: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-sans-brand: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-family-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --tw-font-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-anthropic-serif: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-  --font-anthropic-sans: "Noto Sans JP", "Noto Sans CJK Variable", "Noto Sans CJK JP", sans-serif !important;
-
-  /* Monospace 系 CSS 変数: UDEV Gothic JPDOC を優先 */
-  --font-mono: "UDEV Gothic JPDOC", monospace !important;
-  --font-berkeley-mono: "UDEV Gothic JPDOC", monospace !important;
-  --font-geist-mono: "UDEV Gothic JPDOC", monospace !important;
-  --font-code: "UDEV Gothic JPDOC", monospace !important;
-  --font-family-mono: "UDEV Gothic JPDOC", monospace !important;
-  --tw-font-mono: "UDEV Gothic JPDOC", monospace !important;
-  --mono-font: "UDEV Gothic JPDOC", monospace !important;
-  --code-font: "UDEV Gothic JPDOC", monospace !important;
-  --font-family-code: "UDEV Gothic JPDOC", monospace !important;
-  --monospace-font: "UDEV Gothic JPDOC", monospace !important;
-  --pplx-font-mono: "UDEV Gothic JPDOC", monospace !important;
-}
-
-/* 汎用的な等幅フォント要素に対する強制指定（詳細度を高めて上書きを確実に） */
-:root :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
-:host :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]),
-:root :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) :not(i, .icon, [class*="icon"], [class*="Icon"]),
-:host :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) :not(i, .icon, [class*="icon"], [class*="Icon"]),
-[style*="monospace"], [style*="ui-monospace"] {
-  font-family: "UDEV Gothic JPDOC", "Berkeley Mono", "IBM Plex Mono", "Geist Mono", "Cascadia Code", "Cascadia Mono", "Consolas", "Monaco", "Courier New", monospace !important;
-}
-
+  const header = `@charset "UTF-8";
 /* ============================================================================
-   編集可能領域（RTE / 入力フィールド / コードエディタ）の除外ゾーン
-   ----------------------------------------------------------------------------
-   Excel Online / Googleスプレッドシート / Word Online / PowerPoint Online /
-   ブログエディタ等、ブラウザ上でフォントを選択して編集するアプリの置換を
-   無効化する。DOM構造で判別するためドメインリストのメンテナンス不要。
-   - CSS変数の上書き（Layer 1）は要素スコープで無効化可能。ただしCSS変数は
-     inherited のため 'revert' だと親から継承されてしまう（親の :root で
-     !important 済みのため）。'initial' で guaranteed-invalid value にすると、
-     子孫の var() 参照時に fallback 値もしくは IACVT → unset に落ちる
-   - @font-face 再定義（Layer 2）はドキュメントグローバルのため要素単位での
-     無効化は原理的に不可。モダンRTEは主にCSS変数経由で font-family を指定する
-     ため、実用上これで大半のケースをカバーできる
-   - 上の variableOverrides にCSS変数を追加したら、ここのリストも同期更新すること
-   ============================================================================ */
-:is(
-  [contenteditable="true"],
-  [contenteditable=""],
-  [contenteditable="plaintext-only"],
-  input,
-  textarea,
-  [role="textbox"],
-  .ProseMirror,
-  .ql-editor,
-  .mce-content-body,
-  .cke_editable,
-  .fr-element,
-  .tox-edit-area,
-  .note-editable,
-  .trix-content,
-  .public-DraftEditor-content,
-  .CodeMirror,
-  .cm-editor,
-  .monaco-editor,
-  .ace_editor
-) {
-  /* Sans-serif 系 CSS 変数を guaranteed-invalid に（var() fallback または IACVT へ） */
-  --font-sans: initial !important;
-  --font-inter: initial !important;
-  --font-geist-sans: initial !important;
-  --font-fk-grotesk: initial !important;
-  --font-fkgrotesk: initial !important;
-  --font-fk-grotesk-neue: initial !important;
-  --font-fkgrotesk-neue: initial !important;
-  --font-body: initial !important;
-  --font-sans-brand: initial !important;
-  --font-family-sans: initial !important;
-  --tw-font-sans: initial !important;
-  --font-anthropic-serif: initial !important;
-  --font-anthropic-sans: initial !important;
+ * DO NOT EDIT — このファイルは scripts/generate-css.js により自動生成されます。
+ * 変更は scripts/generate-css.js を編集し、npm run generate-css を実行してください。
+ * ============================================================================ */`;
 
-  /* Monospace 系 CSS 変数 */
-  --font-mono: initial !important;
-  --font-berkeley-mono: initial !important;
-  --font-geist-mono: initial !important;
-  --font-code: initial !important;
-  --font-family-mono: initial !important;
-  --tw-font-mono: initial !important;
-  --mono-font: initial !important;
-  --code-font: initial !important;
-  --font-family-code: initial !important;
-  --monospace-font: initial !important;
-  --pplx-font-mono: initial !important;
+  const variableOverrides = buildVariableOverrides();
+  const exclusionZone = buildExclusionZone();
 
-  /* font-family は標準プロパティなので revert で UA value に戻せる
-     （input/textarea では UA のフォームコントロール default、その他は inherit） */
-  font-family: revert !important;
+  const replacementFontFaces = `
+/* 置換フォント自体の @font-face 定義 */
+@font-face {
+  font-family: "__BODY_FONT_NAME__";
+  src:  __BODY_LOCAL_REGULAR__,
+        url('__REPLACE_FONT_BASE__src/fonts/__BODY_WOFF2_REGULAR__') format('woff2');
+  font-weight: ${WEIGHT_REGULAR_RANGE};
+  font-display: swap;
 }
-
-/* 除外ゾーン内の pre/code/kbd/samp は上の :root/:host :is(pre, code, ...) の
-   強制 mono 指定に負けないよう、:is(:root, :host) 前置で同等以上のspecificityで
-   revert する（Shadow DOM 内のコードエディタにも対応） */
-:is(:root, :host) :is(
-  [contenteditable="true"],
-  [contenteditable=""],
-  [contenteditable="plaintext-only"],
-  input,
-  textarea,
-  [role="textbox"],
-  .ProseMirror,
-  .ql-editor,
-  .mce-content-body,
-  .cke_editable,
-  .fr-element,
-  .tox-edit-area,
-  .note-editable,
-  .trix-content,
-  .public-DraftEditor-content,
-  .CodeMirror,
-  .cm-editor,
-  .monaco-editor,
-  .ace_editor
-) :is(pre, code, kbd, samp, .mono, [class*="font-mono"], [class*="codeblock"], [class*="shiki"], [class*="hljs"], [class*="prism"], [class*="language-"]) {
-  font-family: revert !important;
+@font-face {
+  font-family: "__BODY_FONT_NAME__";
+  src:  __BODY_LOCAL_BOLD__,
+        url('__REPLACE_FONT_BASE__src/fonts/__BODY_WOFF2_BOLD__') format('woff2');
+  font-weight: ${WEIGHT_BOLD_RANGE};
+  font-display: swap;
+}
+@font-face {
+  font-family: "__MONO_FONT_NAME__";
+  src:  __MONO_LOCAL_REGULAR__,
+        url('__REPLACE_FONT_BASE__src/fonts/__MONO_WOFF2_REGULAR__') format('woff2');
+  font-weight: ${WEIGHT_REGULAR_RANGE};
+  font-display: swap;
+}
+@font-face {
+  font-family: "__MONO_FONT_NAME__";
+  src:  __MONO_LOCAL_BOLD__,
+        url('__REPLACE_FONT_BASE__src/fonts/__MONO_WOFF2_BOLD__') format('woff2');
+  font-weight: ${WEIGHT_BOLD_RANGE};
+  font-display: swap;
 }
 `;
 
-  /** @type {string[]} 各セクション（Gothic/Mono）の @font-face ルール */
-  const sections = outputConfig.configs.map(item => {
-    return item.families.map(family =>
-      generateFontFace(family, item.config)
-    ).join('\n');
-  });
+  const sections = outputConfig.configs.map(item =>
+    item.families.map(family => generateFontFace(family, item.config)).join('\n')
+  );
 
-  return `${header}\n${variableOverrides}\n${sections.join('\n')}\n`;
+  return `${header}\n${variableOverrides}\n${exclusionZone}\n${replacementFontFaces}\n${sections.join('\n')}\n`;
 }
 
-/**
- * メイン処理
- */
-async function main() {
+// ---------------------------------------------
+// 整合検証: 置換先フォント name および local() 代替名が GOTHIC/MONO FAMILIES に
+// 混入していないか確認（混在すると自己参照ループになる）。
+// ---------------------------------------------
+function validateConsistency() {
+  const gothicSet = new Set(GOTHIC_FAMILIES);
+  const monoSet = new Set(MONO_FONT_FAMILIES);
+  const conflicts = [];
+
+  const bodyAliases = new Set([
+    BODY_FONT.name,
+    ...(BODY_FONT.localFontsRegular || []),
+    ...(BODY_FONT.localFontsBold || []),
+  ]);
+  const monoAliases = new Set([
+    MONO_FONT.name,
+    ...(MONO_FONT.localFontsRegular || []),
+    ...(MONO_FONT.localFontsBold || []),
+  ]);
+
+  for (const alias of bodyAliases) {
+    if (gothicSet.has(alias)) {
+      conflicts.push(`body alias '${alias}' が GOTHIC_FAMILIES にも含まれています (自己参照)`);
+    }
+  }
+  for (const alias of monoAliases) {
+    if (monoSet.has(alias)) {
+      conflicts.push(`mono alias '${alias}' が MONO_FONT_FAMILIES にも含まれています (自己参照)`);
+    }
+  }
+
+  if (conflicts.length) {
+    console.error('❌ 整合性エラー:');
+    conflicts.forEach(c => console.error(`   - ${c}`));
+    process.exit(1);
+  }
+}
+
+// ---------------------------------------------
+// プレースホルダー解決
+// 置換先フォント情報は固定なのでビルド時にすべて resolved される。
+// __REPLACE_FONT_BASE__ のみ実行時 (preload-fonts.js) で置換する。
+// ---------------------------------------------
+function buildPlaceholderMap() {
+  const safeLocal = (list) => list.map(f => `local("${String(f).replace(/"/g, '')}")`).join(', ');
+  return {
+    '__BODY_FONT_NAME__': BODY_FONT.name,
+    '__BODY_FONT_FALLBACK__': BODY_FONT.fallback,
+    '__BODY_LOCAL_REGULAR__': safeLocal(BODY_FONT.localFontsRegular),
+    '__BODY_LOCAL_BOLD__': safeLocal(BODY_FONT.localFontsBold),
+    '__BODY_WOFF2_REGULAR__': BODY_FONT.woff2Regular,
+    '__BODY_WOFF2_BOLD__': BODY_FONT.woff2Bold,
+    '__MONO_FONT_NAME__': MONO_FONT.name,
+    '__MONO_FONT_FALLBACK__': MONO_FONT.fallback,
+    '__MONO_LOCAL_REGULAR__': safeLocal(MONO_FONT.localFontsRegular),
+    '__MONO_LOCAL_BOLD__': safeLocal(MONO_FONT.localFontsBold),
+    '__MONO_WOFF2_REGULAR__': MONO_FONT.woff2Regular,
+    '__MONO_WOFF2_BOLD__': MONO_FONT.woff2Bold
+  };
+}
+
+let _placeholderRegexCache = null;
+function getPlaceholderRegex(keys) {
+  if (_placeholderRegexCache) return _placeholderRegexCache;
+  const escaped = keys.map(k => k.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'));
+  _placeholderRegexCache = new RegExp(escaped.join('|'), 'g');
+  return _placeholderRegexCache;
+}
+
+function resolveTemplate(templateCSS, placeholderMap) {
+  const regex = getPlaceholderRegex(Object.keys(placeholderMap));
+  return templateCSS.replace(regex, match => placeholderMap[match]);
+}
+
+function main() {
   console.log('🎨 CSS ファイル生成を開始します...\n');
 
-  const cssDir = path.join(__dirname, '../src/css');
+  validateConsistency();
 
+  const cssDir = path.join(__dirname, '../src/css');
   fs.mkdirSync(cssDir, { recursive: true });
 
-  // 各設定ごとに CSS を生成
+  const placeholderMap = buildPlaceholderMap();
+
   for (const outputConfig of OUTPUT_CONFIGS) {
     const outputPath = path.join(cssDir, outputConfig.fileName);
-    const cssContent = generateCSS(outputConfig);
-
     try {
-      fs.writeFileSync(outputPath, cssContent, 'utf8');
-      console.log(`✅ ${outputConfig.title} CSS を生成しました: ${outputConfig.fileName}`);
+      const templateCSS = generateCSS(outputConfig);
+      // フォント情報は固定なのでビルド時に全置換。__REPLACE_FONT_BASE__ だけ実行時へ残す。
+      const resolvedCSS = resolveTemplate(templateCSS, placeholderMap);
+      fs.writeFileSync(outputPath, resolvedCSS, 'utf8');
       const totalFonts = outputConfig.configs.reduce((acc, curr) => acc + curr.families.length, 0);
-      console.log(`   - フォント定義数: ${totalFonts}`);
+      const sizeKB = (Buffer.byteLength(resolvedCSS, 'utf8') / 1024).toFixed(1);
+      console.log(`✅ ${outputConfig.title} CSS を生成しました: ${outputConfig.fileName} (${totalFonts} 定義 / ${sizeKB} KB)`);
     } catch (error) {
-      console.error(`❌ ${outputConfig.title} CSS の生成に失敗しました:`, error.message);
+      console.error(`❌ CSS の生成に失敗しました:`, error.message);
       process.exit(1);
     }
   }
 
   console.log('\n🎉 CSS ファイル生成が完了しました！');
-  console.log('\n📂 生成されたファイル:');
-  OUTPUT_CONFIGS.forEach(config => {
-    console.log(`   - src/css/${config.fileName}`);
-  });
 }
 
-main().catch(error => {
-  console.error('❌ エラーが発生しました:', error);
-  process.exit(1);
-});
+main();

@@ -21,3 +21,6 @@ debug/
 
 # Chrome extension reserved
 _metadata/
+
+# Serena MCP local cache
+.serena/

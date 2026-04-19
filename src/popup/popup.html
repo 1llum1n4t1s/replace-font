@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="popup.js"></script>
 </head>
@@ -10,31 +11,18 @@
 <body>
   <div class="container">
     <div class="header">
-      <div class="icon">📝</div>
-      <h1 class="title">NotoSansへ置換するやつ(改修型)</h1>
+      <div class="icon">Aa</div>
+      <h1 class="title">NotoSansへ置換するやつ</h1>
     </div>
 
     <div class="status-card">
-      <div class="status-indicator">
-        <span class="dot active"></span>
-        <span class="status-text">動作中</span>
+      <div class="status-row">
+        <div class="status-indicator">
+          <span class="dot active" id="status-dot"></span>
+          <span class="status-text" id="status-text">動作中</span>
+        </div>
       </div>
-      <p class="description">読みづらい日本語フォントを自動的にNoto Sansに置換します</p>
-    </div>
-
-    <div class="features">
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <span class="feature-text">高速処理</span>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🔄</span>
-        <span class="feature-text">自動検出</span>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">✨</span>
-        <span class="feature-text">最適化済</span>
-      </div>
+      <p class="description">読みづらいフォントを Noto Sans JP / UDEV Gothic JPDOC に自動置換します</p>
     </div>
 
     <div class="info-section">

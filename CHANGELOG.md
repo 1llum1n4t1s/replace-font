@@ -1,6 +1,53 @@
 # Changelog
 
+## [2.0.52] - 2026-04-19
+
+### 🎯 大改修: アーキテクチャ刷新・品質改善一括適用
+
+Shadow DOM 処理・動的フォント検出・競合 @font-face 中和など、ランタイムの主要経路を全面的に再設計。
+
+### 🛡️ セキュリティ
+
+- `data-rfs-shadow` 属性と `replace-font-shadow-created` イベントによるスプーフィング耐性強化: 1 マイクロタスクあたり `SHADOW_BATCH_MAX = 512` で DoS 抑制
+- `escapeFamilyName()`: `DYNAMIC_FONT_PATTERN` による主防壁に加えて `\` / `"` エスケープを追加（防御深化）
+- `inject.js` の `console.debug` を `DEBUG = false` ガード（MAIN world でページ側から丸見えだった問題）
+- `getCSSText()` / `getSharedStyleSheet()` に **self-identity チェック** を導入して、bfcache 突入時の非同期 race で新 Promise を踏み潰すバグを修正
+- `fetchFailureAt` (`FAILURE_TTL_MS = 5000`) による fetch ストーム throttle を復活
+- `processStyleNode()` の LINK ノード処理で `isConnected` チェック追加（detached link の load リスナー leak 防止）
+
+### 🏗️ 内部改善
+
+- **`src/content/font-config.js` を新設**: `BODY_FONT` / `MONO_FONT` 定義を単一の真実の源泉に集約。content_scripts と `scripts/generate-css.js` (Node require) の両方から参照され、手動同期が不要に
+- `injectCSS()` の `catch` 内でも retry カウンタをインクリメント（以前は `null cssText` 分岐でしか増えず、ShadowRoot detach 時に無限再試行する経路があった）
+- `injectToDocument()` を分離: メインドキュメントへの CSS 適用に `document.adoptedStyleSheets` を使用（~10ms CSSOM パースコスト削減）。フォールバックは `<style>` タグ
+- `setupStyleSheetMonitor(ownSheet?)` が共有シートを引数で受け取って `querySelectorAll` introspection を省略する高速パスを持つ
+- `onPagehideDispose(e)` が `e.persisted` チェック: bfcache 突入時はリスナー保持、最終アンロード時のみ dispose
+- bfcache 突入時の状態フラグ (`initialized` 除く `documentApplied`, `styleSheetMonitorActive`, `preloadInjected` 等) を `onPagehideCacheClear` でリセットし、pageshow 復帰時に再適用
+- MutationObserver コールバックが `pendingMutationNodes` Set に蓄積 → `queueMicrotask` でバッチ flush（以前は同期 TreeWalker で YouTube 等 10k 要素ページがブロックされる懸念）
+- `earlyStyleBuffer` を `EARLY_STYLE_BUFFER_CAP = 1024` で FIFO 上限化（CSS fetch が永続失敗する環境でのメモリリーク防止）
+- `runFontHealthCheck()`: 初期化 1.5 秒後に `document.fonts.check()` でロード確認。CSP `font-src` ブロック等の silent failure を `console.info` で可視化
+- `validateConsistency()` 強化: `BODY_FONT.name` だけでなく `localFontsRegular` / `localFontsBold` の全エイリアスが `GOTHIC_FAMILIES` と衝突しないかチェック、衝突時は `process.exit(1)`
+- `GOTHIC_FONT_FAMILIES` から `Noto Sans CJK JP` を削除（`BODY_FONT.localFontsRegular` に含まれるため自己参照だった）
+
+### 🎨 UI
+
+- popup を明示的な Light / Dark テーマ対応に刷新（`prefers-color-scheme`）。`Aa` アイコン、ステータスドット、フォントタグ一覧のクリーンなデザインに
+- ライトテーマを基本に、視認性と情報密度のバランスを再設計
+
+### 📚 ドキュメント
+
+- `CLAUDE.md` を現実装に合わせて全面改訂（postMessage / isAcceptableCSS / APPLIED_FLAG / pendingClosedRoots / fetchFailureCache 等、削除済みの参照を一掃。行数・定数名も実際の値に修正）
+- `sync-version.js` のバージョン同期対象に `docs/privacy.html` を追加
+
+### 🗑️ 削除
+
+- `manifest.json` の `minimum_chrome_version: "102"` 記述（declarative world: "MAIN" サポートの要件として CLAUDE.md に参考記述のみ）
+- closed Shadow DOM 対応（`postMessage` / `isAcceptableCSS` / `pendingClosedRoots` / `APPLIED_FLAG` / `PAYLOAD_TYPE`）: 実世界での closed Shadow DOM 使用は稀で、複雑なクロスワールド通信に見合う価値がないため削除。影響は限定的
+
 ## [2.0.50] - 2026-04-18
+
+> ⚠️ 注: このエントリの "exclude_matches (Stripe/PayPal/reCAPTCHA...) を追加" は v2.0.50 時点で実装済みだったが、
+> v2.0.52 のアーキテクチャ刷新で **削除** された（host_permissions: &lt;all_urls&gt; の最小化方針に合わせ、exclude_matches なしで運用に移行）。
 
 ### 🛡️ セキュリティ
 
@@ -36,7 +83,9 @@
 - fix: フォントパス追従・Closed Shadow DOM対応・エディタ除外CSS (#16)
 - ci: Chrome Web Store 自動公開ワークフローを追加
 
-## [2.1.0] - 2026-01-17
+## [2.1.0-archived] - 2026-01-17
+
+> 注: このエントリは当時の実験系統（`*` ユニバーサルセレクタ方式）の記録で、現行 2.0.x 系列（`@font-face` 再定義方式）とはアプローチが異なる。歴史的記録としてのみ保持。本プロジェクトのバージョンは 2.0.x を patch `+1` で進める。
 
 ### 🎯 重大な変更
 
